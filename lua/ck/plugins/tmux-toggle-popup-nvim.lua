@@ -46,8 +46,8 @@ function M.config()
           end,
         },
         toggle = {
-          key = "F1",
-          global = true,
+          key = "-n F1",
+          mode = "force-close",
         },
       }
     end,
@@ -172,11 +172,6 @@ function M.toggle_log_view(file)
   return M.create_terminal({
     name = "log",
     command = { cmd, file },
-    toggle = {
-      action = function(_, name)
-        return "kill-session -t " .. name
-      end,
-    },
   })
 end
 
