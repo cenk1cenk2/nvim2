@@ -10,6 +10,7 @@ function M.config()
       return {
         "jellydn/hurl.nvim",
         dependencies = { "MunifTanjim/nui.nvim" },
+        branch = "canary",
         cmd = {
           "HurlRunner",
           "HurlRunnerAt",
@@ -99,6 +100,13 @@ function M.config()
           desc = "run hurl to entry",
         },
         {
+          fn.wk_keystroke({ categories.RUN, "r", "T" }),
+          function()
+            vim.cmd([[HurlRunnerToEnd]])
+          end,
+          desc = "run hurl to end",
+        },
+        {
           fn.wk_keystroke({ categories.RUN, "r", "r" }),
           function()
             vim.cmd([[HurlRunnerAt]])
@@ -126,6 +134,13 @@ function M.config()
             vim.cmd([[HurlVerbose]])
           end,
           desc = "run hurl for file with verbose mode",
+        },
+        {
+          fn.wk_keystroke({ categories.RUN, "r", "V" }),
+          function()
+            vim.cmd([[HurlVeryVerbose]])
+          end,
+          desc = "run hurl for file with very verbose mode",
         },
         {
           fn.wk_keystroke({ categories.RUN, "r", "m" }),
