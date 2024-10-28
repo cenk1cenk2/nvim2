@@ -4,7 +4,7 @@ local M = {}
 M.name = "felpafel/inlay-hint.nvim"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, true, {
+  require("ck.setup").define_plugin(M.name, false, {
     plugin = function()
       ---@type Plugin
       return {

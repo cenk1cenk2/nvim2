@@ -11,7 +11,7 @@ end
 nvim.lsp.codelens.refresh = true
 
 nvim.lsp.inlay_hints.enabled = true
-nvim.lsp.inlay_hints.toggled = true
+nvim.lsp.inlay_hints.toggled = false
 nvim.lsp.inlay_hints.mode = "eol"
 
 nvim.lsp.copilot.debounce = 50
