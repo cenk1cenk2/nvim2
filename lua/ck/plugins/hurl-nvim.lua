@@ -15,6 +15,8 @@ function M.config()
           "HurlRunner",
           "HurlRunnerAt",
           "HurlRunnerToEntry",
+          "HurlRunnerToEnd",
+          "HurlRerun",
           "HurlToggleMode",
           "HurlSetEnvFile",
           "HurlVerbose",
@@ -112,6 +114,13 @@ function M.config()
             vim.cmd([[HurlRunnerAt]])
           end,
           desc = "run hurl under cursor",
+        },
+        {
+          fn.wk_keystroke({ categories.RUN, "r", "R" }),
+          function()
+            vim.cmd([[HurlRerun]])
+          end,
+          desc = "rerun last hurl command",
         },
         {
           fn.wk_keystroke({ categories.RUN, "r", "f" }),

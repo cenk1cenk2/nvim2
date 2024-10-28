@@ -6,6 +6,13 @@ function M.setup()
       ---@type WKMappings
       return {
         {
+          fn.wk_keystroke({ categories.LSP, "l" }),
+          function()
+            nvim.lsp.fn.codelens()
+          end,
+          desc = "codelens",
+        },
+        {
           fn.wk_keystroke({ categories.LSP, "Q" }),
           group = "restart",
         },
@@ -260,14 +267,6 @@ function M.on_attach(_, bufnr)
             nvim.lsp.fn.jump({ count = -1, severity = { vim.diagnostic.severity.INFO, vim.diagnostic.severity.HINT } })
           end,
           desc = "prev diagnostic (info, hint)",
-          buffer = bufnr,
-        },
-        {
-          fn.wk_keystroke({ categories.LSP, "l" }),
-          function()
-            nvim.lsp.fn.codelens()
-          end,
-          desc = "codelens",
           buffer = bufnr,
         },
         {
