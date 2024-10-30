@@ -121,7 +121,7 @@ function M.setup()
                   return
                 end
 
-                vim.bo.expandtab = value == "tabs"
+                vim.api.nvim_set_option_value("expandtab", value == "spaces", { buf = 0 })
               end)
             end,
             desc = "indentation type",
@@ -131,14 +131,14 @@ function M.setup()
             function()
               vim.ui.input({
                 prompt = "Indentation Amount",
-                default = vim.bo.tabstop,
+                default = tostring(vim.bo.tabstop),
               }, function(value)
                 if not value then
                   return
                 end
 
-                vim.bo.shiftwidth = tonumber(value)
-                vim.bo.tabstop = tonumber(value)
+                vim.api.nvim_set_option_value("shiftwidth", tonumber(value), { buf = 0 })
+                vim.api.nvim_set_option_value("tabstop", tonumber(value), { buf = 0 })
               end)
             end,
             desc = "indentation amount",
