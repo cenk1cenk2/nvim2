@@ -59,6 +59,7 @@ function M.config()
           ask = fn.wk_keystroke({ categories.COPILOT, "c" }),
           edit = fn.wk_keystroke({ categories.COPILOT, "e" }),
           refresh = fn.wk_keystroke({ categories.COPILOT, "r" }),
+          focus = fn.wk_keystroke({ categories.COPILOT, "f" }),
           toggle = {
             debug = fn.wk_keystroke({ categories.COPILOT, "A" }),
             hint = fn.wk_keystroke({ categories.COPILOT, "a" }),
