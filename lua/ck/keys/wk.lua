@@ -146,7 +146,7 @@ function M.setup()
             desc = "editor [block]",
           },
           {
-            fn.wk_keystroke({ categories.ACTIONS, "b" }),
+            fn.wk_keystroke({ categories.ACTIONS, "B" }),
             function()
               local editor = "nvim"
 
