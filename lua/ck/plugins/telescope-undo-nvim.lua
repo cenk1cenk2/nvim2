@@ -55,7 +55,7 @@ function M.config()
       ---@type WKMappings
       return {
         {
-          fn.wk_keystroke({ categories.ACTIONS, "u" }),
+          fn.wk_keystroke({ "u" }),
           function()
             require("telescope").extensions.undo.undo()
           end,

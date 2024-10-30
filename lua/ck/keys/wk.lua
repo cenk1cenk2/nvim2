@@ -112,6 +112,38 @@ function M.setup()
             desc = "toggle line numbers",
           },
           {
+            fn.wk_keystroke({ categories.ACTIONS, "i" }),
+            function()
+              vim.ui.select({ "tabs", "spaces" }, {
+                prompt = "Indentation Type",
+              }, function(value)
+                if not value then
+                  return
+                end
+
+                vim.bo.expandtab = value == "tabs"
+              end)
+            end,
+            desc = "indentation type",
+          },
+          {
+            fn.wk_keystroke({ categories.ACTIONS, "I" }),
+            function()
+              vim.ui.input({
+                prompt = "Indentation Amount",
+                default = vim.bo.tabstop,
+              }, function(value)
+                if not value then
+                  return
+                end
+
+                vim.bo.shiftwidth = tonumber(value)
+                vim.bo.tabstop = tonumber(value)
+              end)
+            end,
+            desc = "indentation amount",
+          },
+          {
             fn.wk_keystroke({ categories.ACTIONS, "L" }),
             ":set norelativenumber!<CR>",
             desc = "toggle relative line numbers",

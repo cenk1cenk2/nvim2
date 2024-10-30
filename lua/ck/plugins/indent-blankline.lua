@@ -84,14 +84,14 @@ function M.config()
       ---@type WKMappings
       return {
         {
-          fn.wk_keystroke({ categories.ACTIONS, "i" }),
+          fn.wk_keystroke({ categories.ACTIONS, "g" }),
           function()
             vim.cmd([[IBLToggle]])
           end,
           desc = "toggle indentation guides",
         },
         {
-          fn.wk_keystroke({ categories.ACTIONS, "I" }),
+          fn.wk_keystroke({ categories.ACTIONS, "G" }),
           function()
             vim.cmd([[IBLToggleScope]])
           end,
