@@ -25,7 +25,12 @@ function M.config()
         log_level = require("ck.log"):to_nvim_level(),
         url = vim.env["YOUTRACK_URL"],
         token = vim.env["YOUTRACK_TOKEN"],
-        queries = {},
+        queries = {
+          {
+            name = "latest",
+            query = "sort by: updated",
+          },
+        },
         issues = {
           fields = { "State", "Priority", "Subsystem", "Type", "Estimation", "Spent time", "Timer" },
         },
