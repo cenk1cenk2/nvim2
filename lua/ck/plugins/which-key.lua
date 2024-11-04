@@ -86,6 +86,7 @@ function M.config()
           { "<auto>", mode = { "n", "i", "x", "s", "o", "t", "c" } },
           { "m", mode = { "n" } },
           { "<localleader>", mode = { "n" } },
+          { ",", mode = { "n" } },
           -- { "<leader>" },
           -- { "g" },
           -- { "z" },
