@@ -7,13 +7,19 @@ local M = {}
 ---@module "plenary.job"
 ---@module "toggleterm"
 
+---@return string[]
+function M.get_selection()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  return utils.get_visual_selection() or vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+end
+
 ---
+---@param lines string[]
 ---@param opts CommandJob
 ---@return Job
-function M.run_buffer_command(opts)
+function M.run_buffer_command(lines, opts)
   local bufnr = vim.api.nvim_get_current_buf()
-  local lines = utils.get_visual_selection() or vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-
   local j = job.create(vim.tbl_extend("force", opts, {
     writer = lines,
     on_success = function(j)
@@ -49,12 +55,10 @@ function M.run_clipboard_command(opts)
 end
 
 ---
+---@param lines string[]
 ---@param opts CommandJob
 ---@return Job
-function M.run_buffer_clipboard_command(opts)
-  local bufnr = vim.api.nvim_get_current_buf()
-  local lines = utils.get_visual_selection() or vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-
+function M.run_buffer_clipboard_command(lines, opts)
   local j = job.create(vim.tbl_extend("force", opts, {
     writer = lines,
     on_success = function(j)
@@ -99,17 +103,14 @@ function M.run_buffer_to_terminal_command(opts)
     :toggle()
 end
 
----@class Executables.RunTemporaryBufferToTerminalCommandOptions: TermCreateArgs
----@field cmd (fun(path: string, filetype: string): string) | string
-
 ---
+---@param lines string[]
 ---@param opts Executables.RunTemporaryBufferToTerminalCommandOptions
 ---@return Terminal?
-function M.run_buffer_to_temporary_terminal_command(opts)
+function M.run_buffer_to_temporary_terminal_command(lines, opts)
   local terminal = require("ck.plugins.toggleterm-nvim")
 
   local bufnr = vim.api.nvim_get_current_buf()
-  local lines = utils.get_visual_selection() or vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 
   local path = table.concat({ os.tmpname(), require("ck.utils.fs").get_buffer_extension(bufnr) }, ".")
   local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
@@ -173,6 +174,7 @@ function M.run_sd()
   local store_key = "SD_INPUT"
   local shada = require("ck.modules.shada")
   local stored_value = shada.get(store_key)
+  local lines = M.get_selection()
 
   vim.ui.input({
     prompt = "sd: ",
@@ -187,7 +189,7 @@ function M.run_sd()
 
     arguments = vim.split(arguments, " ")
 
-    M.run_buffer_command({
+    M.run_buffer_command(lines, {
       command = "sd",
       args = arguments,
     })
@@ -273,7 +275,9 @@ function M.setup()
         {
           fn.wk_keystroke({ categories.ISSUES, "m" }),
           function()
-            M.run_buffer_clipboard_command({
+            local lines = M.get_selection()
+
+            M.run_buffer_clipboard_command(lines, {
               command = "jira-printer",
               args = { "-i", "markdown", "-o", "jira" },
             })
@@ -284,7 +288,9 @@ function M.setup()
         {
           fn.wk_keystroke({ categories.ISSUES, "M" }),
           function()
-            M.run_buffer_clipboard_command({
+            local lines = M.get_selection()
+
+            M.run_buffer_clipboard_command(lines, {
               command = "jira-printer",
               args = { "-i", "jira", "-o", "markdown" },
             })
@@ -295,22 +301,89 @@ function M.setup()
         {
           fn.wk_keystroke({ categories.RUN, "d" }),
           function()
-            M.run_buffer_command({
-              command = "ansible-vault",
-              args = { "decrypt" },
-            })
+            local lines = M.get_selection()
+
+            vim.ui.select({
+              { command = "ansible-vault", args = { "decrypt" } },
+              { command = "sttr", args = { "ascii85-decode" } },
+              { command = "sttr", args = { "base32-decode" } },
+              { command = "sttr", args = { "base64-decode" } },
+              { command = "sttr", args = { "base64url-decode" } },
+              { command = "sttr", args = { "hex-decode" } },
+              { command = "sttr", args = { "html-decode" } },
+              { command = "sttr", args = { "json-unescape" } },
+              { command = "sttr", args = { "url-decode" } },
+              { command = "sttr", args = { "zeropad" } },
+            }, {
+              prompt = "decrypt",
+              format_item = function(item)
+                return ("%s %s"):format(item.command, table.concat(item.args, " "))
+              end,
+            }, function(item)
+              M.run_buffer_clipboard_command(lines, item)
+            end)
           end,
-          desc = "ansible-vault decrypt",
+          desc = "decode",
+          mode = { "n", "v" },
         },
         {
           fn.wk_keystroke({ categories.RUN, "D" }),
           function()
-            M.run_buffer_command({
-              command = "ansible-vault",
-              args = { "encrypt" },
-            })
+            local lines = M.get_selection()
+
+            vim.ui.select({
+              { command = "ansible-vault", args = { "encrypt" } },
+              { command = "sttr", args = { "ascii85-encode" } },
+              { command = "sttr", args = { "base32-encode" } },
+              { command = "sttr", args = { "base64-encode" } },
+              { command = "sttr", args = { "base64url-encode" } },
+              { command = "sttr", args = { "hex-encode" } },
+              { command = "sttr", args = { "html-encode" } },
+              { command = "sttr", args = { "url-encode" } },
+
+              { command = "sttr", args = { "bcrypt" } },
+              { command = "sttr", args = { "count-chars" } },
+              { command = "sttr", args = { "count-lines" } },
+              { command = "sttr", args = { "count-words" } },
+              { command = "sttr", args = { "escape-quotes" } },
+              { command = "sttr", args = { "extract-emails" } },
+              { command = "sttr", args = { "extract-ip" } },
+              { command = "sttr", args = { "extract-url" } },
+              { command = "sttr", args = { "hex-rgb" } },
+              { command = "sttr", args = { "json" } },
+              { command = "sttr", args = { "json-escape" } },
+              { command = "sttr", args = { "json-msgpack" } },
+              { command = "sttr", args = { "json-yaml" } },
+              { command = "sttr", args = { "markdown-html" } },
+              { command = "sttr", args = { "md5" } },
+              { command = "sttr", args = { "morse-encode" } },
+              { command = "sttr", args = { "msgpack-json" } },
+              { command = "sttr", args = { "remove-newlines" } },
+              { command = "sttr", args = { "remove-spaces" } },
+              { command = "sttr", args = { "reverse" } },
+              { command = "sttr", args = { "reverse-lines" } },
+              { command = "sttr", args = { "rot13" } },
+              { command = "sttr", args = { "sha1" } },
+              { command = "sttr", args = { "sha224" } },
+              { command = "sttr", args = { "sha256" } },
+              { command = "sttr", args = { "sha384" } },
+              { command = "sttr", args = { "sha512" } },
+              { command = "sttr", args = { "slug" } },
+              { command = "sttr", args = { "snake" } },
+              { command = "sttr", args = { "title" } },
+              { command = "sttr", args = { "unique-lines" } },
+              { command = "sttr", args = { "yaml-json" } },
+            }, {
+              prompt = "encode",
+              format_item = function(item)
+                return ("%s %s"):format(item.command, table.concat(item.args, " "))
+              end,
+            }, function(item)
+              M.run_buffer_clipboard_command(lines, item)
+            end)
           end,
-          desc = "ansible-vault encrypt",
+          desc = "encode",
+          mode = { "n", "v" },
         },
         {
           fn.wk_keystroke({ categories.RUN, "e" }),
@@ -329,7 +402,9 @@ function M.setup()
         {
           fn.wk_keystroke({ categories.RUN, "o" }),
           function()
-            M.run_buffer_to_temporary_terminal_command({
+            local lines = M.get_selection()
+
+            M.run_buffer_to_temporary_terminal_command(lines, {
               cmd = function(path)
                 return ("otree '%s'"):format(path)
               end,

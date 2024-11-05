@@ -32,42 +32,42 @@ end
 
 ---@return string[]?
 function M.get_visual_selection()
-  -- this will exit visual mode
-  -- use 'gv' to reselect the text
-  local _, csrow, cscol, cerow, cecol
-  local mode = vim.fn.mode()
-  if mode == "v" or mode == "V" or mode == "" then
-    -- if we are in visual mode use the live position
-    _, csrow, cscol, _ = unpack(vim.fn.getpos("."))
-    _, cerow, cecol, _ = unpack(vim.fn.getpos("v"))
-    if mode == "V" then
-      -- visual line doesn't provide columns
-      cscol, cecol = 0, 999
+  -- from https://www.reddit.com/r/neovim/comments/1b1sv3a/function_to_get_visually_selected_text/
+  local _, srow, scol = unpack(vim.fn.getpos("v"))
+  local _, erow, ecol = unpack(vim.fn.getpos("."))
+
+  -- visual line mode
+  if vim.fn.mode() == "V" then
+    if srow > erow then
+      return vim.api.nvim_buf_get_lines(0, erow - 1, srow, true)
+    else
+      return vim.api.nvim_buf_get_lines(0, srow - 1, erow, true)
     end
-    -- exit visual mode
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-  else
-    return
   end
 
-  -- swap vars if needed
-  if cerow < csrow then
-    csrow, cerow = cerow, csrow
+  -- regular visual mode
+  if vim.fn.mode() == "v" then
+    if srow < erow or (srow == erow and scol <= ecol) then
+      return vim.api.nvim_buf_get_text(0, srow - 1, scol - 1, erow - 1, ecol, {})
+    else
+      return vim.api.nvim_buf_get_text(0, erow - 1, ecol - 1, srow - 1, scol, {})
+    end
   end
-  if cecol < cscol then
-    cscol, cecol = cecol, cscol
-  end
-  local lines = vim.fn.getline(csrow, cerow)
-  -- local n = cerow-csrow+1
-  local n = #lines
-  if n <= 0 then
-    return { "" }
-  end
-  lines[n] = string.sub(lines[n], 1, cecol)
-  lines[1] = string.sub(lines[1], cscol)
 
-  ---@diag disable-next-line: return-type-mismatch
-  return lines
+  -- visual block mode
+  if vim.fn.mode() == "\22" then
+    local lines = {}
+    if srow > erow then
+      srow, erow = erow, srow
+    end
+    if scol > ecol then
+      scol, ecol = ecol, scol
+    end
+    for i = srow, erow do
+      table.insert(lines, vim.api.nvim_buf_get_text(0, i - 1, math.min(scol - 1, ecol), i - 1, math.max(scol - 1, ecol), {})[1])
+    end
+    return lines
+  end
 end
 
 return M
