@@ -48,4 +48,17 @@ return {
       }
     )
   ),
+  s.s(
+    { trig = "kustomize", name = "Kustomize", desc = { "Adds the kustomize boilerplate." } },
+    s.fmt(
+      [[
+      ---
+      apiVersion: kustomize.config.k8s.io/v1beta1
+      kind: Kustomization
+
+      resources: []
+      ]],
+      {}
+    )
+  ),
 }
