@@ -369,8 +369,6 @@ function M.setup()
               { command = "sttr", args = { "sha384" } },
               { command = "sttr", args = { "sha512" } },
               { command = "sttr", args = { "slug" } },
-              { command = "sttr", args = { "snake" } },
-              { command = "sttr", args = { "title" } },
               { command = "sttr", args = { "unique-lines" } },
               { command = "sttr", args = { "yaml-json" } },
             }, {
