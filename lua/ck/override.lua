@@ -52,6 +52,8 @@ nvim.lsp.ensure_installed = {
   "prismals",
   "prosemd_lsp",
   "taplo",
+  -- TODO: this will be replaced with that
+  -- "ruff",
   "ruff_lsp",
   "docker_compose_language_service",
   "helm_ls",
@@ -76,6 +78,8 @@ nvim.lsp.ensure_installed = {
   "beautysh",
   "hadolint",
   "proselint",
+  -- TODO: this will be replaced with that
+  -- "buf_ls",
   "bufls",
   "protolint",
   -- "tflint",
