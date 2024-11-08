@@ -52,9 +52,7 @@ nvim.lsp.ensure_installed = {
   "prismals",
   "prosemd_lsp",
   "taplo",
-  -- TODO: this will be replaced with that
-  -- "ruff",
-  "ruff_lsp",
+  "ruff",
   "docker_compose_language_service",
   "helm_ls",
   "typos_lsp",
@@ -78,9 +76,8 @@ nvim.lsp.ensure_installed = {
   "beautysh",
   "hadolint",
   "proselint",
-  -- TODO: this will be replaced with that
+  -- TODO: https://github.com/williamboman/mason-lspconfig.nvim/pull/485 After this merge request.
   -- "buf_ls",
-  "bufls",
   "protolint",
   -- "tflint",
   "tfsec",
