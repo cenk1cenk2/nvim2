@@ -302,9 +302,30 @@ function M.setup()
           fn.wk_keystroke({ categories.RUN, "d" }),
           function()
             local lines = M.get_selection()
+            local cb = function(item)
+              if item == nil then
+                log:warn("Nothing to do.")
+
+                return
+              end
+
+              if type(item.cb) == "function" then
+                item.cb(lines, item)
+
+                return
+              end
+
+              M.run_buffer_clipboard_command(lines, item)
+            end
 
             vim.ui.select({
-              { command = "ansible-vault", args = { "decrypt" } },
+              {
+                command = "ansible-vault",
+                args = { "decrypt" },
+                cb = function(l, i)
+                  return M.run_buffer_command(l, i)
+                end,
+              },
               { command = "sttr", args = { "ascii85-decode" } },
               { command = "sttr", args = { "base32-decode" } },
               { command = "sttr", args = { "base64-decode" } },
@@ -320,7 +341,7 @@ function M.setup()
                 return ("%s %s"):format(item.command, table.concat(item.args, " "))
               end,
             }, function(item)
-              M.run_buffer_clipboard_command(lines, item)
+              cb(item)
             end)
           end,
           desc = "decode",
@@ -330,9 +351,30 @@ function M.setup()
           fn.wk_keystroke({ categories.RUN, "D" }),
           function()
             local lines = M.get_selection()
+            local cb = function(item)
+              if item == nil then
+                log:warn("Nothing to do.")
+
+                return
+              end
+
+              if type(item.cb) == "function" then
+                item.cb(lines, item)
+
+                return
+              end
+
+              M.run_buffer_clipboard_command(lines, item)
+            end
 
             vim.ui.select({
-              { command = "ansible-vault", args = { "encrypt" } },
+              {
+                command = "ansible-vault",
+                args = { "encrypt" },
+                cb = function(l, i)
+                  M.run_buffer_command(l, i)
+                end,
+              },
               { command = "sttr", args = { "ascii85-encode" } },
               { command = "sttr", args = { "base32-encode" } },
               { command = "sttr", args = { "base64-encode" } },
@@ -377,7 +419,7 @@ function M.setup()
                 return ("%s %s"):format(item.command, table.concat(item.args, " "))
               end,
             }, function(item)
-              M.run_buffer_clipboard_command(lines, item)
+              cb(item)
             end)
           end,
           desc = "encode",
