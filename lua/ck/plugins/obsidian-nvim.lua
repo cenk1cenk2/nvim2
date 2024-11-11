@@ -296,7 +296,7 @@ function M.config()
         },
 
         {
-          fn.wk_keystroke({ categories.NOTES, "N" }),
+          fn.wk_keystroke({ categories.NOTES, "C" }),
           function()
             M.note_from_template("Todo", os.date("%Y%m%dT%H%M%S"), "Draft.md")
           end,
@@ -369,7 +369,7 @@ function M.config()
         },
 
         {
-          fn.wk_keystroke({ categories.NOTES, "n" }),
+          fn.wk_keystroke({ categories.NOTES, "c" }),
           function()
             vim.cmd([[ObsidianNew]])
           end,
@@ -377,7 +377,7 @@ function M.config()
         },
 
         {
-          fn.wk_keystroke({ categories.NOTES, "n" }),
+          fn.wk_keystroke({ categories.NOTES, "c" }),
           function()
             vim.cmd([[ObsidianExtractNote]])
           end,
