@@ -258,6 +258,14 @@ function M.config()
           mode = { "n", "o", "x" },
         },
         {
+          "SS",
+          function()
+            require("flash").treesitter_search({})
+          end,
+          desc = "flash treesitter search",
+          mode = { "n", "o", "x" },
+        },
+        {
           "r",
           function()
             require("flash").remote({})
