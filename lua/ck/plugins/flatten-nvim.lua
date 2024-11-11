@@ -28,35 +28,34 @@ function M.config()
           end,
           pre_open = function() end,
           post_open = function(bufnr, winnr, ft, is_blocking)
-            if is_blocking then
-              -- If the file is a git commit, create one-shot autocmd to delete it on write
-              -- If you just want the toggleable terminal integration, ignore this bit and only use the
-              -- code in the else block
-              vim.api.nvim_create_autocmd("BufWritePost", {
-                buffer = bufnr,
-                once = true,
-                callback = function()
-                  -- This is a bit of a hack, but if you run bufdelete immediately
-                  -- the shell can occasionally freeze
-                  -- if vim.tbl_contains(fts, ft) then
-                  vim.defer_fn(function()
-                    vim.api.nvim_buf_delete(bufnr, {})
-                  end, 50)
-                  -- end
-                end,
-              })
-              -- else
-              -- If it's a normal file, then reopen the terminal, then switch back to the newly opened window
-              -- This gives the appearance of the window opening independently of the terminal
-              -- require("toggleterm").toggle(0)
-              -- vim.api.nvim_set_current_win(winnr)
-            end
+            -- if is_blocking then
+            --   -- If the file is a git commit, create one-shot autocmd to delete it on write
+            --   -- If you just want the toggleable terminal integration, ignore this bit and only use the
+            --   -- code in the else block
+            --   vim.api.nvim_create_autocmd("BufWritePost", {
+            --     buffer = bufnr,
+            --     once = true,
+            --     callback = function()
+            --       -- This is a bit of a hack, but if you run bufdelete immediately
+            --       -- the shell can occasionally freeze
+            --       -- if vim.tbl_contains(fts, ft) then
+            --       vim.defer_fn(function()
+            --         vim.api.nvim_buf_delete(bufnr, {})
+            --       end, 50)
+            --       -- end
+            --     end,
+            --   })
+            --   -- else
+            --   -- If it's a normal file, then reopen the terminal, then switch back to the newly opened window
+            --   -- This gives the appearance of the window opening independently of the terminal
+            --   -- require("toggleterm").toggle(0)
+            --   -- vim.api.nvim_set_current_win(winnr)
+            -- end
           end,
           block_end = function() end,
         },
         block_for = {
           gitcommit = true,
-          [""] = true,
         },
         -- Window options
         window = {

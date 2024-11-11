@@ -174,6 +174,8 @@ function M.setup()
               vim.env.EDITOR = editor
               vim.env.GIT_EDITOR = editor
               vim.env.EDITOR_BLOCK = "1"
+
+              require("ck.log"):info("Editor set to blocking mode.")
             end,
             desc = "editor [block]",
           },
@@ -185,7 +187,9 @@ function M.setup()
               vim.env.VISUAL = editor
               vim.env.EDITOR = editor
               vim.env.GIT_EDITOR = editor
-              vim.env.EDITOR_BLOCK = nil
+              vim.env.EDITOR_BLOCK = ""
+
+              require("ck.log"):info("Editor set to async mode.")
             end,
             desc = "editor [async]",
           },
