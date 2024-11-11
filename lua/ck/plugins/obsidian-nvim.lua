@@ -440,21 +440,26 @@ end
 function M.note_from_template(root, title, template)
   local client = require("obsidian"):get_client()
   local file = ("%s/%s.md"):format(root, title)
-  local matches = client:resolve_note(file)
 
-  if matches then
+  if client:resolve_note(file) then
     require("ck.log"):info("Opening note: %s", file)
     vim.cmd(([[ObsidianQuickSwitch %s]]):format(file))
-  else
-    vim.cmd(([[ObsidianNew %s]]):format(file))
 
-    local bufnr = vim.api.nvim_get_current_buf()
-    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
-    if #lines == 2 and lines[1] == ("# %s"):format(title) then
-      require("ck.log"):info("Templating note: %s -> %s", file, template)
-      vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, {})
-      vim.cmd(([[ObsidianTemplate %s]]):format(template))
-    end
+    return
+  end
+
+  require("ck.log"):info("Creating note: %s", file)
+  vim.cmd(([[ObsidianNew %s]]):format(file))
+
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  vim.api.nvim_buf_set_name(bufnr, file)
+
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
+  if #lines == 2 and lines[1] == ("# %s"):format(title) then
+    require("ck.log"):info("Templating note: %s from %s", file, template)
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, {})
+    vim.cmd(([[ObsidianTemplate %s]]):format(template))
   end
 end
 
