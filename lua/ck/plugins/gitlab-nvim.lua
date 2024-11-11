@@ -288,9 +288,9 @@ function M.config()
           mode = { "v" },
         },
         {
-          fn.wk_keystroke({ categories.GIT, "l", "P" }),
+          fn.wk_keystroke({ categories.GIT, "l", "C" }),
           function()
-            require("gitlab").create_comment_suggestions()
+            require("gitlab").create_comment_suggestion()
           end,
           desc = "gitlab mr create suggestion",
           mode = { "v" },
