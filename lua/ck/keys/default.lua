@@ -283,6 +283,19 @@ function M.load()
         ">gv",
         mode = { "v" },
       },
+      -- jumps
+      {
+        "]c",
+        "]c",
+        desc = "jump to next git change",
+        mode = { "n", "v", "o" },
+      },
+      {
+        "[c",
+        "[c",
+        desc = "jump to prev git change",
+        mode = { "n", "v", "o" },
+      },
     },
   })
 end
