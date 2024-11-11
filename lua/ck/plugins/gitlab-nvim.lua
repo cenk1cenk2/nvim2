@@ -34,10 +34,10 @@ function M.config()
             size = {
               height = function()
                 if vim.o.lines < 60 then
-                  return 0.3
+                  return 0.2
                 end
 
-                return 40
+                return 20
               end,
             },
           },
