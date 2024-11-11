@@ -296,7 +296,7 @@ function M.config()
         },
 
         {
-          fn.wk_keystroke({ categories.NOTES, "q" }),
+          fn.wk_keystroke({ categories.NOTES, "N" }),
           function()
             M.note_from_template("Todo", os.date("%Y%m%dT%H%M%S"), "Draft.md")
           end,
