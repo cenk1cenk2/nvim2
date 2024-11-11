@@ -157,6 +157,13 @@ function M.config()
           desc = "gitlab review",
         },
         {
+          fn.wk_keystroke({ categories.GIT, "l", "D" }),
+          function()
+            require("gitlab").choose_merge_request()
+          end,
+          desc = "gitlab mr to review",
+        },
+        {
           fn.wk_keystroke({ categories.GIT, "l", "s" }),
           function()
             require("gitlab").summary()
