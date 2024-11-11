@@ -81,7 +81,7 @@ function M.config()
             local autopairs = require("nvim-autopairs")
             local suggestion = require("copilot.suggestion")
             autopairs.disable()
-            suggestion.accept()
+            suggestion.accept({})
             autopairs.enable()
           end,
           desc = "accept copilot suggestion",
