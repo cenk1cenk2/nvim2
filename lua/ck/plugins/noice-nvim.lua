@@ -275,6 +275,13 @@ function M.config()
       ---@type WKMappings
       return {
         {
+          fn.wk_keystroke({ "M" }),
+          function()
+            vim.cmd([[Noice]])
+          end,
+          desc = "messages [noice]",
+        },
+        {
           fn.wk_keystroke({ categories.ACTIONS, "n" }),
           function()
             vim.cmd([[Noice enable]])
@@ -287,17 +294,6 @@ function M.config()
             vim.cmd([[Noice disable]])
           end,
           desc = "disable noice",
-        },
-      }
-    end,
-    keymaps = function()
-      return {
-        {
-          "<C-m>",
-          function()
-            vim.cmd([[Noice]])
-          end,
-          desc = "messages [noice]",
         },
       }
     end,
