@@ -453,14 +453,14 @@ function M.note_from_template(root, title, template)
 
   local bufnr = vim.api.nvim_get_current_buf()
 
-  vim.api.nvim_buf_set_name(bufnr, file)
-
   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
   if #lines == 2 and lines[1] == ("# %s"):format(title) then
     require("ck.log"):info("Templating note: %s from %s", file, template)
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, {})
     vim.cmd(([[ObsidianTemplate %s]]):format(template))
   end
+
+  vim.api.nvim_buf_set_name(bufnr, file)
 end
 
 return M
