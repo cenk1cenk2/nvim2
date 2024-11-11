@@ -215,16 +215,30 @@ function M.config()
         {
           fn.wk_keystroke({ categories.GIT, "l", "t" }),
           function()
+            require("gitlab").move_to_discussion_tree_from_diagnostic()
+          end,
+          desc = "gitlab mr expand discussion",
+        },
+        {
+          fn.wk_keystroke({ categories.GIT, "l", "T" }),
+          function()
             require("gitlab").toggle_discussions()
           end,
           desc = "gitlab mr toggle discussions",
         },
         {
-          fn.wk_keystroke({ categories.GIT, "l", "T" }),
+          fn.wk_keystroke({ categories.GIT, "l", "l" }),
           function()
-            require("gitlab").move_to_discussion_tree_from_diagnostic()
+            require("gitlab").toggle_draft_mode()
           end,
-          desc = "gitlab mr move to discussion tree",
+          desc = "gitlab toggle live/draft mode",
+        },
+        {
+          fn.wk_keystroke({ categories.GIT, "l", "P" }),
+          function()
+            require("gitlab").publish_all_drafts()
+          end,
+          desc = "gitlab publish drafts",
         },
         {
           fn.wk_keystroke({ categories.GIT, "l", "o" }),
@@ -234,8 +248,29 @@ function M.config()
           desc = "gitlab mr open in browser",
         },
         {
+          fn.wk_keystroke({ categories.GIT, "l", "O" }),
+          function()
+            require("gitlab").pipeline()
+          end,
+          desc = "gitlab mr pipeline",
+        },
+        {
           fn.wk_keystroke({ categories.GIT, "l", "p" }),
           group = "people",
+        },
+        {
+          fn.wk_keystroke({ categories.GIT, "l", "p", "l" }),
+          function()
+            require("gitlab").add_label()
+          end,
+          desc = "add label",
+        },
+        {
+          fn.wk_keystroke({ categories.GIT, "l", "p", "L" }),
+          function()
+            require("gitlab").delete_label()
+          end,
+          desc = "remove label",
         },
         {
           fn.wk_keystroke({ categories.GIT, "l", "p", "a" }),
@@ -264,13 +299,6 @@ function M.config()
             require("gitlab").remove_reviewer()
           end,
           desc = "remove reviewer",
-        },
-        {
-          fn.wk_keystroke({ categories.GIT, "l", "P" }),
-          function()
-            require("gitlab").pipeline()
-          end,
-          desc = "gitlab mr pipeline",
         },
         {
           fn.wk_keystroke({ categories.GIT, "l", "Q" }),

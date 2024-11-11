@@ -259,7 +259,7 @@ function M.config()
         },
 
         {
-          fn.wk_keystroke({ categories.NOTES, "P" }),
+          fn.wk_keystroke({ categories.NOTES, "s" }),
           function()
             vim.cmd([[ObsidianTOC]])
           end,

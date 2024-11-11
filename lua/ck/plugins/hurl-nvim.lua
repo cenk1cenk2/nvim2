@@ -131,7 +131,7 @@ function M.config()
           mode = { "n", "v" },
         },
         {
-          fn.wk_keystroke({ categories.RUN, "r", "m" }),
+          fn.wk_keystroke({ categories.RUN, "r", "M" }),
           function()
             vim.cmd([[HurlToggleMode]])
           end,
