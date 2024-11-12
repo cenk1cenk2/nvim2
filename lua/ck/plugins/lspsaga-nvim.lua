@@ -22,7 +22,7 @@ function M.config()
         "sagafinder",
       })
 
-      -- ---@diagnostic disable-next-line: duplicate-set-field
+      ---@diagnostic disable-next-line: duplicate-set-field
       nvim.lsp.fn.code_action = function()
         vim.cmd("Lspsaga code_action")
         require("lspsaga.codeaction").pending_request = false

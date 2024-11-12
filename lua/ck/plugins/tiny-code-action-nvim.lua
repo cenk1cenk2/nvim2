@@ -4,7 +4,7 @@ local M = {}
 M.name = "rachartier/tiny-code-action.nvim"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, false, {
+  require("ck.setup").define_plugin(M.name, true, {
     plugin = function()
       ---@type Plugin
       return {
@@ -24,23 +24,19 @@ function M.config()
           layout_strategy = "vertical",
           layout_config = {
             width = function()
-              if vim.o.columns < 180 then
+              if vim.o.columns < 360 then
                 return math.floor(vim.o.columns * 0.90)
               end
 
               return math.floor(vim.o.columns * 0.5)
             end,
             height = function()
-              if vim.o.lines < 60 then
-                return math.floor(vim.o.lines * 0.95)
-              end
-
               return math.floor(vim.o.lines * 0.75)
             end,
             preview_height = function(_, _, max_lines)
-              local h = math.floor(max_lines * 0.5)
-              return math.max(h, 10)
+              return math.floor(max_lines * 0.5)
             end,
+            preview_cutoff = 1,
             mirror = true,
           },
         },

@@ -21,12 +21,12 @@ function M.config()
           -- https://github.com/nvim-extensions/nvim-ginkgo
           "nvim-extensions/nvim-ginkgo",
           "nvim-treesitter/nvim-treesitter",
-          {
-            "antoinemadec/FixCursorHold.nvim",
-            init = false,
-            config = false,
-            lazy = false,
-          },
+          -- {
+          --   "antoinemadec/FixCursorHold.nvim",
+          --   init = false,
+          --   config = false,
+          --   lazy = false,
+          -- },
         },
       }
     end,

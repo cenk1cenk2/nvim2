@@ -15,6 +15,7 @@ function M.config()
     setup = function()
       local defaults = require("markview").configuration
       return {
+        buf_ignore = {},
         filetypes = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante" },
         modes = { "n", "no", "c" }, -- Change these modes
         hybrid_modes = { "n", "v", "x" },

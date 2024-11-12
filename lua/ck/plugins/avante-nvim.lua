@@ -55,7 +55,41 @@ function M.config()
             rounded = false,
           },
         },
+        behaviour = {
+          auto_set_highlight_group = false,
+          auto_set_keymaps = false,
+        },
         mappings = {
+          --- @class AvanteConflictMappings
+          diff = {
+            ours = fn.local_keystroke({ "c", "o" }),
+            theirs = fn.local_keystroke({ "c", "t" }),
+            all_theirs = fn.local_keystroke({ "a", "t" }),
+            both = fn.local_keystroke({ "c", "b" }),
+            cursor = fn.local_keystroke({ "c", "c" }),
+            next = "]x",
+            prev = "[x",
+          },
+          suggestion = {
+            accept = "<M-l>",
+            next = "<M-k>",
+            prev = "<M-j>",
+            dismiss = "<C-h>",
+          },
+          jump = {
+            next = "]]",
+            prev = "[[",
+          },
+          submit = {
+            normal = "<CR>",
+            insert = "<C-s>",
+          },
+          sidebar = {
+            apply_all = fn.local_keystroke({ "A" }),
+            apply_cursor = fn.local_keystroke({ "a" }),
+            switch_windows = "<Tab>",
+            reverse_switch_windows = "<S-Tab>",
+          },
           ask = fn.wk_keystroke({ categories.COPILOT, "c" }),
           edit = fn.wk_keystroke({ categories.COPILOT, "e" }),
           refresh = fn.wk_keystroke({ categories.COPILOT, "r" }),

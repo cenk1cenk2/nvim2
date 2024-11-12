@@ -5,16 +5,21 @@ function nvim.fn.workspace_quit()
   local buffers = vim.api.nvim_list_bufs()
   local modified = false
   for _, bufnr in ipairs(buffers) do
-    if vim.api.nvim_get_option_value("modified", { buf = bufnr }) then
+    if vim.api.nvim_get_option_value("buflisted", { buf = bufnr }) and vim.api.nvim_get_option_value("modified", { buf = bufnr }) then
       modified = true
+
+      break
     end
   end
 
   if modified then
-    vim.ui.select({ "yes", "no" }, {
+    vim.ui.select({ { name = "yes", value = true }, { name = "no", value = false } }, {
       prompt = "You have unsaved changes. Quit anyway? (y/n) ",
+      format_item = function(item)
+        return item.name
+      end,
     }, function(input)
-      if not input or input == "no" then
+      if not input then
         return
       end
 
