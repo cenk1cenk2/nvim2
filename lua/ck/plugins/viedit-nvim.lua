@@ -16,12 +16,12 @@ function M.config()
         -- Highlight group for marked text
         -- Can use any highlight group definitions
         highlight = {
-          link = "IncSearch",
+          link = "CurSearch",
         },
 
         -- Highlight group for the marked text where cursor currently is
         current_highlight = {
-          link = "CurSearch",
+          link = "IncSearch",
         },
 
         -- Determines the behavior of the end of the mark when text is inserted
@@ -45,11 +45,11 @@ function M.config()
         -- If override_keys is off - this won't be applied
         keys = {
           -- Key to move to the next occurrence of the marked text
-          next_occurrence = "<localleader>n",
+          next_occurrence = "n",
           -- Key to move to the previous occurrence of the marked text
-          previous_occurrence = "<localleader>p",
+          previous_occurrence = "N",
           -- Toggle individual occurrence to/from selection
-          toggle_single = "<localleader>t",
+          toggle_single = ";",
         },
       }
     end,

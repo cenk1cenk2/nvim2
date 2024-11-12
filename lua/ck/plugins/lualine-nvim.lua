@@ -32,6 +32,7 @@ function M.config()
             -- components.filename,
             components.diff,
             components.python_env,
+            components.viedit,
             components.iedit,
           },
           lualine_c = {
@@ -387,7 +388,22 @@ function M.components()
       end,
       color = { fg = nvim.ui.colors.black, bg = nvim.ui.colors.orange[600] },
       cond = function()
-        return is_loaded("iedit") and require("ck.plugins.iedit-nvim").is_active()
+        return is_loaded("iedit") and require("ck.plugins.iedit-nvim") ~= nil
+      end,
+    },
+    viedit = {
+      function()
+        return nvim.ui.icons.ui.Pencil
+      end,
+      color = { fg = nvim.ui.colors.black, bg = nvim.ui.colors.orange[600] },
+      cond = function()
+        if not is_loaded("viedit") then
+          return false
+        end
+
+        local session = require("viedit.session").get(vim.api.nvim_get_current_buf())
+
+        return type(session) == "table" and session.is_active
       end,
     },
     lazy_updates = {

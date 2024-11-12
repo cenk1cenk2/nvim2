@@ -55,7 +55,8 @@ hl.common = {
   Question = { fg = c.yellow[600] },
   WarningMsg = { fg = c.orange[600], bold = true, bg = c.bg[200] },
 
-  IncSearch = { bg = c.bg[500] },
+  IncSearch = { bg = c.bg[400] },
+  CurSearch = { bg = c.bg[500] },
   Search = { bg = c.bg[400] },
   Substitute = { fg = c.bg[500], bg = c.orange[600] },
   MatchParen = { fg = c.blue[600], underline = true },
