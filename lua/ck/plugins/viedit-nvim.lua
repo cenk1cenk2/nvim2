@@ -4,7 +4,7 @@ local M = {}
 M.name = "viocost/viedit"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, false, {
+  require("ck.setup").define_plugin(M.name, true, {
     plugin = function()
       ---@type Plugin
       return {
@@ -15,7 +15,9 @@ function M.config()
       return {
         -- Highlight group for marked text
         -- Can use any highlight group definitions
-        highlight = "IncSearch",
+        highlight = {
+          link = "IncSearch",
+        },
 
         -- Highlight group for the marked text where cursor currently is
         current_highlight = {
@@ -43,11 +45,11 @@ function M.config()
         -- If override_keys is off - this won't be applied
         keys = {
           -- Key to move to the next occurrence of the marked text
-          next_occurrence = "n",
+          next_occurrence = "<localleader>n",
           -- Key to move to the previous occurrence of the marked text
-          previous_occurrence = "N",
+          previous_occurrence = "<localleader>p",
           -- Toggle individual occurrence to/from selection
-          toggle_single = ";",
+          toggle_single = "<localleader>t",
         },
       }
     end,
@@ -58,19 +60,19 @@ function M.config()
       ---@type WKMappings
       return {
         {
-          fn.wk_keystroke({ categories.RUN, "i" }),
+          fn.wk_keystroke({ categories.SEARCH, "i" }),
           function()
             require("viedit").toggle_single()
           end,
-          desc = "start iedit",
+          desc = "start viedit",
           mode = { "n", "v" },
         },
         {
-          fn.wk_keystroke({ categories.RUN, "I" }),
+          fn.wk_keystroke({ categories.SEARCH, "a" }),
           function()
             require("viedit").toggle_all()
           end,
-          desc = "start iedit select all",
+          desc = "start viedit select all",
           mode = { "n", "v" },
         },
       }

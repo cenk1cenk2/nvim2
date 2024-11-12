@@ -50,7 +50,7 @@ function M.config()
       ---@type WKMappings
       return {
         {
-          fn.wk_keystroke({ categories.RUN, "i" }),
+          fn.wk_keystroke({ categories.SEARCH, "i" }),
           function()
             if M.is_active() then
               log:info("Editing stopped.")
@@ -65,7 +65,7 @@ function M.config()
           mode = { "n", "v" },
         },
         {
-          fn.wk_keystroke({ categories.RUN, "I" }),
+          fn.wk_keystroke({ categories.SEARCH, "a" }),
           function()
             log:info("Editing started with selection.")
 
