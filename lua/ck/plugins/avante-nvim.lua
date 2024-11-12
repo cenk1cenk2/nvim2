@@ -54,6 +54,10 @@ function M.config()
           sidebar_header = {
             rounded = false,
           },
+          input = {
+            prefix = nvim.ui.icons.misc.Robot .. " ",
+            height = 20, -- Height of the input window in vertical layout
+          },
         },
         behaviour = {
           auto_set_highlight_group = false,
