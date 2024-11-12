@@ -4,7 +4,7 @@ local M = {}
 M.name = "stevearc/quicker.nvim"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, false, {
+  require("ck.setup").define_plugin(M.name, true, {
     plugin = function()
       ---@type Plugin
       return {
@@ -15,6 +15,9 @@ function M.config()
     setup = function()
       ---@type quicker.SetupOptions
       return {
+        edit = {
+          enabled = true,
+        },
         keys = {
           {
             ">",
