@@ -20,12 +20,9 @@ function M.config()
       end
     end,
     setup = function()
-      local editor = "nvim -b"
-
-      vim.env.VISUAL = editor
-      vim.env.EDITOR = editor
-      vim.env.GIT_EDITOR = editor
-      vim.env.EDITOR_BLOCK = "1"
+      for key, value in pairs(M.editor_block()) do
+        vim.env[key] = value
+      end
 
       ---@type tmux-toggle-popup.Config
       return {
@@ -149,13 +146,35 @@ function M.config()
         {
           fn.wk_keystroke({ categories.TERMINAL, "y" }),
           function()
-            M.create_terminal({ name = "yazi", command = { "yazi" } })
+            M.create_terminal({ name = "yazi", command = { "yazi" }, env = M.editor_async() })
           end,
           desc = "yazi",
         },
       }
     end,
   })
+end
+
+function M.editor_block()
+  local editor = "nvim -b"
+
+  return {
+    VISUAL = editor,
+    EDITOR = editor,
+    GIT_EDITOR = editor,
+    EDITOR_BLOCK = "1",
+  }
+end
+
+function M.editor_async()
+  local editor = "nvim"
+
+  return {
+    VISUAL = editor,
+    EDITOR = editor,
+    GIT_EDITOR = editor,
+    EDITOR_BLOCK = "",
+  }
 end
 
 ---@param opts tmux-toggle-popup.Session
