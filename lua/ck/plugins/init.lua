@@ -71,7 +71,7 @@ local plugins = {
   "gitignore-nvim",
   "lspsaga-nvim",
   -- "tiny-code-action-nvim",
-  "tiny-inline-diagnostic-nvim",
+  -- "tiny-inline-diagnostic-nvim",
   "nvim-dap-ui",
   "nvim-dap-virtual-text",
   "dressing",
