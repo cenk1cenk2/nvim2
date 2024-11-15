@@ -20,7 +20,7 @@ function M.config()
       end
     end,
     setup = function()
-      for key, value in pairs(M.editor_block()) do
+      for key, value in ipairs(M.editor_block()) do
         vim.env[key] = value
       end
 
