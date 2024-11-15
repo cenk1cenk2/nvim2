@@ -20,14 +20,14 @@ function M.config()
       end
     end,
     setup = function()
-      for key, value in ipairs(M.editor_block()) do
+      for key, value in pairs(M.editor_block()) do
         vim.env[key] = value
       end
 
       ---@type tmux-toggle-popup.Config
       return {
-        log_level = vim.log.levels.DEBUG,
-        -- log_level = require("ck.log"):to_nvim_level(),
+        -- log_level = vim.log.levels.DEBUG,
+        log_level = require("ck.log"):to_nvim_level(),
         env = {
           VISUAL = function()
             return vim.env.VISUAL
@@ -155,6 +155,7 @@ function M.config()
   })
 end
 
+---@return table<string, string>
 function M.editor_block()
   local editor = "nvim -b"
 
@@ -166,6 +167,7 @@ function M.editor_block()
   }
 end
 
+---@return table<string, string>
 function M.editor_async()
   local editor = "nvim"
 
