@@ -13,6 +13,9 @@ function M.config()
         event = { "BufReadPost", "BufNewFile", "BufNew" },
       }
     end,
+    configure = function()
+      nvim.lsp.diagnostics.virtual_text = false
+    end,
     setup = function()
       return {
         signs = {
@@ -31,7 +34,6 @@ function M.config()
       }
     end,
     on_setup = function(c)
-      nvim.lsp.diagnostics.virtual_text = false
       require("tiny-inline-diagnostic").setup(c)
     end,
   })
