@@ -15,6 +15,9 @@ function M.config()
     end,
     setup = function()
       return {
+        signs = {
+          diag = nvim.ui.icons.ui.SquareCentered,
+        },
         options = {
           -- Show the source of the diagnostic.
           show_source = false,

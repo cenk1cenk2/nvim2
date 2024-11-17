@@ -240,6 +240,12 @@ function M.define_plugin(name, enabled, config)
     log:trace("Defining plugin: %s as %s", config.plugin_spec[1], config.name)
   end
 
+  if config.enabled == false then
+    log:debug(string.format("Plugin config stopped due to disabled: %s", name))
+
+    return
+  end
+
   if config.condition ~= nil and config.condition(config, M.fn) == false then
     nvim.plugins[name] = config
 
