@@ -23,10 +23,10 @@ function M.config()
       })
 
       ---@diagnostic disable-next-line: duplicate-set-field
-      -- nvim.lsp.fn.code_action = function()
-      --   vim.cmd("Lspsaga code_action")
-      --   require("lspsaga.codeaction").pending_request = false
-      -- end
+      nvim.lsp.fn.code_action = function()
+        vim.cmd("Lspsaga code_action")
+        require("lspsaga.codeaction").pending_request = false
+      end
 
       ---@diagnostic disable-next-line: duplicate-set-field
       nvim.lsp.fn.hover = function()
