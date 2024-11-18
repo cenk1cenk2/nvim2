@@ -132,14 +132,14 @@ function M.config()
         {
           fn.wk_keystroke({ categories.TESTS, "k" }),
           function()
-            require("neotest").output.open({ enter = true })
+            require("neotest").output.open({ enter = true, short = false, auto_close = true })
           end,
           desc = "show test output",
         },
         {
           fn.wk_keystroke({ categories.TESTS, "s" }),
           function()
-            require("neotest").summary.toggle({ enter = true })
+            require("neotest").summary.toggle()
           end,
           desc = "show test summary",
         },
