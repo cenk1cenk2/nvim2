@@ -12,12 +12,57 @@ local M = {
 function M.load_wk(mappings)
   if not is_loaded("which-key") then
     local plugin = require("ck.plugins.which-key")
-    vim.list_extend(plugin._.wk, mappings)
+    vim.list_extend(plugin._.pending_wk, mappings)
 
     return
   end
 
   require("which-key").add(mappings)
+end
+
+---@module "snacks.toggle"
+---@class WKToggleMapping: WKMappings
+---@field toggle (fun(): snacks.toggle) | snacks.toggle
+---@alias WKToggleMappings WKToggleMapping[]
+---@alias LoadWkTogglesFn fun(mappings: WKToggleMappings): nil
+
+--- Loads which key mappings with toggles.
+---@type LoadWkTogglesFn
+function M.load_toggles(mappings)
+  if not is_loaded("snacks") then
+    local plugin = require("ck.plugins.snacks-nvim")
+    vim.list_extend(plugin._.pending_toggles, mappings)
+
+    return
+  end
+
+  local plugin = require("ck.plugins.snacks-nvim")
+
+  ---@type WKMappings[]
+  local m = {}
+  for _, mapping in pairs(mappings) do
+    local keys = mapping[1]
+    plugin._.toggles[keys] = M.evaluate_property(mapping.toggle)
+
+    table.insert(m, {
+      keys,
+      function()
+        plugin._.toggles[keys]:toggle()
+      end,
+      icon = function()
+        local key = plugin._.toggles[keys]:get() and "enabled" or "disabled"
+        return {
+          icon = type(plugin._.toggles[keys].opts.icon) == "string" and plugin._.toggles[keys].opts.icon or plugin._.toggles[keys].opts.icon[key],
+          color = type(plugin._.toggles[keys].opts.color) == "string" and plugin._.toggles[keys].opts.color or plugin._.toggles[keys].opts.color[key],
+        }
+      end,
+      desc = function()
+        return (plugin._.toggles[keys]:get() and "disable " or "enable ") .. mapping.desc
+      end,
+    })
+  end
+
+  M.load_wk(m)
 end
 
 ---@alias KeymapMappings KeymapMapping[]
@@ -194,6 +239,7 @@ end
 ---@field on_done? fun(config: Config, fn: SetupFn): nil
 ---@field keymaps? (fun(config: Config, fn: SetupFn): KeymapMappings) | KeymapMappings
 ---@field wk? (fun(config: Config, categories: WKCategories, fn: SetupFn): WKMappings) | WKMappings
+---@field toggles? (fun(config: Config, categories: WKCategories, fn: SetupFn): WKToggleMappings)
 ---@field autocmds? (fun(config: Config, fn: SetupFn): Autocmds[]) | Autocmds[]
 ---@field commands? (fun(config: Config, fn: SetupFn): Commands[]) | Commands[]
 ---@field hl? (fun(config: Config, fn: SetupFn): table<string, vim.api.keyset.highlight>) | table<string, vim.api.keyset.highlight>
@@ -221,6 +267,7 @@ function M.define_plugin(name, enabled, config)
     on_done = { config.on_done, "f", true },
     keymaps = { config.keymaps, { "t", "f" }, true },
     wk = { config.wk, { "t", "f" }, true },
+    toggles = { config.toggles, { "f" }, true },
     autocmds = { config.autocmds, { "t", "f" }, true },
     commands = { config.commands, { "t", "f" }, true },
     hl = { config.hl, { "f", "t" }, true },
@@ -316,6 +363,10 @@ function M.init(config)
 
   if config.wk ~= nil then
     M.load_wk(M.evaluate_property(config.wk, config, M.fn.get_wk_categories(), M.fn))
+  end
+
+  if config.toggles ~= nil then
+    M.load_toggles(M.evaluate_property(config.toggles, config, M.fn.get_wk_categories(), M.fn))
   end
 
   if config.hl ~= nil then

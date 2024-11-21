@@ -1,0 +1,292 @@
+-- https://github.com/folke/snacks.nvim
+local M = {
+  _ = {
+    ---@type table<string, snacks.toggle>
+    toggles = {},
+    ---@type WKToggleMappings
+    pending_toggles = {},
+  },
+}
+
+M.name = "folke/snacks.nvim"
+
+local log = require("ck.log")
+
+function M.config()
+  require("ck.setup").define_plugin(M.name, true, {
+    plugin = function()
+      ---@type Plugin
+      return {
+        "folke/snacks.nvim",
+        lazy = false,
+      }
+    end,
+    configure = function(_, fn)
+      fn.add_disabled_filetypes({
+        "snacks_notify",
+        "snacks_notify_history",
+        "snacks_dashboard",
+      })
+    end,
+    setup = function()
+      ---@type snacks.Config
+      return {
+        big_file = {
+          notify = true, -- show notification when big file detected
+          size = 2 * 1024 * 1024, -- 1.5MB
+          -- Enable or disable features when big file detected
+          ---@param ctx {buf: number, ft:string}
+          setup = function(ctx)
+            vim.treesitter.stop(ctx.buf)
+            vim.schedule(function()
+              vim.bo[ctx.buf].syntax = ctx.ft
+            end)
+          end,
+        },
+        win = {
+          border = nvim.ui.border,
+        },
+        toggle = {
+          icon = {
+            enabled = nvim.ui.icons.ui.ToggleOn,
+            disabled = nvim.ui.icons.ui.ToggleOff,
+          },
+          -- colors for enabled/disabled states
+          color = {
+            enabled = "green",
+            disabled = "red",
+          },
+        },
+        dashboard = {
+          enabled = true,
+          preset = M.DASHBOARD,
+          pane_gap = 2,
+          sections = {
+            {
+              section = "header",
+              align = "left",
+            },
+            {
+              pane = 2,
+              indent = 2,
+              section = "keys",
+              gap = 2,
+              padding = 4,
+            },
+            {
+              pane = 2,
+              padding = 2,
+              gap = 2,
+              section = "startup",
+            },
+          },
+        },
+        notifier = {
+          enabled = true,
+          timeout = 3000,
+          icons = {
+            error = nvim.ui.icons.diagnostics.Error .. " ",
+            warn = nvim.ui.icons.diagnostics.Warning .. " ",
+            info = nvim.ui.icons.diagnostics.Information .. " ",
+            debug = nvim.ui.icons.diagnostics.Debug .. " ",
+            trace = nvim.ui.icons.diagnostics.Trace .. " ",
+          },
+          style = "compact",
+          width = { min = 50, max = 0.25 },
+          height = { min = 1, max = 0.25 },
+          more_format = " " .. nvim.ui.icons.ui.BoldArrowDown .. " %d lines ",
+        },
+        quickfile = {
+          enabled = true,
+        },
+        styles = {
+          notification = {
+            wo = { wrap = true }, -- Wrap notifications
+            border = nvim.ui.border,
+          },
+        },
+      }
+    end,
+    on_setup = function(c)
+      require("snacks").setup(c)
+    end,
+    on_done = function()
+      _G.dd = function(...)
+        require("snacks").debug.inspect(...)
+      end
+      _G.bt = function()
+        require("snacks").debug.backtrace()
+      end
+      vim.print = _G.dd
+
+      require("ck.setup").load_toggles(M._.pending_toggles)
+      M._.pending_toggles = {}
+    end,
+    wk = function(_, categories, fn)
+      ---@type WKMappings
+      return {
+        {
+          fn.wk_keystroke({ categories.SESSION, "w" }),
+          function()
+            require("snacks").dashboard.open()
+          end,
+          desc = "dashboard",
+        },
+
+        {
+          fn.wk_keystroke({ categories.GIT, "o" }),
+          function()
+            require("snacks").gitbrowse.open({ what = "branch" })
+          end,
+          desc = "open branch in browser",
+        },
+
+        {
+          fn.wk_keystroke({ categories.GIT, "O" }),
+          function()
+            require("snacks").gitbrowse.open({ what = "file" })
+          end,
+          desc = "open file in browser",
+        },
+      }
+    end,
+    autocmds = function()
+      return {
+        require("ck.modules.autocmds").q_close_autocmd({ "snacks_dashboard" }),
+      }
+    end,
+  })
+end
+
+---@class BufferDeleteOptions
+---@field bufnr? number Buffer to delete. Defaults to the current buffer
+---@field force? boolean Delete the buffer even if it is modified
+---@field filter? fun(buf: number): boolean Filter buffers to delete
+---@field wipe? boolean Wipe the buffer instead of deleting it (see `:h :bwipeout`)
+
+---@param opts? number|BufferDeleteOptions
+function nvim.fn.close_buffer(opts)
+  opts = opts or {}
+  if type(opts) == "number" then
+    opts = { buf = opts }
+  end
+
+  -- https://github.com/echasnovski/mini.bufremove/blob/main/lua/mini/bufremove.lua
+  if opts.bufnr == nil then
+    opts.bufnr = vim.api.nvim_get_current_buf()
+  end
+
+  if not opts.force and is_loaded("bufferline") and require("bufferline.groups")._is_pinned({ id = bufnr }) then
+    log:warn("Buffer is pinned!")
+
+    return
+  end
+
+  require("snacks").bufdelete.delete({ buf = opts.bufnr, force = opts.force, wipe = opts.wipe, filter = opts.filter })
+end
+
+M.DASHBOARD = {
+  header = [[
+                ████▒▒▒▒██████
+              ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+            ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+            ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+          ██▒▒▒▒▒▒    ▒▒    ▒▒▒▒▒▒██
+          ██▒▒▒▒▒▒  ██▒▒██  ▒▒▒▒▒▒██
+          ██▒▒▒▒▒▒  ██▒▒██  ▒▒▒▒▒▒██
+            ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██
+    ██████  ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    ██
+    ██▒▒▒▒██  ██▒▒██▒▒▒▒▒▒██▒▒██████▒▒██  ██
+  ██████▒▒▒▒██▒▒▒▒▒▒██████▒▒▒▒██▒▒▒▒██  ██▒▒██
+██▒▒▒▒▒▒████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██████  ██▒▒██
+  ██████▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒████▒▒██
+        ██████████▒▒▒▒▒▒██▒▒▒▒██▒▒▒▒▒▒██
+              ██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒██████████
+        ██████▒▒▒▒▒▒██▒▒██  ██▒▒▒▒▒▒▒▒▒▒▒▒██
+      ██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒██  ████████████
+    ██▒▒██████████  ██▒▒▒▒▒▒██
+    ████              ██████▒▒██
+                            ████
+                                ██]],
+  keys = {
+    {
+      key = "SPC w l",
+      desc = "Load Last Session",
+      action = "<leader>wl",
+      icon = nvim.ui.icons.ui.History,
+    },
+    {
+      key = "SPC w f",
+      desc = "Sessions",
+      action = "<leader>wf",
+      icon = nvim.ui.icons.ui.Project,
+    },
+    {
+      key = "SPC p",
+      desc = "Find File",
+      action = "<leader>p",
+      icon = nvim.ui.icons.ui.File,
+    },
+    {
+      key = "c",
+      desc = "~Config",
+      action = function()
+        vim.fn.chdir(join_paths(vim.env.HOME, ".config/nvim/"))
+        require("possession").load(require("possession.paths").cwd_session_name())
+      end,
+      icon = nvim.ui.icons.misc.Neovim,
+    },
+    {
+      key = "n",
+      desc = "~Notes",
+      action = function()
+        vim.fn.chdir(join_paths(vim.env.HOME, ".config/nvim/"))
+        require("possession").load(require("possession.paths").cwd_session_name())
+      end,
+      icon = nvim.ui.icons.misc.Obsidian,
+    },
+    {
+      key = "SPC w q",
+      desc = "Quit",
+      action = "<leader>wq",
+      icon = nvim.ui.icons.ui.SignOut,
+    },
+  },
+}
+
+---@param option string
+---@param opts? snacks.toggle.Config | {on?: unknown, off?: unknown}
+function M.toggle_global_option(option, opts)
+  opts = opts or {}
+  local on = opts.on == nil and true or opts.on
+  local off = opts.off ~= nil and opts.off or false
+  return require("snacks").toggle.new({
+    name = option,
+    get = function()
+      return vim.opt[option]:get() == on
+    end,
+    set = function(state)
+      vim.opt[option] = state and on or off
+    end,
+  }, opts)
+end
+
+---@param option string
+---@param opts? snacks.toggle.Config | {on?: unknown, off?: unknown}
+function M.toggle_local_option(option, opts)
+  opts = opts or {}
+  local on = opts.on == nil and true or opts.on
+  local off = opts.off ~= nil and opts.off or false
+  return require("snacks").toggle.new({
+    name = option,
+    get = function()
+      return vim.opt_local[option]:get() == on
+    end,
+    set = function(state)
+      vim.opt_local[option] = state and on or off
+    end,
+  }, opts)
+end
+
+return M

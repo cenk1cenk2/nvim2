@@ -107,11 +107,6 @@ function M.setup()
             desc = "set crlf",
           },
           {
-            fn.wk_keystroke({ categories.ACTIONS, "l" }),
-            ":set nonumber!<CR>",
-            desc = "toggle line numbers",
-          },
-          {
             fn.wk_keystroke({ categories.ACTIONS, "i" }),
             function()
               vim.ui.select({ "tabs", "spaces" }, {
@@ -142,11 +137,6 @@ function M.setup()
               end)
             end,
             desc = "indentation amount",
-          },
-          {
-            fn.wk_keystroke({ categories.ACTIONS, "L" }),
-            ":set norelativenumber!<CR>",
-            desc = "toggle relative line numbers",
           },
           {
             fn.wk_keystroke({ categories.ACTIONS, "w" }),
@@ -203,11 +193,6 @@ function M.setup()
             fn.wk_keystroke({ categories.ACTIONS, "S" }),
             ":set signcolumn=yes<CR>",
             desc = "fix sign columns",
-          },
-          {
-            fn.wk_keystroke({ categories.ACTIONS, "t" }),
-            ":setlocal wrap!<CR>",
-            desc = "toggle wrap",
           },
           {
             fn.wk_keystroke({ categories.ACTIONS, "T" }),
@@ -444,6 +429,32 @@ function M.setup()
             fn.wk_keystroke({ categories.TREESITTER }),
             group = "treesitter",
           },
+        },
+      }
+    end,
+    toggles = function(_, categories, fn)
+      ---@type WKToggleMappings
+      return {
+        {
+          fn.wk_keystroke({ categories.ACTIONS, "L" }),
+          toggle = function()
+            return require("ck.plugins.snacks-nvim").toggle_global_option("relativenumber")
+          end,
+          desc = "relative line numbers",
+        },
+        {
+          fn.wk_keystroke({ categories.ACTIONS, "l" }),
+          toggle = function()
+            return require("ck.plugins.snacks-nvim").toggle_global_option("number")
+          end,
+          desc = "line numbers",
+        },
+        {
+          fn.wk_keystroke({ categories.ACTIONS, "t" }),
+          toggle = function()
+            return require("ck.plugins.snacks-nvim").toggle_local_option("wrap")
+          end,
+          desc = "wrap",
         },
       }
     end,

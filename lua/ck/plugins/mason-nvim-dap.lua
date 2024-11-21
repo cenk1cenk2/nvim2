@@ -3,6 +3,8 @@ local M = {}
 
 M.name = "jay-babu/mason-nvim-dap.nvim"
 
+local log = require("ck.log")
+
 function M.config()
   require("ck.setup").define_plugin(M.name, true, {
     plugin = function()
@@ -37,12 +39,9 @@ function M.config()
         -- 	- false: Dap is not automatically configured.
         -- 	- true: Dap is automatically configured.
         -- 	- {adapters: {ADAPTER: {}, }, configurations: {ADAPTER: {}, }}. Allows overriding default configuration.
-        automatic_setup = true,
+        automatic_setup = false,
         handlers = {
           function(config)
-            -- all sources with no handler get passed here
-
-            -- Keep original functionality of `automatic_setup = true`
             require("mason-nvim-dap").default_setup(config)
           end,
         },

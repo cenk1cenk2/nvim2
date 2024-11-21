@@ -12,7 +12,6 @@ function M.config()
       return {
         "mfussenegger/nvim-dap",
         dependencies = {
-          "jay-babu/mason-nvim-dap.nvim",
           "rcarriga/nvim-dap-ui",
           "theHamsta/nvim-dap-virtual-text",
           {

@@ -636,6 +636,16 @@ hl.plugins.notify = {
   NotifyWARNTitle = { fg = c.orange[600] },
 }
 
+-- https://github.com/folke/snacks.nvim?tab=readme-ov-file#-highlight-groups
+---@type table<string, vim.api.keyset.highlight>
+hl.plugins.snacks = {
+  SnacksDashboardDesc = { fg = c.yellow[600] },
+  SnacksDashboardIcon = { fg = c.yellow[300] },
+  SnacksDashboardFile = { fg = c.yellow[900] },
+  SnacksDashboardSpecial = { fg = c.orange[900] },
+  SnacksDashboardHeader = { fg = c.orange[600] },
+}
+
 ---@type table<string, vim.api.keyset.highlight>
 hl.plugins.vim_visual_multi = {
   VM_Cursor = { bg = c.blue[900] },

@@ -16,7 +16,7 @@ M.opts = {
 
 M._ = {
   ---@type WKMappings
-  wk = {},
+  pending_wk = {},
 }
 
 function M.config()
@@ -105,7 +105,8 @@ function M.config()
 
       which_key.setup(c)
 
-      which_key.add(M._.wk)
+      which_key.add(M._.pending_wk)
+      M._.pending_wk = {}
     end,
     autocmds = function()
       return {

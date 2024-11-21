@@ -17,7 +17,7 @@ function M.config()
   for _, path in ipairs(modules) do
     local ok, m = pcall(require, ("ck.modules.%s"):format(path))
 
-    if not ok then
+    if not ok or type(m) ~= "table" then
       log:error("Module does not exists: %s", path)
     else
       local ok, err = pcall(m.setup)

@@ -3,14 +3,12 @@ local M = {}
 local plugins = {
   "plenary-nvim",
   "lazy-nvim",
-  "nvim-notify",
+  "snacks-nvim",
   "structlog-nvim",
   "mini-nvim-icons",
   -- core
   "which-key",
-  "alpha-nvim",
   "bufferline-nvim",
-  "mini-bufremove",
   "lualine-nvim",
   "telescope",
   "cmp",
@@ -125,7 +123,7 @@ function M.config()
   for _, path in ipairs(plugins) do
     local ok, m = pcall(require, ("ck.plugins.%s"):format(path))
 
-    if not ok then
+    if not ok or type(m) ~= "table" then
       log:error("Plugin configuration does not exists: %s", path)
     else
       local ok, err = pcall(m.config)

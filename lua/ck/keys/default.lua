@@ -126,7 +126,9 @@ function M.load()
       -- close buffer
       {
         "<C-q>",
-        ":bdelete<CR>",
+        function()
+          nvim.fn.close_buffer()
+        end,
         mode = { "n" },
       },
       -- disable Ex mode

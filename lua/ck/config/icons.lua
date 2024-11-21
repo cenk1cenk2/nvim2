@@ -142,6 +142,8 @@ return {
     Target = "",
     Telescope = "",
     Text = "",
+    ToggleOff = " ",
+    ToggleOn = " ",
     Tree = "",
     Triangle = "󰐊",
     TriangleShortArrowDown = "",

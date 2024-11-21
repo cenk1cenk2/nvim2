@@ -20,14 +20,14 @@ function M.config()
               require("ck.setup").setup_callback(require("ck.plugins.cmp").name, function(c)
                 c.formatting.source_names["cmp-dbee"] = "DB"
 
+                require("cmp").setup.filetype({ "sql", "mysql", "plsql" }, {
+                  sources = {
+                    { name = "cmp-dbee" },
+                  },
+                })
+
                 return c
               end)
-
-              require("cmp").setup.filetype({ "sql", "mysql", "plsql" }, {
-                sources = {
-                  { name = "cmp-dbee" },
-                },
-              })
             end,
             config = function()
               require("cmp-dbee").setup({})

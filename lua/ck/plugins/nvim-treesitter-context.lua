@@ -36,7 +36,7 @@ function M.config()
       ---@type WKMappings
       return {
         {
-          fn.wk_keystroke({ categories.TREESITTER, "t" }),
+          fn.wk_keystroke({ categories.TREESITTER, "T" }),
           function()
             require("treesitter-context").toggle()
           end,

@@ -83,6 +83,24 @@ function M.setup()
       ---@type WKMappings
       return {
         {
+          fn.wk_keystroke({ categories.NEOVIM, "n" }),
+          function()
+            require("snacks").win({
+              file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1],
+              width = 0.6,
+              height = 0.6,
+              wo = {
+                spell = false,
+                wrap = false,
+                signcolumn = "yes",
+                statuscolumn = " ",
+                conceallevel = 3,
+              },
+            })
+          end,
+          desc = "news",
+        },
+        {
           fn.wk_keystroke({ categories.NEOVIM, "r" }),
           function()
             M.rebuild_latest_neovim()

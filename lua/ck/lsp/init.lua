@@ -84,7 +84,13 @@ function M.setup(force)
       -- Default: true
       run_on_start = true,
 
-      start_delay = 1000, -- 3 second delay
+      start_delay = 1000, -- 3 second delay,
+
+      integrations = {
+        ["mason-lspconfig"] = true,
+        ["mason-null-ls"] = false,
+        ["mason-nvim-dap"] = true,
+      },
     })
   else
     log:error("LSP installer not available.")

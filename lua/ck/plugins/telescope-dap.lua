@@ -13,7 +13,7 @@ function M.config()
         cmd = { "Telescope dap" },
       }
     end,
-    on_setup = function()
+    on_done = function()
       require("telescope").load_extension("dap")
     end,
     wk = function(_, categories, fn)
@@ -25,7 +25,7 @@ function M.config()
             require("telescope").extensions.dap.configurations(require("telescope.themes").get_dropdown({}))
           end,
           desc = "configurations",
-          mode = { "v" },
+          mode = { "n", "v" },
         },
       }
     end,

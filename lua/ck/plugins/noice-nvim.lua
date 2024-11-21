@@ -11,7 +11,6 @@ function M.config()
         "folke/noice.nvim",
         dependencies = {
           "MunifTanjim/nui.nvim",
-          "rcarriga/nvim-notify",
         },
         event = "UIEnter",
       }
@@ -277,23 +276,33 @@ function M.config()
         {
           fn.wk_keystroke({ "M" }),
           function()
-            vim.cmd([[Noice]])
+            vim.cmd([[Noice all]])
           end,
           desc = "messages [noice]",
         },
+      }
+    end,
+    toggles = function(_, categories, fn)
+      ---@type WKToggleMappings
+      return {
         {
-          fn.wk_keystroke({ categories.ACTIONS, "n" }),
-          function()
-            vim.cmd([[Noice enable]])
+          fn.wk_keystroke({ categories.NEOVIM, "N" }),
+          toggle = function()
+            return require("snacks").toggle.new({
+              name = "noice",
+              get = function()
+                return require("noice.config").is_running()
+              end,
+              set = function(state)
+                if state then
+                  require("noice").enable()
+                else
+                  require("noice").disable()
+                end
+              end,
+            })
           end,
-          desc = "enable noice",
-        },
-        {
-          fn.wk_keystroke({ categories.ACTIONS, "N" }),
-          function()
-            vim.cmd([[Noice disable]])
-          end,
-          desc = "disable noice",
+          desc = "noice",
         },
       }
     end,

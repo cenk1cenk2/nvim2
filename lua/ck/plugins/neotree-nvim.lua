@@ -145,8 +145,18 @@ function M.config()
 
       local renderer = require("neo-tree.ui.renderer")
 
+      local events = require("neo-tree.events")
+
+      local on_move = function(data)
+        require("snacks").rename.on_rename_file(data.source, data.destination)
+      end
+
       return {
         sources = { "filesystem", "buffers", "git_status", "document_symbols" },
+        event_handlers = {
+          { event = events.FILE_MOVED, handler = on_move },
+          { event = events.FILE_RENAMED, handler = on_move },
+        },
         source_selector = {
           winbar = false,
           statusline = false,

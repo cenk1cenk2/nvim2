@@ -143,6 +143,18 @@ function M.config()
         },
       }
     end,
+    toggles = function(_, categories, fn)
+      ---@type WKToggleMappings
+      return {
+        {
+          fn.wk_keystroke({ categories.TREESITTER, "t" }),
+          toggle = function()
+            return require("snacks").toggle.treesitter()
+          end,
+          desc = "treesitter",
+        },
+      }
+    end,
   })
 end
 
