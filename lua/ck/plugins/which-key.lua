@@ -85,7 +85,7 @@ function M.config()
         triggers = {
           { "<auto>", mode = { "n", "i", "x", "s", "o", "t", "c" } },
           { "m", mode = { "n" } },
-          { "<localleader>", mode = { "n" } },
+          { "<localleader>", mode = { "n", "x", "v", "o" } },
           { ",", mode = { "n" } },
           -- { "<leader>" },
           -- { "g" },
@@ -107,6 +107,18 @@ function M.config()
 
       which_key.add(M._.pending_wk)
       M._.pending_wk = {}
+    end,
+    wk = function(_, _, fn)
+      ---@type WKMappings
+      return {
+        {
+          fn.wk_keystroke({ "<Space>" }),
+          function()
+            require("which-key").show({ global = false })
+          end,
+          desc = "buffer bindings",
+        },
+      }
     end,
     autocmds = function()
       return {

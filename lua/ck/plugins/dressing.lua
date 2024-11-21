@@ -62,7 +62,25 @@ function M.config()
           backend = { "telescope", "fzf", "builtin", "nui" },
 
           -- Options for telescope selector
-          telescope = { theme = "dropdown", preview = true },
+          telescope = {
+            theme = "dropdown",
+            preview = true,
+            results_title = false,
+
+            sorting_strategy = "ascending",
+            layout_strategy = "center",
+            layout_config = {
+              preview_cutoff = 1, -- Preview should always show (unless previewer = false)
+
+              width = function(_, max_columns, _)
+                return math.min(max_columns, 120)
+              end,
+
+              height = function(_, _, max_lines)
+                return math.min(max_lines, 24)
+              end,
+            },
+          },
 
           -- see :help dressing_get_config
           get_config = nil,
