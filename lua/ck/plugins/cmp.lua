@@ -84,7 +84,7 @@ function M.config()
     setup = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
-      local compare = cmp.config.compare
+      -- local compare = cmp.config.compare
 
       ---@type cmp.ConfigSchema
       return {

@@ -89,7 +89,7 @@ function M.setup(force)
       integrations = {
         ["mason-lspconfig"] = true,
         ["mason-null-ls"] = false,
-        ["mason-nvim-dap"] = true,
+        ["mason-nvim-dap"] = is_headless(),
       },
     })
   else

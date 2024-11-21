@@ -30,7 +30,7 @@ function M.config()
       fn.setup_callback(require("ck.plugins.cmp").name, function(c)
         local enabled = vim.deepcopy(c.enabled)
         c.enabled = function()
-          return enabled() or require("cmp_dap").is_dap_buffer()
+          return enabled() or (is_loaded("dap") and require("cmp_dap").is_dap_buffer())
         end
 
         return c
@@ -65,6 +65,11 @@ function M.config()
             { name = "dap" },
           },
         })
+      end
+
+      if is_enabled(require("ck.plugins.mason-nvim-dap").name) then
+        -- just call to make sure it is loaded as well
+        require("mason-nvim-dap")
       end
     end,
     signs = {
