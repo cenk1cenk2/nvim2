@@ -290,7 +290,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.FIND, "F" }),
           function()
-            require("telescope.builtin").builtin(require("telescope.themes").get_dropdown({ previewer = false }))
+            require("telescope.builtin").builtin()
           end,
           desc = "telescope list builtin finders",
         },

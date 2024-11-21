@@ -67,6 +67,24 @@ function M.config()
     end,
     on_done = function()
       require("telescope").load_extension("yank_history")
+
+      -- this stupid thing gets overwritten by something so it is here
+      require("ck.setup").init({
+        keymaps = {
+          {
+            "p",
+            "<Plug>(YankyPutAfter)",
+            desc = "yanky put after",
+            mode = { "n", "o" },
+          },
+          {
+            "P",
+            "<Plug>(YankyPutBefore)",
+            desc = "yanky put before",
+            mode = { "n", "o" },
+          },
+        },
+      })
     end,
     keymaps = function()
       return {
@@ -87,18 +105,6 @@ function M.config()
           "<Plug>(YankyYank)",
           desc = "yanky",
           mode = { "n", "v", "x" },
-        },
-        {
-          "p",
-          "<Plug>(YankyPutAfter)",
-          desc = "yanky put after",
-          mode = { "n", "o" },
-        },
-        {
-          "P",
-          "<Plug>(YankyPutBefore)",
-          desc = "yanky put before",
-          mode = { "n", "o" },
         },
         {
           "P",
