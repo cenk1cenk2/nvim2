@@ -20,10 +20,6 @@ function M.config()
       end
     end,
     setup = function()
-      for key, value in ipairs(M.editor_block()) do
-        vim.env[key] = value
-      end
-
       ---@type tmux-toggle-popup.Config
       return {
         -- log_level = vim.log.levels.DEBUG,
@@ -50,6 +46,11 @@ function M.config()
     end,
     on_setup = function(c)
       require("tmux-toggle-popup").setup(c)
+    end,
+    on_done = function()
+      for key, value in pairs(M.editor_block()) do
+        vim.env[key] = value
+      end
     end,
     keymaps = function()
       if not vim.env["TMUX"] then
