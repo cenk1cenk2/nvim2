@@ -31,15 +31,17 @@ function M.config()
     setup = function()
       ---@type snacks.Config
       return {
-        big_file = {
+        bigfile = {
+          enabled = true,
           notify = true, -- show notification when big file detected
-          size = 2 * 1024 * 1024, -- 1.5MB
+          size = 2 * 1024 * 1024,
           -- Enable or disable features when big file detected
           ---@param ctx {buf: number, ft:string}
           setup = function(ctx)
-            vim.treesitter.stop(ctx.buf)
             vim.schedule(function()
-              vim.bo[ctx.buf].syntax = ctx.ft
+              vim.bo[ctx.buf].syntax = "off"
+              -- vim.bo[ctx.buf].ft = ctx.ft
+              vim.treesitter.stop(ctx.buf)
             end)
           end,
         },

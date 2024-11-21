@@ -417,13 +417,14 @@ function M.components()
     },
     searchcount = {
       function()
-        local searchcount = vim.fn.searchcount({ recompute = 1 })
+        -- local searchcount = vim.fn.searchcount({ recompute = 1 })
+        --
+        -- if searchcount.total == 0 then
+        --   return ""
+        -- end
 
-        if searchcount.total == 0 then
-          return ""
-        end
-
-        return ("%s %s/%s"):format(nvim.ui.icons.ui.Search, searchcount.current, searchcount.total == 100 and "99+" or searchcount.total)
+        -- return ("%s %s/%s"):format(nvim.ui.icons.ui.Search, searchcount.current, searchcount.total == 100 and "99+" or searchcount.total)
+        return nvim.ui.icons.ui.Search .. " "
       end,
       cond = function()
         return conditions.hide_in_width() and vim.o.hlsearch
