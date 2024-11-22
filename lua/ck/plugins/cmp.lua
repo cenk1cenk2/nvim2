@@ -76,7 +76,9 @@ function M.config()
           { "hrsh7th/cmp-calc" },
           {
             -- https://github.com/Snikimonkd/cmp-go-pkgs
-            "Snikimonkd/cmp-go-pkgs",
+            -- "Snikimonkd/cmp-go-pkgs",
+            "cenk1cenk2/cmp-go-pkgs",
+            branch = "patch-1",
           },
         },
       }

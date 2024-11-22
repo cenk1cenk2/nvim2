@@ -88,6 +88,7 @@ function M.config()
         notifier = {
           enabled = true,
           timeout = 3000,
+          level = vim.log.levels.INFO,
           icons = {
             error = nvim.ui.icons.diagnostics.Error .. " ",
             warn = nvim.ui.icons.diagnostics.Warning .. " ",
@@ -121,7 +122,7 @@ function M.config()
       _G.bt = function()
         require("snacks").debug.backtrace()
       end
-      vim.print = _G.dd
+      -- vim.print = _G.dd
 
       require("ck.setup").load_toggles(M._.pending_toggles)
       M._.pending_toggles = {}
