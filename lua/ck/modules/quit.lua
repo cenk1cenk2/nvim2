@@ -12,7 +12,7 @@ function nvim.fn.workspace_quit()
 
   if #modified > 0 then
     require("ck.utils").ui_confirm({
-      prompt = ("You have unsaved changes, quit anyways?\n%s"):format(table.concat(modified, "\n")),
+      prompt = ("You have unsaved changes, quit anyways?\n\n%s"):format(table.concat(modified, "\n")),
       choices = {
         {
           label = "Quit",
