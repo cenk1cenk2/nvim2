@@ -246,6 +246,7 @@ end
 ---@field signs? (fun(config: Config, fn: SetupFn): table<string, vim.fn.sign_define.dict>) | table<string, vim.fn.sign_define.dict>
 ---@field plugin_spec? Plugin
 ---@field to_setup? SetupCallback[]
+---@field to_hook? HookCallback[]
 ---@field current_setup any
 
 ---@alias DefinePluginFn fun(name: string, enabled: boolean, config: Config): nil
@@ -279,6 +280,7 @@ function M.define_plugin(name, enabled, config)
     enabled = enabled,
     store = {},
     to_setup = {},
+    to_hook = {},
   }, nvim.plugins[name] or {})
 
   if config.plugin ~= nil then
@@ -405,6 +407,10 @@ function M.configure(config, callbacks)
     for _, to_setup in pairs(vim.list_extend(vim.deepcopy(config.to_setup or {}), callbacks or {})) do
       nvim.plugins[config.name].current_setup = to_setup(nvim.plugins[config.name].current_setup, config, M.fn)
     end
+
+    for _, to_hook in pairs(vim.deepcopy(config.to_hook or {})) do
+      to_hook(M.HOOK_EVENTS.HAS_FINISHED_SETUP, M.fn)
+    end
   end
 
   if config.on_setup ~= nil then
@@ -469,18 +475,41 @@ end
 
 -- Appends to setup of an plugin with the intend of changing the original configuration.
 ---@type SetupFnSetupCallback
-function M.fn.setup_callback(name, config)
+function M.fn.setup_callback(name, cb)
   if nvim.plugins[name] == nil then
     nvim.plugins[name] = {
       to_setup = {},
     }
   end
 
-  table.insert(nvim.plugins[name].to_setup, config)
+  table.insert(nvim.plugins[name].to_setup, cb)
 end
 
 ---@type SetupFnSetupCallback
 M.setup_callback = M.fn.setup_callback
+
+---@enum HookEvent
+M.HOOK_EVENTS = {
+  HAS_FINISHED_SETUP = "has_finished_setup",
+}
+
+---@alias HookCallback fun(event: HookEvent, fn: SetupFn): any
+---@alias SetupFnHookCallback fun(name: string, cb: HookCallback)
+
+-- Appends to setup of an plugin with the intend of changing the original configuration.
+---@type SetupFnHookCallback
+function M.fn.hook_callback(name, cb)
+  if nvim.plugins[name] == nil then
+    nvim.plugins[name] = {
+      to_hook = {},
+    }
+  end
+
+  table.insert(nvim.plugins[name].to_hook, cb)
+end
+
+---@type SetupFnHookCallback
+M.hook_callback = M.fn.hook_callback
 
 ---@alias SetupFnGetWkCategories fun(): WKCategories
 

@@ -13,7 +13,7 @@ function M.config()
       }
     end,
     configure = function()
-      require("ck.setup").setup_callback(require("ck.plugins.telescope").name, function(parent)
+      require("ck.setup").hook_callback(require("ck.plugins.telescope").name, function()
         require("ck.setup").setup_callback(M.name, function(c)
           c.select.telescope.layout_config = require("telescope.themes").get_dropdown({
             layout_config = {
@@ -29,8 +29,6 @@ function M.config()
             },
           })
         end)
-
-        return parent
       end)
     end,
     setup = function()
