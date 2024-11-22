@@ -167,7 +167,7 @@ function M.config()
             align = "center",
             position = {
               col = "50%",
-              row = "75%",
+              row = "50%",
             },
             border = {
               style = nvim.ui.border,
