@@ -23,9 +23,11 @@ function M.config()
     end,
     configure = function(_, fn)
       fn.add_disabled_filetypes({
-        "snacks_notify",
-        "snacks_notify_history",
         "snacks_dashboard",
+        "snacks_notif",
+        "snacks_notif_history",
+        "snacks_terminal",
+        "snacks_words",
       })
     end,
     setup = function()
