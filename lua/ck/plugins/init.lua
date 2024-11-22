@@ -55,7 +55,7 @@ local plugins = {
   "windows-nvim",
   "telescope-undo-nvim",
   "nvim-ufo",
-  -- "quicker-nvim",
+  "quicker-nvim",
   "nvim-bqf",
   "lsp-trouble",
   "todo-comments",

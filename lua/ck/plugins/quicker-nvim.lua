@@ -18,6 +18,13 @@ function M.config()
         edit = {
           enabled = true,
         },
+        type_icons = {
+          E = nvim.ui.icons.diagnostics.Error,
+          W = nvim.ui.icons.diagnostics.Warning,
+          I = nvim.ui.icons.diagnostics.Information,
+          N = nvim.ui.icons.diagnostics.Dot,
+          H = nvim.ui.icons.diagnostics.Hint,
+        },
         keys = {
           {
             ">",
@@ -42,7 +49,7 @@ function M.config()
           },
         },
         max_filename_width = function()
-          return math.floor(math.min(80, vim.o.columns / 4))
+          return math.floor(math.min(40, vim.o.columns / 8))
         end,
       }
     end,
@@ -61,11 +68,11 @@ function M.config()
         },
 
         {
-          "<M-y>",
+          "<C-S-y>",
           function()
             require("quicker").toggle({ focus = true, loclist = true })
           end,
-          desc = "quickfix [quicker]",
+          desc = "location list [quicker]",
           mode = { "n", "v", "x" },
         },
       }
