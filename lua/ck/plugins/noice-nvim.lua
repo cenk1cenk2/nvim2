@@ -193,7 +193,7 @@ function M.config()
               style = nvim.ui.border,
             },
             position = {
-              row = "75%",
+              row = "50%",
               col = "50%",
             },
             size = {
