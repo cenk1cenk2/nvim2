@@ -70,4 +70,27 @@ function M.get_visual_selection()
   end
 end
 
+---@param opts { prompt: string, choices: { label: string, callback?: fun(): nil }[] }
+function M.ui_confirm(opts)
+  local choice = vim.fn.confirm(
+    opts.prompt,
+    table.concat(
+      vim.tbl_map(function(choice)
+        return "&" .. choice.label
+      end, opts.choices),
+      "\n"
+    )
+  )
+
+  if choice == 0 then
+    return
+  end
+
+  local cb = opts.choices[choice].callback
+
+  if type(cb) == "function" then
+    cb()
+  end
+end
+
 return M
