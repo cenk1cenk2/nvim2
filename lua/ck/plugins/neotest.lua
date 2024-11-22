@@ -137,6 +137,13 @@ function M.config()
           desc = "show test output",
         },
         {
+          fn.wk_keystroke({ categories.TESTS, "K" }),
+          function()
+            require("neotest").output.open({ enter = true, short = true, auto_close = true })
+          end,
+          desc = "show test output in short form",
+        },
+        {
           fn.wk_keystroke({ categories.TESTS, "s" }),
           function()
             require("neotest").summary.toggle()
