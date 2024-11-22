@@ -145,7 +145,6 @@ function M.config()
         {
           fn.wk_keystroke({ categories.BUFFER, "X" }),
           function()
-            -- require("bufferline").close_others()
             local current = vim.api.nvim_get_current_buf()
 
             for _, e in ipairs(require("bufferline").get_elements().elements) do

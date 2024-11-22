@@ -171,10 +171,11 @@ end
 
 ---@param opts? number|BufferDeleteOptions
 function nvim.fn.close_buffer(opts)
-  opts = opts or {}
   if type(opts) == "number" then
     opts = { buf = opts }
   end
+
+  opts = opts or {}
 
   -- https://github.com/echasnovski/mini.bufremove/blob/main/lua/mini/bufremove.lua
   if opts.bufnr == nil then
