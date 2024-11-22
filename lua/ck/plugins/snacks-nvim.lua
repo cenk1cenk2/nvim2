@@ -243,7 +243,7 @@ M.DASHBOARD = {
       key = "n",
       desc = "~Notes",
       action = function()
-        vim.fn.chdir(join_paths(vim.env.HOME, ".config/notes/"))
+        vim.fn.chdir(join_paths(vim.env.HOME, "notes/"))
         require("possession").load(require("possession.paths").cwd_session_name())
       end,
       icon = nvim.ui.icons.misc.Obsidian,
