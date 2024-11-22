@@ -22,7 +22,7 @@ function M.config()
         filter_rules = {
           bo = {
             filetype = vim.tbl_filter(function(ft)
-              if vim.tbl_contains({ "alpha", "snacks_dashboard" }, ft) then
+              if vim.tbl_contains({ "alpha", "snacks_dashboard", "" }, ft) then
                 return false
               end
 
