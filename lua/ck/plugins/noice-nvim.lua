@@ -287,7 +287,7 @@ function M.config()
       return {
         {
           fn.wk_keystroke({ categories.NEOVIM, "N" }),
-          toggle = function()
+          function()
             return require("snacks").toggle.new({
               name = "noice",
               get = function()

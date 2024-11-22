@@ -437,21 +437,21 @@ function M.setup()
       return {
         {
           fn.wk_keystroke({ categories.ACTIONS, "L" }),
-          toggle = function()
+          function()
             return require("ck.plugins.snacks-nvim").toggle_global_option("relativenumber")
           end,
           desc = "relative line numbers",
         },
         {
           fn.wk_keystroke({ categories.ACTIONS, "l" }),
-          toggle = function()
+          function()
             return require("ck.plugins.snacks-nvim").toggle_global_option("number")
           end,
           desc = "line numbers",
         },
         {
           fn.wk_keystroke({ categories.ACTIONS, "t" }),
-          toggle = function()
+          function()
             return require("ck.plugins.snacks-nvim").toggle_local_option("wrap")
           end,
           desc = "wrap",

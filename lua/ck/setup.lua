@@ -22,7 +22,7 @@ end
 
 ---@module "snacks.toggle"
 ---@class WKToggleMapping: WKMappings
----@field toggle (fun(): snacks.toggle) | snacks.toggle
+---@field [2]? (fun(): snacks.toggle) | snacks.toggle
 ---@alias WKToggleMappings WKToggleMapping[]
 ---@alias LoadWkTogglesFn fun(mappings: WKToggleMappings): nil
 
@@ -41,25 +41,29 @@ function M.load_toggles(mappings)
   ---@type WKMappings[]
   local m = {}
   for _, mapping in pairs(mappings) do
-    local keys = mapping[1]
-    plugin._.toggles[keys] = M.evaluate_property(mapping.toggle)
+    local keys = table.remove(mapping, 1)
+    local toggle = table.remove(mapping, 1)
+    plugin._.toggles[keys] = M.evaluate_property(toggle)
 
-    table.insert(m, {
-      keys,
-      function()
-        plugin._.toggles[keys]:toggle()
-      end,
-      icon = function()
-        local key = plugin._.toggles[keys]:get() and "enabled" or "disabled"
-        return {
-          icon = type(plugin._.toggles[keys].opts.icon) == "string" and plugin._.toggles[keys].opts.icon or plugin._.toggles[keys].opts.icon[key],
-          color = type(plugin._.toggles[keys].opts.color) == "string" and plugin._.toggles[keys].opts.color or plugin._.toggles[keys].opts.color[key],
-        }
-      end,
-      desc = function()
-        return (plugin._.toggles[keys]:get() and "disable " or "enable ") .. mapping.desc
-      end,
-    })
+    table.insert(
+      m,
+      vim.tbl_extend("force", mapping, {
+        keys,
+        function()
+          plugin._.toggles[keys]:toggle()
+        end,
+        icon = function()
+          local key = plugin._.toggles[keys]:get() and "enabled" or "disabled"
+          return {
+            icon = type(plugin._.toggles[keys].opts.icon) == "string" and plugin._.toggles[keys].opts.icon or plugin._.toggles[keys].opts.icon[key],
+            color = type(plugin._.toggles[keys].opts.color) == "string" and plugin._.toggles[keys].opts.color or plugin._.toggles[keys].opts.color[key],
+          }
+        end,
+        desc = function()
+          return (plugin._.toggles[keys]:get() and "disable " or "enable ") .. mapping.desc
+        end,
+      })
+    )
   end
 
   M.load_wk(m)

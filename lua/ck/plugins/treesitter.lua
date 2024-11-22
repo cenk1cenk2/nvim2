@@ -148,7 +148,7 @@ function M.config()
       return {
         {
           fn.wk_keystroke({ categories.TREESITTER, "t" }),
-          toggle = function()
+          function()
             return require("snacks").toggle.treesitter()
           end,
           desc = "treesitter",
