@@ -13,22 +13,24 @@ function M.config()
       }
     end,
     configure = function()
-      require("ck.setup").setup_callback(require("ck.plugins.telescope").name, function(c)
-        c.select.telescope.layout_config = require("telescope.themes").get_dropdown({
-          layout_config = {
-            preview_cutoff = 1, -- Preview should always show (unless previewer = false)
+      require("ck.setup").setup_callback(require("ck.plugins.telescope").name, function(parent)
+        require("ck.setup").setup_callback(M.name, function(c)
+          c.select.telescope.layout_config = require("telescope.themes").get_dropdown({
+            layout_config = {
+              preview_cutoff = 1, -- Preview should always show (unless previewer = false)
 
-            width = function(_, max_columns, _)
-              return math.min(max_columns, 120)
-            end,
+              width = function(_, max_columns, _)
+                return math.min(max_columns, 120)
+              end,
 
-            height = function(_, _, max_lines)
-              return math.min(max_lines, 24)
-            end,
-          },
-        })
+              height = function(_, _, max_lines)
+                return math.min(max_lines, 24)
+              end,
+            },
+          })
+        end)
 
-        return c
+        return parent
       end)
     end,
     setup = function()
