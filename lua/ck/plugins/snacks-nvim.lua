@@ -172,7 +172,7 @@ end
 ---@param opts? number|BufferDeleteOptions
 function nvim.fn.close_buffer(opts)
   if type(opts) == "number" then
-    opts = { buf = opts }
+    opts = { bufnr = opts }
   end
 
   opts = opts or {}

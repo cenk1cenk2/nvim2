@@ -440,19 +440,6 @@ function M.setup()
           desc = "run genpass",
         },
         {
-          fn.wk_keystroke({ categories.RUN, "o" }),
-          function()
-            local lines = M.get_selection()
-
-            M.run_buffer_to_temporary_terminal_command(lines, {
-              cmd = function(path)
-                return ("otree '%s'"):format(path)
-              end,
-            })
-          end,
-          desc = "run otree",
-        },
-        {
           fn.wk_keystroke({ categories.RUN, "k" }),
           function()
             M.set_kubeconfig()
