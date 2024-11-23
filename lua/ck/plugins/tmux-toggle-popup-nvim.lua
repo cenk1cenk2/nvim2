@@ -26,16 +26,16 @@ function M.config()
         log_level = require("ck.log"):to_nvim_level(),
         env = {
           VISUAL = function()
-            return vim.env.VISUAL
+            return vim.env["VISUAL"]
           end,
           EDITOR = function()
-            return vim.env.EDITOR
+            return vim.env["EDITOR"]
           end,
           GIT_EDITOR = function()
-            return vim.env.GIT_EDITOR
+            return vim.env["GIT_EDITOR"]
           end,
           EDITOR_BLOCK = function()
-            return vim.env.EDITOR_BLOCK
+            return vim.env["EDITOR_BLOCK"]
           end,
         },
         toggle = {
@@ -48,7 +48,7 @@ function M.config()
       require("tmux-toggle-popup").setup(c)
     end,
     on_done = function()
-      for key, value in pairs(M.editor_block()) do
+      for key, value in ipairs(M.editor_block()) do
         vim.env[key] = value
       end
     end,
