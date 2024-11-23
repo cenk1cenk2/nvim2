@@ -188,7 +188,7 @@ function M.restart_lsp(filter)
 end
 
 function M.fix_current()
-  local params = vim.lsp.util.make_range_params(vim.api.nvim_get_current_win(), { offset_encoding = "utf-8" })
+  local params = vim.lsp.util.make_range_params(vim.api.nvim_get_current_win(), "utf-8")
   params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
   local bufnr = vim.api.nvim_get_current_buf()
 
@@ -253,7 +253,7 @@ function M.fix_current()
 end
 
 function M.organize_imports()
-  local params = vim.lsp.util.make_range_params(vim.api.nvim_get_current_win(), { offset_encoding = "utf-8" })
+  local params = vim.lsp.util.make_range_params(vim.api.nvim_get_current_win(), "utf-8")
   params.context = {
     diagnostics = {},
     only = { "source.organizeImports" },
