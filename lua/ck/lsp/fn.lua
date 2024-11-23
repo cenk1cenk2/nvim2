@@ -203,14 +203,13 @@ function M.fix_current()
 
     if #fixes == 0 then
       log:warn(
-        "[QUICKFIX] Not found: %s -> %s",
+        "[QUICKFIX] Not found: %s",
         table.concat(
           vim.tbl_map(function(client)
             return client.name
           end, vim.lsp.get_clients({ bufnr = bufnr })),
           ", "
-        ),
-        responses
+        )
       )
 
       return
