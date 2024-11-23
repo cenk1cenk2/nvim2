@@ -156,34 +156,6 @@ function M.setup()
             desc = "previous window",
           },
           {
-            fn.wk_keystroke({ categories.ACTIONS, "b" }),
-            function()
-              local editor = "nvim -b"
-
-              vim.env.VISUAL = editor
-              vim.env.EDITOR = editor
-              vim.env.GIT_EDITOR = editor
-              vim.env.EDITOR_BLOCK = "1"
-
-              require("ck.log"):info("Editor set to blocking mode.")
-            end,
-            desc = "editor [block]",
-          },
-          {
-            fn.wk_keystroke({ categories.ACTIONS, "B" }),
-            function()
-              local editor = "nvim"
-
-              vim.env.VISUAL = editor
-              vim.env.EDITOR = editor
-              vim.env.GIT_EDITOR = editor
-              vim.env.EDITOR_BLOCK = ""
-
-              require("ck.log"):info("Editor set to async mode.")
-            end,
-            desc = "editor [async]",
-          },
-          {
             fn.wk_keystroke({ categories.ACTIONS, "s" }),
             ":sort<CR>",
             desc = "sort",
@@ -435,6 +407,39 @@ function M.setup()
     toggles = function(_, categories, fn)
       ---@type WKToggleMappings
       return {
+        {
+          fn.wk_keystroke({ categories.ACTIONS, "b" }),
+          function()
+            return require("snacks").toggle.new({
+              name = "editor block",
+              get = function()
+                return vim.env["EDITOR_BLOCK"] == "1"
+              end,
+              set = function(state)
+                if state then
+                  local editor = "nvim -b"
+
+                  vim.env.VISUAL = editor
+                  vim.env.EDITOR = editor
+                  vim.env.GIT_EDITOR = editor
+                  vim.env.EDITOR_BLOCK = "1"
+
+                  require("ck.log"):info("Editor set to blocking mode.")
+                else
+                  local editor = "nvim"
+
+                  vim.env.VISUAL = editor
+                  vim.env.EDITOR = editor
+                  vim.env.GIT_EDITOR = editor
+                  vim.env.EDITOR_BLOCK = ""
+
+                  require("ck.log"):info("Editor set to async mode.")
+                end
+              end,
+            })
+          end,
+          desc = "editor block",
+        },
         {
           fn.wk_keystroke({ categories.ACTIONS, "L" }),
           function()
