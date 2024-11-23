@@ -221,6 +221,7 @@ function M.register()
     "css",
     "markdown",
     "graphql",
+    "xml",
   })
 
   -- lsp_utils.register(METHOD, "eslint_d", {

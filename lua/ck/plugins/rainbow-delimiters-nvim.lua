@@ -26,6 +26,7 @@ function M.config()
           vue = "rainbow-parens",
           svelte = "rainbow-parens",
           html = "rainbow-parens",
+          xml = "rainbow-parens",
         },
         -- Highlight the entire buffer all at once
         strategy = {
