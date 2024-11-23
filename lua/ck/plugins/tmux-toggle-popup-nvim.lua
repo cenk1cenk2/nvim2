@@ -48,7 +48,7 @@ function M.config()
       require("tmux-toggle-popup").setup(c)
     end,
     on_done = function()
-      for key, value in ipairs(M.editor_block()) do
+      for key, value in pairs(M.editor_block()) do
         vim.env[key] = value
       end
     end,
