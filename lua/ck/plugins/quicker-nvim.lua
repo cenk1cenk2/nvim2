@@ -68,7 +68,7 @@ function M.config()
         },
 
         {
-          "<C-u>",
+          "<C-g>",
           function()
             require("quicker").toggle({ focus = true, loclist = true })
           end,
