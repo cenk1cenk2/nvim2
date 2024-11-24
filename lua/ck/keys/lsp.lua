@@ -17,7 +17,7 @@ function M.setup()
           group = "restart",
         },
         {
-          fn.wk_keystroke({ categories.LSP, "Q", "q" }),
+          fn.wk_keystroke({ categories.LSP, "Q", "Q" }),
           function()
             nvim.lsp.fn.restart_lsp({})
           end,
@@ -318,7 +318,7 @@ function M.on_attach(_, bufnr)
           buffer = bufnr,
         },
         {
-          fn.wk_keystroke({ categories.LSP, "Q", "Q" }),
+          fn.wk_keystroke({ categories.LSP, "Q", "q" }),
           function()
             nvim.lsp.fn.restart_lsp()
           end,
