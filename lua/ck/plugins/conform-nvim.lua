@@ -127,7 +127,7 @@ function M.config()
             bufnr = vim.api.nvim_get_current_buf(),
             timeout_ms = nvim.lsp.tools.format.timeout_ms,
             filter = nvim.lsp.tools.format.filter,
-            undojoin = false,
+            undojoin = true,
           },
           opts or {}
         )
