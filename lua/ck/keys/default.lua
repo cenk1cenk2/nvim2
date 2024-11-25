@@ -54,6 +54,12 @@ function M.load()
         mode = { "n", "v", "x" },
       },
       {
+        "<M-S-t>",
+        "<C-w>T",
+        desc = "break out into a tab",
+        mode = { "n", "v", "x" },
+      },
+      {
         "<M-q>",
         function()
           vim.cmd([[tabclose]])
