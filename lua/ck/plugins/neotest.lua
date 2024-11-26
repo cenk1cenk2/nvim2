@@ -19,7 +19,10 @@ function M.config()
           -- https://github.com/haydenmeade/neotest-jest
           "haydenmeade/neotest-jest",
           -- https://github.com/nvim-contrib/nvim-ginkgo
-          "nvim-contrib/nvim-ginkgo",
+          {
+            "nvim-contrib/nvim-ginkgo",
+            -- dir = "/Users/cenk/development/nvim-ginkgo",
+          },
           "nvim-treesitter/nvim-treesitter",
           -- {
           --   "antoinemadec/FixCursorHold.nvim",
