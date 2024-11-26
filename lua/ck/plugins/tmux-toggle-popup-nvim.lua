@@ -18,6 +18,10 @@ function M.config()
       if vim.env["TMUX"] then
         nvim.fn.toggle_log_view = M.toggle_log_view
       end
+
+      for key, value in pairs(M.editor_block()) do
+        vim.env[key] = value
+      end
     end,
     setup = function()
       ---@type tmux-toggle-popup.Config
@@ -46,11 +50,6 @@ function M.config()
     end,
     on_setup = function(c)
       require("tmux-toggle-popup").setup(c)
-    end,
-    on_done = function()
-      for key, value in pairs(M.editor_block()) do
-        vim.env[key] = value
-      end
     end,
     keymaps = function()
       if not vim.env["TMUX"] then
@@ -176,7 +175,7 @@ function M.editor_async()
     VISUAL = editor,
     EDITOR = editor,
     GIT_EDITOR = editor,
-    EDITOR_BLOCK = "",
+    EDITOR_BLOCK = nil,
   }
 end
 
