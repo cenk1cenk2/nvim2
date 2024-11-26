@@ -18,8 +18,8 @@ function M.config()
           "rouge8/neotest-rust",
           -- https://github.com/haydenmeade/neotest-jest
           "haydenmeade/neotest-jest",
-          -- https://github.com/nvim-extensions/nvim-ginkgo
-          "nvim-extensions/nvim-ginkgo",
+          -- https://github.com/nvim-contrib/nvim-ginkgo
+          "nvim-contrib/nvim-ginkgo",
           "nvim-treesitter/nvim-treesitter",
           -- {
           --   "antoinemadec/FixCursorHold.nvim",
