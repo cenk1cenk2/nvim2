@@ -42,7 +42,7 @@ return {
     },
     s.fmt(
       [[
-      constructor (<>) {
+      constructor(<>) {
         <>
       }
       ]],
@@ -65,7 +65,7 @@ return {
 
       @Controller()
       export class <>Controller {
-        constructor (<>) {}
+        constructor(<>) {}
       }
       ]],
       {
@@ -87,7 +87,7 @@ return {
 
       @Injectable()
       export class <>Service {
-        constructor (<>) {}
+        constructor(<>) {}
       }
       ]],
       {
