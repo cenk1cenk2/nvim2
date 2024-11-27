@@ -172,22 +172,22 @@ function M.load()
       -- resize with arrows
       {
         "<C-M-k>",
-        ":resize +5<CR>",
+        ":resize +4<CR>",
         mode = { "n" },
       },
       {
         "<C-M-j>",
-        ":resize -5<CR>",
+        ":resize -4<CR>",
         mode = { "n" },
       },
       {
         "<C-M-l>",
-        ":vertical resize -5<CR>",
+        ":vertical resize -8<CR>",
         mode = { "n" },
       },
       {
         "<C-M-h>",
-        ":vertical resize +5<CR>",
+        ":vertical resize +8<CR>",
         mode = { "n" },
       },
       -- move current line / block with Alt-j/k a la vscode.
