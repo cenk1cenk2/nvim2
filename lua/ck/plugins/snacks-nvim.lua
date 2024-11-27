@@ -194,6 +194,15 @@ function nvim.fn.close_buffer(opts)
             require("snacks").bufdelete.delete({ buf = opts.bufnr, force = true, wipe = opts.wipe, filter = opts.filter })
           end,
         },
+        {
+          label = "Unpin",
+          callback = function()
+            require("bufferline.groups").remove_element("pinned", require("ck.plugins.bufferline-nvim").get_element(opts.bufnr))
+          end,
+        },
+        {
+          label = "No",
+        },
       },
     })
 
