@@ -182,8 +182,20 @@ function nvim.fn.close_buffer(opts)
     opts.bufnr = vim.api.nvim_get_current_buf()
   end
 
-  if not opts.force and is_loaded("bufferline") and require("bufferline.groups")._is_pinned({ id = opts.bufnr }) then
-    log:warn("Buffer is pinned!")
+  if not opts.force and require("ck.plugins.bufferline-nvim").is_element_pinned({ id = opts.bufnr }) then
+    require("ck.utils").ui_confirm({
+      prompt = "Buffer is pinned! Close anyway?",
+      choices = {
+        {
+          label = "Yes",
+          callback = function()
+            require("bufferline.groups").remove_element("pinned", require("ck.plugins.bufferline-nvim").get_element(opts.bufnr))
+
+            require("snacks").bufdelete.delete({ buf = opts.bufnr, force = true, wipe = opts.wipe, filter = opts.filter })
+          end,
+        },
+      },
+    })
 
     return
   end

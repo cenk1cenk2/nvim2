@@ -199,6 +199,36 @@ function M.config()
   })
 end
 
+---
+---@param bufnr number
+---@return bufferline.Buffer?
+function M.get_element(bufnr)
+  if not is_loaded("bufferline") then
+    return nil
+  end
+
+  local elements = require("bufferline").get_elements()
+
+  local element = vim.tbl_filter(function(e)
+    return e.id == bufnr
+  end, elements.elements)
+
+  if #element > 0 then
+    return element[1]
+  end
+end
+
+---
+---@param element bufferline.Buffer|bufferline.Tab
+---@return boolean
+function M.is_element_pinned(element)
+  if not is_loaded("bufferline") then
+    return false
+  end
+
+  return require("bufferline.groups")._is_pinned(element)
+end
+
 function M.diagnostics_indicator(_, _, diagnostics, _)
   local result = {}
   local symbols = { error = nvim.ui.icons.diagnostics.Error, warning = nvim.ui.icons.diagnostics.Warning, info = nvim.ui.icons.diagnostics.Information }
