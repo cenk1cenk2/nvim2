@@ -184,7 +184,7 @@ function nvim.fn.close_buffer(opts)
 
   if not opts.force and require("ck.plugins.bufferline-nvim").is_element_pinned({ id = opts.bufnr }) then
     require("ck.utils").ui_confirm({
-      prompt = "Buffer is pinned! Close anyway?",
+      prompt = ("Buffer is pinned. Close anyway?\n%s"):format(require("ck.utils.fs").get_project_buffer_filepath(opts.bufnr)),
       choices = {
         {
           label = "Yes",
