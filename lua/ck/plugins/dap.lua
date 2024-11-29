@@ -14,6 +14,7 @@ function M.config()
         dependencies = {
           "rcarriga/nvim-dap-ui",
           "theHamsta/nvim-dap-virtual-text",
+          "leoluz/nvim-dap-go",
           {
             "rcarriga/cmp-dap",
             enabled = is_enabled(require("ck.plugins.cmp").name),
