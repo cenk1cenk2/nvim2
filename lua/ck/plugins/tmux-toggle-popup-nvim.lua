@@ -26,8 +26,8 @@ function M.config()
     setup = function()
       ---@type tmux-toggle-popup.Config
       return {
-        -- log_level = vim.log.levels.DEBUG,
-        log_level = require("ck.log"):to_nvim_level(),
+        log_level = vim.log.levels.DEBUG,
+        -- log_level = require("ck.log"):to_nvim_level(),
         env = {
           VISUAL = function()
             return vim.env["VISUAL"]
@@ -132,7 +132,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.TERMINAL, "k" }),
           function()
-            M.create_terminal({ name = "k9s", command = { "k9s" }, env = M.editor_block() })
+            M.create_terminal({ name = "k9s", command = { "k9s" } })
           end,
           desc = "k9s",
         },
@@ -175,7 +175,7 @@ function M.editor_async()
     VISUAL = editor,
     EDITOR = editor,
     GIT_EDITOR = editor,
-    EDITOR_BLOCK = nil,
+    EDITOR_BLOCK = "",
   }
 end
 
