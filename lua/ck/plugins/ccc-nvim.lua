@@ -25,7 +25,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.RUN, "c" }),
           function()
-            require("ccc").picker()
+            vim.cmd([[CccPick]])
           end,
           desc = "color picker",
         },
