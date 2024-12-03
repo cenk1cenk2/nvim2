@@ -64,9 +64,14 @@ function M.config()
       ---@type WKMappings
       return {
         {
-          fn.wk_keystroke({ categories.FIND, "c" }),
+          fn.wk_keystroke({ categories.FIND, "C" }),
+          ":Trouble todo<CR>",
+          desc = "todo [trouble]",
+        },
+        {
+          fn.wk_keystroke({ categories.FIND, "C" }),
           ":TodoTelescope<CR>",
-          desc = "todo comments",
+          desc = "todo [telescope]",
         },
       }
     end,
