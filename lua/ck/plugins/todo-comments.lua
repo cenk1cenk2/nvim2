@@ -65,7 +65,7 @@ function M.config()
       return {
         {
           fn.wk_keystroke({ categories.FIND, "c" }),
-          ":Trouble todo<CR>",
+          ":Trouble todo toggle<CR>",
           desc = "todo [trouble]",
         },
         {
