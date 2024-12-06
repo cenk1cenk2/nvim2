@@ -1,6 +1,8 @@
 -- https://github.com/andythigpen/nvim-coverage
 local M = {}
 
+local log = require("ck.log")
+
 M.name = "andythigpen/nvim-coverage"
 
 function M.config()
@@ -77,6 +79,8 @@ function M.config()
               shada.set(store_key, arguments)
 
               if not arguments or arguments == "" then
+                log:warn("No coverage file provided.")
+
                 return
               end
 
