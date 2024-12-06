@@ -193,11 +193,11 @@ function M.config()
           desc = "attach to nearest test",
         },
         {
-          fn.wk_keystroke({ categories.TESTS, "L" }),
+          fn.wk_keystroke({ categories.TESTS, categories.LOGS, "l" }),
           function()
             nvim.fn.toggle_log_view(join_paths(get_state_dir(), "neotest.log"))
           end,
-          desc = "open the default logfile",
+          desc = "open the default logfile [neotest]",
         },
       }
     end,

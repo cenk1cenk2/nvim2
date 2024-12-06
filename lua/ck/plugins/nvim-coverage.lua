@@ -63,6 +63,29 @@ function M.config()
           desc = "load coverage file",
         },
         {
+          fn.wk_keystroke({ categories.TESTS, "L" }),
+          function()
+            local shada = require("ck.modules.shada")
+            local store_key = "NVIM_COVERAGE_REPORT"
+            local stored_value = shada.get(store_key)
+
+            vim.ui.input({
+              prompt = "Load coverage",
+              default = stored_value,
+              completion = "file",
+            }, function(arguments)
+              shada.set(store_key, arguments)
+
+              if not arguments or arguments == "" then
+                return
+              end
+
+              require("coverage").load_lcov(arguments, true)
+            end)
+          end,
+          desc = "load coverage file with input",
+        },
+        {
           fn.wk_keystroke({ categories.TESTS, "t" }),
           function()
             require("coverage").toggle()
