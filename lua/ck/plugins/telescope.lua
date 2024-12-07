@@ -324,7 +324,7 @@ function M.config()
           desc = "select from filetypes",
         },
         {
-          fn.wk_keystroke({ categories.GIT, "f" }),
+          fn.wk_keystroke({ categories.GIT, "F" }),
           function()
             require("telescope.builtin").git_status()
           end,

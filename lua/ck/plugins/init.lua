@@ -36,6 +36,7 @@ local plugins = {
   -- extensions
   "spider-nvim",
   "dap",
+  "neogit",
   "statuscol-nvim",
   "flash-nvim",
   "vim-repeat",
