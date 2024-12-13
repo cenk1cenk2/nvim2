@@ -18,7 +18,9 @@ function M.config()
       }
     end,
     setup = function()
-      return {}
+      return {
+        graph_style = "kitty",
+      }
     end,
     on_setup = function(c)
       require("neogit").setup(c)
