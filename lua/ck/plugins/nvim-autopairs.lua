@@ -49,6 +49,7 @@ function M.config()
           pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
           offset = 0, -- Offset from pattern match
           end_key = "$",
+          manual_position = false,
           keys = nvim.selection_chars,
           check_comma = true,
           highlight = "AutoPairsFastWrap",
