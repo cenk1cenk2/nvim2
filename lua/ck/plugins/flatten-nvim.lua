@@ -10,7 +10,7 @@ function M.config()
       return {
         "willothy/flatten.nvim",
         lazy = false,
-        priority = 1001,
+        priority = 1100,
       }
     end,
     setup = function()
