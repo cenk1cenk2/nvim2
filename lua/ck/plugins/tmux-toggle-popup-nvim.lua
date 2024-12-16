@@ -26,8 +26,8 @@ function M.config()
     setup = function()
       ---@type tmux-toggle-popup.Config
       return {
-        log_level = vim.log.levels.DEBUG,
-        -- log_level = require("ck.log"):to_nvim_level(),
+        -- log_level = vim.log.levels.DEBUG,
+        log_level = require("ck.log"):to_nvim_level(),
         env = {
           VISUAL = function()
             return vim.env["VISUAL"]
