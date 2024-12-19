@@ -88,13 +88,6 @@ function M.config()
       ---@type WKMappings
       return {
         {
-          fn.wk_keystroke({ categories.GIT, "D" }),
-          function()
-            vim.cmd([[Gitsigns diffthis]])
-          end,
-          desc = "diff current buffer with head",
-        },
-        {
           fn.wk_keystroke({ categories.GIT, "B" }),
           function()
             vim.cmd([[Gitsigns toggle_current_line_blame]])

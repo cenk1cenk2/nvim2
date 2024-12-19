@@ -210,7 +210,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.GIT, "a" }),
           function()
-            vim.cmd([[DiffviewFileHistory %]])
+            vim.cmd([[DiffviewFileHistory -- %]])
           end,
           desc = "buffer commits",
           mode = { "n", "v" },
@@ -218,7 +218,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.GIT, "A" }),
           function()
-            vim.cmd([[DiffviewFileHistory --base=LOCAL %]])
+            vim.cmd([[DiffviewFileHistory --base=LOCAL -- %]])
           end,
           desc = "buffer commits [HEAD]",
           mode = { "n", "v" },
@@ -235,6 +235,17 @@ function M.config()
           desc = "diff view toggle",
         },
         {
+          fn.wk_keystroke({ categories.GIT, "D" }),
+          function()
+            if next(require("diffview.lib").views) == nil then
+              vim.cmd([[DiffviewOpen --base=LOCAL]])
+            else
+              vim.cmd([[DiffviewClose]])
+            end
+          end,
+          desc = "diff with head",
+        },
+        {
           fn.wk_keystroke({ categories.GIT, "w" }),
           function()
             vim.cmd([[DiffviewFileHistory]])
@@ -244,7 +255,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.GIT, "W" }),
           function()
-            vim.cmd([[DiffviewFileHistory --base=HEAD]])
+            vim.cmd([[DiffviewFileHistory --base=LOCAL]])
           end,
           desc = "workspace commits [HEAD]",
         },
@@ -254,6 +265,13 @@ function M.config()
             M.compare_with_branch()
           end,
           desc = "compare with branch",
+        },
+        {
+          fn.wk_keystroke({ categories.GIT, "C" }),
+          function()
+            M.compare_buffer_with_branch()
+          end,
+          desc = "compare buffer with branch",
         },
       }
     end,
@@ -279,6 +297,28 @@ function M.compare_with_branch()
     shada.set(store_key, branch)
 
     vim.cmd(":DiffviewOpen " .. branch)
+  end)
+end
+
+function M.compare_buffer_with_branch()
+  local store_key = "DIFFVIEW_COMPARE_BRANCH"
+  local shada = require("ck.modules.shada")
+  local stored_value = shada.get(store_key)
+
+  vim.ui.input({
+    prompt = "Compare buffer with branch:",
+    default = stored_value,
+  }, function(branch)
+    if branch == nil then
+      log:warn("Nothing to compare.")
+
+      return
+    end
+
+    log:info("Comparing buffer with branch: %s -> %s", require("ck.utils.fs").get_project_buffer_filepath(), branch)
+    shada.set(store_key, branch)
+
+    vim.cmd(":DiffviewOpen " .. branch .. " -- %")
   end)
 end
 
