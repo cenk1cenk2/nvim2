@@ -157,6 +157,7 @@ require("ck.setup").setup_callback(require("ck.plugins.treesitter").name, functi
       "gotmpl",
       "gowork",
       "graphql",
+      "hcl",
       "html",
       "htmldjango",
       "http",
