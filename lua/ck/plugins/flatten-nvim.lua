@@ -23,9 +23,6 @@ function M.config()
           should_block = function(argv)
             return vim.tbl_contains(argv, "-b")
           end,
-          should_nest = function(host)
-            return require("flatten").default_should_nest(host)
-          end,
           pre_open = function() end,
           post_open = function(bufnr, winnr, ft, is_blocking)
             -- if is_blocking then
