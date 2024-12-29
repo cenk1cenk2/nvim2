@@ -10,6 +10,7 @@ function M.config()
       return {
         "nvimdev/lspsaga.nvim",
         event = "LspAttach",
+        branch = "ref",
       }
     end,
     configure = function(_, fn)
