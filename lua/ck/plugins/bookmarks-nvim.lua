@@ -1,38 +1,37 @@
--- https://github.com/tomasky/bookmarks.nvim
+-- https://github.com/LintaoAmons/bookmarks.nvim
 local M = {}
 
-M.name = "tomasky/bookmarks.nvim"
+M.name = "LintaoAmons/bookmarks.nvim"
 
 function M.config()
   require("ck.setup").define_plugin(M.name, true, {
     plugin = function()
       ---@type Plugin
       return {
-        -- using bookmark for telescope delete action
-        -- "tomasky/bookmarks.nvim",
-        "kevintraver/bookmarks.nvim",
-        branch = "feature/telescope-delete-action",
+        "LintaoAmons/bookmarks.nvim",
+        dependencies = {
+          { "kkharji/sqlite.lua" },
+        },
         event = { "BufReadPost", "BufNewFile", "BufNew" },
       }
     end,
     setup = function()
       return {
-        sign_priority = 10, --set bookmark sign priority to cover other sign
-        save_file = join_paths(get_cache_dir(), "bookmarks"), -- bookmarks save file path
-        linehl = false,
-        signcolumn = true,
-        numhl = false,
         signs = {
-          add = { hl = "Bookmark", text = nvim.ui.icons.ui.BookMark, numhl = "BookMarksAddNr", linehl = "BookMarksAddLn" },
-          ann = { hl = "Bookmark", text = nvim.ui.icons.ui.Flag, numhl = "BookMarksAnnNr", linehl = "BookMarksAnnLn" },
+          -- Sign mark icon and color in the gutter
+          mark = {
+            icon = nvim.ui.icons.ui.BookMark,
+            color = "",
+            line_bg = "",
+          },
+          desc_format = function()
+            return ""
+          end,
         },
       }
     end,
     on_setup = function(c)
       require("bookmarks").setup(c)
-    end,
-    on_done = function()
-      require("telescope").load_extension("bookmarks")
     end,
     keymaps = function(_, fn)
       ---@type WKMappings
@@ -40,7 +39,12 @@ function M.config()
         {
           fn.keystroke({ "m", "m" }),
           function()
-            require("bookmarks").bookmark_toggle()
+            local Service = require("bookmarks.domain.service")
+            local Sign = require("bookmarks.sign")
+            local Tree = require("bookmarks.tree.operate")
+            Service.toggle_mark("")
+            Sign.safe_refresh_signs()
+            pcall(Tree.refresh)
           end,
           desc = "toggle bookmark",
         },
@@ -48,7 +52,7 @@ function M.config()
         {
           fn.keystroke({ "m", "n" }),
           function()
-            require("bookmarks").bookmark_next()
+            require("bookmarks").goto_next_list_bookmark()
           end,
           desc = "next bookmark",
         },
@@ -56,7 +60,7 @@ function M.config()
         {
           fn.keystroke({ "m", "p" }),
           function()
-            require("bookmarks").bookmark_prev()
+            require("bookmarks").goto_prev_list_bookmark()
           end,
           desc = "previous bookmark",
         },
@@ -64,33 +68,9 @@ function M.config()
         {
           fn.keystroke({ "m", "f" }),
           function()
-            require("telescope").extensions.bookmarks.list()
+            require("bookmarks").goto_bookmark()
           end,
           desc = "show bookmarks",
-        },
-
-        {
-          fn.keystroke({ "m", "q" }),
-          function()
-            require("bookmarks").bookmark_list()
-          end,
-          desc = "bookmarks to quickfix",
-        },
-
-        {
-          fn.keystroke({ "m", "x" }),
-          function()
-            require("bookmarks").bookmark_clean()
-          end,
-          desc = "clean bookmarks in current buffer",
-        },
-
-        {
-          fn.keystroke({ "m", "X" }),
-          function()
-            require("bookmarks").bookmark_clean()
-          end,
-          desc = "clean bookmarks",
         },
       }
     end,
