@@ -59,8 +59,6 @@ function M.config()
               })
             end,
           },
-          -- https://github.com/davidsierradz/cmp-conventionalcommits
-          { "davidsierradz/cmp-conventionalcommits" },
           -- https://github.com/tzachar/cmp-fuzzy-buffer
           { "tzachar/cmp-fuzzy-buffer" },
           { "lukas-reineke/cmp-rg" },

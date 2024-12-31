@@ -17,7 +17,7 @@ function M.config()
         },
       }
     end,
-    configure = function(config, fn)
+    configure = function(_, fn)
       fn.setup_callback(require("ck.plugins.possession-nvim").name, function(c)
         local before_save = c.hooks.before_save
         c.hooks.before_save = function(name)
@@ -49,6 +49,17 @@ function M.config()
         disable_line_numbers = false,
         -- Disable relative line numbers
         disable_relative_line_numbers = false,
+        mappings = {
+          commit_editor = {
+            ["q"] = "Close",
+            ["<c-c><c-q>"] = "Submit",
+            ["<c-c><c-c>"] = "Abort",
+          },
+          commit_editor_I = {
+            ["<c-c><c-q>"] = "Submit",
+            ["<c-c><c-c>"] = "Abort",
+          },
+        },
       }
     end,
     on_setup = function(c)
