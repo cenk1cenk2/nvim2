@@ -21,7 +21,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.NEOVIM, categories.LOGS, "l" }),
           function()
-            vim.ui.select(require("ck.log").levels, {
+            vim.ui.select(vim.tbl_keys(require("ck.log").levels), {
               prompt = "Log Level",
             }, function(level)
               if not level then

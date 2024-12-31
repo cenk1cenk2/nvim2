@@ -27,6 +27,12 @@ end
 
 ---@return boolean
 function M.should_format_on_save()
+  if #vim.lsp.get_clients() == 0 then
+    log:debug("No LSP clients found, therefore not avoiding format on save.")
+
+    return true
+  end
+
   return require("ck.setup").get_augroup(group) ~= nil
 end
 
