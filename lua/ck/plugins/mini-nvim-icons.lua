@@ -1,4 +1,4 @@
---https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-icons.md
+-- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-icons.md
 local M = {}
 
 M.name = "echasnovski/mini.icons"
