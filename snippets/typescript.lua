@@ -19,6 +19,23 @@ return {
   ),
   s.s(
     {
+      name = "import globstar",
+      trig = "imgs",
+      desc = { "Import globstar." },
+    },
+    s.fmt(
+      [[
+      import * as <> from '<>'
+      ]],
+      {
+        s.i(2),
+        s.i(1),
+      },
+      { delimiters = "<>" }
+    )
+  ),
+  s.s(
+    {
       name = "export selected",
       trig = "exps",
       desc = { "Export selected from the file." },
