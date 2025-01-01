@@ -235,7 +235,7 @@ function M.setup()
             fn.wk_keystroke({ categories.BUFFER, "R" }),
             function()
               vim.ui.input({
-                prompt = "Rename Buffer",
+                prompt = "rename buffer",
                 default = vim.api.nvim_buf_get_name(0),
               }, function(value)
                 if not value then
@@ -246,6 +246,15 @@ function M.setup()
               end)
             end,
             desc = "change buffer current name",
+            mode = { "n", "v" },
+          },
+          {
+            fn.wk_keystroke({ categories.BUFFER, "N" }),
+            function()
+              local bufnr = vim.api.nvim_create_buf(true, false)
+              vim.api.nvim_set_current_buf(bufnr)
+            end,
+            desc = "create empty buffer",
             mode = { "n", "v" },
           },
           {
