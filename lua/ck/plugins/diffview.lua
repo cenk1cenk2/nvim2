@@ -210,7 +210,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.GIT, "a" }),
           function()
-            vim.cmd([[DiffviewFileHistory -- %]])
+            vim.cmd([[DiffviewFileHistory %]])
           end,
           desc = "buffer commits",
           mode = { "n", "v" },
@@ -218,7 +218,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.GIT, "A" }),
           function()
-            vim.cmd([[DiffviewFileHistory --base=LOCAL -- %]])
+            vim.cmd([[DiffviewFileHistory --base=LOCAL %]])
           end,
           desc = "buffer commits [HEAD]",
           mode = { "n", "v" },
