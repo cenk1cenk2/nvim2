@@ -12,6 +12,7 @@ local plugins = {
   "lualine-nvim",
   "telescope",
   "cmp",
+  "blink-cmp",
   "treesitter",
   "neoconf-nvim",
   "nvim-lspconfig",
