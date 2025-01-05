@@ -602,6 +602,8 @@ hl.plugins.nvim_cmp = {
 hl.plugins.blink_cmp = {
   BlinkCmpMenu = { link = "NormalFloat" },
   BlinkCmpMenuBorder = { link = "FloatBorder" },
+  BlinkCmpSignatureHelpBorder = { link = "FloatBorder" },
+  BlinkCmpDocBorder = { link = "FloatBorder" },
   BlinkCmpKind = { fg = c.orange[300] },
   BlinkCmpKindCopilot = { fg = c.red[900] },
   BlinkCmpSource = { fg = c.gray[600] },
