@@ -95,7 +95,7 @@ hl.common = {
 
   Pmenu = { link = "NormalFloat" },
   PmenuSbar = { fg = c.none, bg = c.bg[300] },
-  PmenuSel = { fg = c.none, bg = c.bg[400] },
+  PmenuSel = { fg = c.none, bg = c.blue[900] },
   PmenuThumb = { fg = c.none, bg = c.gray[600] },
 
   SpecialKey = { fg = c.gray[600] },
