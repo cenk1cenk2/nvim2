@@ -107,11 +107,11 @@ function M.config()
           cmdline = function()
             local type = vim.fn.getcmdtype()
 
-            if type == "/" or type == "?" then
+            if vim.tbl_contains({ "/", "?" }, type) then
               return {
                 "fuzzy_buffer",
               }
-            elseif type == ":" or type == "@" then
+            elseif vim.tbl_contains({ ":", "@" }, type) then
               return {
                 "zsh",
                 "cmdline",
