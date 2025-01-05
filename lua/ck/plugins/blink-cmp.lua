@@ -122,10 +122,10 @@ function M.config()
           end,
           providers = {
             buffer = {
-              name = "B",
+              name = "BUFF",
             },
             luasnip = {
-              name = "S",
+              name = "LS",
             },
             lazydev = {
               name = "LD",
