@@ -95,7 +95,7 @@ hl.common = {
 
   Pmenu = { link = "NormalFloat" },
   PmenuSbar = { fg = c.none, bg = c.bg[300] },
-  PmenuSel = { fg = c.bg[200], bg = c.blue[900] },
+  PmenuSel = { fg = c.none, bg = c.bg[400] },
   PmenuThumb = { fg = c.none, bg = c.gray[600] },
 
   SpecialKey = { fg = c.gray[600] },
@@ -602,7 +602,7 @@ hl.plugins.nvim_cmp = {
 hl.plugins.blink_cmp = {
   BlinkCmpMenu = { link = "NormalFloat" },
   BlinkCmpMenuBorder = { link = "FloatBorder" },
-  BlinkCmpKind = { fg = c.yellow[300] },
+  BlinkCmpKind = { fg = c.orange[300] },
   BlinkCmpKindCopilot = { fg = c.red[900] },
   BlinkCmpSource = { fg = c.gray[600] },
 }
