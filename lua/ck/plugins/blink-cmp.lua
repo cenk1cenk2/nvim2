@@ -156,6 +156,7 @@ function M.config()
               module = "blink.compat.source",
               name = "omni",
               opts = { disable_omnifuncs = { "v:lua.vim.lsp.omnifunc", "sqlcomplete#Complete" } },
+              async = true,
             },
             fuzzy_buffer = {
               module = "blink.compat.source",
@@ -165,6 +166,9 @@ function M.config()
           },
         },
         completion = {
+          list = {
+            selection = "auto_insert",
+          },
           menu = {
             border = nvim.ui.border,
             min_width = 40,
@@ -208,7 +212,7 @@ function M.config()
         keymap = {
           ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
           ["<CR>"] = { "accept", "fallback" },
-          ["<C-e>"] = { "hide", "fallback" },
+          ["<C-e>"] = { "cancel", "hide", "fallback" },
 
           ["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
           ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
