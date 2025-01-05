@@ -93,6 +93,7 @@ function M.config()
               "lsp",
               "lazydev",
               "zsh",
+              "omni",
               "npm",
               "git",
               "go_pkgs",
@@ -188,18 +189,21 @@ function M.config()
             max_height = 10,
             draw = {
               components = {
-                ["label"] = {
+                label = {
                   width = {
                     fill = true,
                     max = 60,
                   },
                 },
-                ["source_name"] = {
+                source_name = {
                   text = function(ctx)
                     return "[" .. ctx.source_name .. "]"
                   end,
                 },
-                ["kind"] = {
+                kind = {
+                  width = {
+                    fill = false,
+                  },
                   text = function(ctx)
                     return "(" .. ctx.kind .. ")"
                   end,
