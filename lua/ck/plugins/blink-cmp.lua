@@ -92,6 +92,7 @@ function M.config()
             return {
               "lsp",
               "lazydev",
+              "zsh",
               "npm",
               "git",
               "go_pkgs",
