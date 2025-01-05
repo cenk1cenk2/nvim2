@@ -93,7 +93,7 @@ hl.common = {
   FloatTitle = { fg = c.green[300] },
   NormalFloat = { bg = c.bg[200] },
 
-  Pmenu = { fg = c.fg, bg = c.bg[300] },
+  Pmenu = { link = "NormalFloat" },
   PmenuSbar = { fg = c.none, bg = c.bg[300] },
   PmenuSel = { fg = c.bg[200], bg = c.blue[900] },
   PmenuThumb = { fg = c.none, bg = c.gray[600] },
@@ -596,6 +596,15 @@ hl.plugins.nvim_cmp = {
   CmpItemKindDefault = { fg = c.orange[300] },
   CmpItemMenu = { fg = c.gray[600] },
   CmpItemMenuDefault = { fg = c.fg },
+}
+
+---@type table<string, vim.api.keyset.highlight>
+hl.plugins.blink_cmp = {
+  BlinkCmpMenu = { link = "NormalFloat" },
+  BlinkCmpMenuBorder = { link = "FloatBorder" },
+  BlinkCmpKind = { fg = c.yellow[300] },
+  BlinkCmpKindCopilot = { fg = c.red[900] },
+  BlinkCmpSource = { fg = c.gray[600] },
 }
 
 ---@type table<string, vim.api.keyset.highlight>

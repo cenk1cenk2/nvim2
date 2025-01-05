@@ -18,8 +18,17 @@ function M.config()
       }
     end,
     configure = function(_, fn)
-      fn.setup_callback(require("ck.plugins.cmp").name, function(c)
-        c.formatting.source_names["crates"] = "PKG"
+      fn.setup_callback(require("ck.plugins.blink-cmp").name, function(c)
+        c.sources.providers.crates = {
+          module = "blink.compat.source",
+          name = "crates",
+        }
+
+        local cb = c.sources.default
+
+        c.sources.per_filetype["toml"] = function(ctx)
+          return vim.list_extend({ "crates" }, cb(ctx))
+        end
 
         return c
       end)
@@ -57,10 +66,6 @@ function M.config()
     autocmds = function()
       return {
         require("ck.modules.autocmds").init_with({ "BufRead" }, { "Cargo.toml" }, function(event)
-          require("cmp").setup.buffer({
-            sources = { { name = "crates" } },
-          })
-
           return {
             keymaps = function(_, fn)
               return {

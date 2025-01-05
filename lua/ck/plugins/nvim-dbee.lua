@@ -16,15 +16,25 @@ function M.config()
           {
             "MattiasMTS/cmp-dbee",
             ft = { "sql", "mysql", "plsql" },
+            enabled = is_enabled(require("ck.plugins.blink-cmp").name),
             init = function()
-              require("ck.setup").setup_callback(require("ck.plugins.cmp").name, function(c)
-                c.formatting.source_names["cmp-dbee"] = "DB"
+              require("ck.setup").setup_callback(require("ck.plugins.blink-cmp").name, function(c)
+                c.sources.providers.dbee = {
+                  module = "blink.compat.source",
+                  name = "cmp-dbee",
+                }
 
-                require("cmp").setup.filetype({ "sql", "mysql", "plsql" }, {
-                  sources = {
-                    { name = "cmp-dbee" },
+                c.sources.per_filetype = {
+                  sql = {
+                    "dbee",
                   },
-                })
+                  mysql = {
+                    "dbee",
+                  },
+                  plsql = {
+                    "dbee",
+                  },
+                }
 
                 return c
               end)
