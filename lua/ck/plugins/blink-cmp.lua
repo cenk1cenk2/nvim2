@@ -18,22 +18,58 @@ function M.config()
           { "rafamadriz/friendly-snippets" },
           -- https://github.com/L3MON4D3/LuaSnip
           { "L3MON4D3/LuaSnip" },
+          -- https://github.com/saghen/blink.compat
           {
             "saghen/blink.compat",
             config = function()
               require("blink.compat").setup({
-                impersonate_nvim_cmp = true,
+                impersonate_nvim_cmp = false,
               })
             end,
           },
           -- https://github.com/tzachar/cmp-fuzzy-buffer
-          { "tzachar/cmp-fuzzy-buffer" },
+          {
+            "cenk1cenk2/cmp-fuzzy-buffer",
+            branch = "patch-1",
+          },
           -- https://github.com/cenk1cenk2/cmp-zsh
-          { "cenk1cenk2/cmp-zsh" },
+          {
+            "cenk1cenk2/cmp-zsh",
+            config = function()
+              require("cmp_zsh").setup({
+                zshrc = true,
+                filetypes = { "zsh", "bash", "sh" },
+                env = {
+                  ZNAP_HEADLESS = "1",
+                },
+              })
+            end,
+          },
           -- https://github.com/petertriho/cmp-git
-          { "petertriho/cmp-git" },
+          {
+            "petertriho/cmp-git",
+            config = function()
+              require("cmp_git").setup({
+                filetypes = { "gitcommit" },
+                remotes = { "upstream", "origin" },
+                gitlab = {
+                  hosts = {
+                    "gitlab.kilic.dev",
+                    "gitlab.common.riag.digital",
+                  },
+                },
+              })
+            end,
+          },
           -- https://github.com/David-Kunz/cmp-npm
-          { "David-Kunz/cmp-npm" },
+          {
+            "David-Kunz/cmp-npm",
+            config = function()
+              require("cmp-npm").setup({
+                filetypes = { "json" },
+              })
+            end,
+          },
           -- https://github.com/Snikimonkd/cmp-go-pkgs
           {
             -- "Snikimonkd/cmp-go-pkgs",
@@ -92,41 +128,24 @@ function M.config()
             ripgrep = {
               module = "blink-ripgrep",
               name = "Ripgrep",
+              opts = {
+                prefix_min_len = 3,
+              },
             },
             zsh = {
               module = "blink.compat.source",
               name = "zsh",
               async = true,
-              opts = {
-                zshrc = true,
-                filetypes = { "zsh", "bash", "sh" },
-                env = {
-                  ZNAP_HEADLESS = "1",
-                },
-              },
             },
             git = {
               module = "blink.compat.source",
               name = "git",
               async = true,
-              opts = {
-                filetypes = { "gitcommit" },
-                remotes = { "upstream", "origin" },
-                gitlab = {
-                  hosts = {
-                    "gitlab.kilic.dev",
-                    "gitlab.common.riag.digital",
-                  },
-                },
-              },
             },
             npm = {
               module = "blink.compat.source",
               name = "npm",
               async = true,
-              opts = {
-                filetypes = { "json" },
-              },
             },
             go_pkgs = {
               module = "blink.compat.source",
@@ -142,7 +161,6 @@ function M.config()
               module = "blink.compat.source",
               async = true,
               name = "fuzzy_buffer",
-              opts = {},
             },
           },
         },
