@@ -208,8 +208,7 @@ function M.config()
               treesitter = { "lsp", "buffer" },
               columns = {
                 { "kind_icon", gap = 1 },
-                { "label" },
-                { "label_description", gap = 1 },
+                { "label", "label_description", gap = 1 },
                 { "kind", "source_name", gap = 1 },
               },
             },
