@@ -170,7 +170,7 @@ function M.config()
             min_width = 40,
             max_height = 10,
             draw = {
-              treesitter = { "lsp", "buffer" },
+              treesitter = { "lsp", "buffer", "ripgrep" },
               columns = {
                 { "kind_icon", gap = 1 },
                 { "label", "label_description", gap = 1 },
