@@ -239,7 +239,7 @@ function M.config()
             enabled = true,
           },
           signature = {
-            enabled = true,
+            enabled = false,
             auto_open = {
               enabled = true,
               throttle = 100, -- Debounce lsp signature help request by 50ms

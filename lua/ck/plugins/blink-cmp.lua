@@ -219,7 +219,7 @@ function M.config()
           },
         },
         signature = {
-          enabled = false,
+          enabled = true,
           window = {
             border = nvim.ui.border,
             max_height = 15,
