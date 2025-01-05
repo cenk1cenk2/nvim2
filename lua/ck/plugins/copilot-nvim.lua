@@ -13,23 +13,26 @@ function M.config()
         cmd = { "Copilot" },
         dependencies = {
           {
-            -- https://github.com/zbirenbaum/copilot-cmp
-            "zbirenbaum/copilot-cmp",
-            enabled = is_enabled(require("ck.plugins.cmp").name) and vim.tbl_contains(nvim.lsp.copilot.completion, "cmp"),
+            -- https://github.com/giuxtaposition/blink-cmp-copilot
+            "giuxtaposition/blink-cmp-copilot",
+            enabled = is_enabled(require("ck.plugins.blink-cmp").name) and vim.tbl_contains(nvim.lsp.copilot.completion, "cmp"),
             init = function()
-              local cmp = require("ck.plugins.cmp")
-              table.insert(cmp.sources, 1, {
-                name = "copilot",
-              })
+              require("ck.setup").setup_callback(require("ck.plugins.blink-cmp").name, function(c)
+                c.sources.providers.copilot = {
+                  name = "copilot",
+                  module = "blink-cmp-copilot",
+                  score_offset = 100,
+                  async = true,
+                }
 
-              require("ck.setup").setup_callback(cmp.name, function(c)
-                c.formatting.source_names["copilot"] = "CoPi"
+                local cb = c.sources.default
+
+                c.sources.default = function(ctx)
+                  return vim.list_extend({ "copilot" }, cb(ctx))
+                end
 
                 return c
               end)
-            end,
-            config = function()
-              require("copilot_cmp").setup()
             end,
           },
         },

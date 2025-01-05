@@ -9,39 +9,155 @@ function M.config()
       ---@type Plugin
       return {
         "Saghen/blink.cmp",
+        version = "*",
         event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
+          -- https://github.com/mikavilpas/blink-ripgrep.nvim
           { "mikavilpas/blink-ripgrep.nvim" },
+          -- https://github.com/rafamadriz/friendly-snippets
           { "rafamadriz/friendly-snippets" },
+          -- https://github.com/L3MON4D3/LuaSnip
           { "L3MON4D3/LuaSnip" },
-          { "saghen/blink.compat" },
-          -- https://github.com/tzachar/cmp-fuzzy-buffer
-          { "tzachar/cmp-fuzzy-buffer" },
           {
-            "cenk1cenk2/cmp-zsh",
+            "saghen/blink.compat",
             config = function()
-              require("cmp_zsh").setup({
-                zshrc = true,
-                filetypes = { "zsh", "bash", "sh" },
-                env = {
-                  ZNAP_HEADLESS = "1",
-                },
+              require("blink.compat").setup({
+                impersonate_nvim_cmp = true,
               })
             end,
+          },
+          -- https://github.com/tzachar/cmp-fuzzy-buffer
+          { "tzachar/cmp-fuzzy-buffer" },
+          -- https://github.com/cenk1cenk2/cmp-zsh
+          { "cenk1cenk2/cmp-zsh" },
+          -- https://github.com/petertriho/cmp-git
+          { "petertriho/cmp-git" },
+          -- https://github.com/David-Kunz/cmp-npm
+          { "David-Kunz/cmp-npm" },
+          -- https://github.com/Snikimonkd/cmp-go-pkgs
+          {
+            -- "Snikimonkd/cmp-go-pkgs",
+            "cenk1cenk2/cmp-go-pkgs",
+            branch = "patch-1",
+          },
+          -- https://github.com/wookayin/cmp-omni
+          {
+            "wookayin/cmp-omni",
+            branch = "fix-return",
           },
         },
       }
     end,
     setup = function(config)
+      ---@type blink.cmp.Config
       return {
-        sources = M.sources,
+        sources = {
+          default = function(ctx)
+            return {
+              "lsp",
+              "lazydev",
+              "npm",
+              "git",
+              "go_pkgs",
+              "luasnip",
+              -- "snippets",
+              "path",
+              "buffer",
+              "ripgrep",
+            }
+          end,
+          per_filetype = {},
+          cmdline = function()
+            local type = vim.fn.getcmdtype()
+
+            if type == "/" or type == "?" then
+              return {
+                "fuzzy_buffer",
+              }
+            elseif type == ":" or type == "@" then
+              return {
+                "zsh",
+                "cmdline",
+              }
+            end
+
+            return {}
+          end,
+          providers = {
+            lazydev = {
+              name = "LazyDev",
+              module = "lazydev.integrations.blink",
+              score_offset = 100,
+            },
+            ripgrep = {
+              module = "blink-ripgrep",
+              name = "Ripgrep",
+            },
+            zsh = {
+              module = "blink.compat.source",
+              name = "zsh",
+              async = true,
+              opts = {
+                zshrc = true,
+                filetypes = { "zsh", "bash", "sh" },
+                env = {
+                  ZNAP_HEADLESS = "1",
+                },
+              },
+            },
+            git = {
+              module = "blink.compat.source",
+              name = "git",
+              async = true,
+              opts = {
+                filetypes = { "gitcommit" },
+                remotes = { "upstream", "origin" },
+                gitlab = {
+                  hosts = {
+                    "gitlab.kilic.dev",
+                    "gitlab.common.riag.digital",
+                  },
+                },
+              },
+            },
+            npm = {
+              module = "blink.compat.source",
+              name = "npm",
+              async = true,
+              opts = {
+                filetypes = { "json" },
+              },
+            },
+            go_pkgs = {
+              module = "blink.compat.source",
+              async = true,
+              name = "go_pkgs",
+            },
+            omni = {
+              module = "blink.compat.source",
+              name = "omni",
+              opts = { disable_omnifuncs = { "v:lua.vim.lsp.omnifunc", "sqlcomplete#Complete" } },
+            },
+            fuzzy_buffer = {
+              module = "blink.compat.source",
+              async = true,
+              name = "fuzzy_buffer",
+              opts = {},
+            },
+          },
+        },
         completion = {
           menu = {
             border = nvim.ui.border,
-            min_width = 80,
+            min_width = 40,
             max_height = 10,
             draw = {
               treesitter = { "lsp", "buffer" },
+              columns = {
+                { "kind_icon", gap = 1 },
+                { "label", "label_description", gap = 1 },
+                { "kind", "source_name", gap = 1 },
+              },
             },
           },
           documentation = {
@@ -81,8 +197,8 @@ function M.config()
 
           ["<Up>"] = { "select_prev", "fallback" },
           ["<Down>"] = { "select_next", "fallback" },
-          ["<C-p>"] = { "select_prev", "fallback" },
-          ["<C-n>"] = { "select_next", "fallback" },
+          ["<C-k>"] = { "select_prev", "fallback" },
+          ["<C-j>"] = { "select_next", "fallback" },
 
           ["<C-b>"] = { "scroll_documentation_up", "fallback" },
           ["<C-f>"] = { "scroll_documentation_down", "fallback" },
@@ -109,56 +225,5 @@ function M.config()
     end,
   })
 end
-
---- @type blink.cmp.SourceConfig
-M.sources = {
-  default = function(ctx)
-    return {
-      "lsp",
-      "lazydev",
-      "luasnip",
-      "snippets",
-      "path",
-      "buffer",
-      "ripgrep",
-    }
-  end,
-  per_filetype = {},
-  cmdline = function()
-    local type = vim.fn.getcmdtype()
-
-    if type == "/" or type == "?" then
-      return {
-        "fuzzy_buffer",
-      }
-    elseif type == ":" or type == "@" then
-      return {
-        "zsh",
-        "cmdline",
-      }
-    end
-
-    return {}
-  end,
-  providers = {
-    lazydev = {
-      name = "LazyDev",
-      module = "lazydev.integrations.blink",
-      score_offset = 100,
-    },
-    ripgrep = {
-      module = "blink-ripgrep",
-      name = "Ripgrep",
-    },
-    zsh = {
-      module = "blink.compat.source",
-      name = "zsh",
-    },
-    fuzzy_buffer = {
-      module = "blink.compat.source",
-      name = "fuzzy_buffer",
-    },
-  },
-}
 
 return M

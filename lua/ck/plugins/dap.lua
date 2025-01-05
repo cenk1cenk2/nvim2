@@ -17,7 +17,7 @@ function M.config()
           "leoluz/nvim-dap-go",
           {
             "rcarriga/cmp-dap",
-            enabled = is_enabled(require("ck.plugins.cmp").name),
+            enabled = is_enabled(require("ck.plugins.blink-cmp").name),
           },
         },
       }
@@ -28,11 +28,17 @@ function M.config()
         "dap-float",
       })
 
-      fn.setup_callback(require("ck.plugins.cmp").name, function(c)
-        local enabled = vim.deepcopy(c.enabled)
-        c.enabled = function()
-          return enabled() or (is_loaded("dap") and require("cmp_dap").is_dap_buffer())
-        end
+      fn.setup_callback(require("ck.plugins.blink-cmp").name, function(c)
+        c.sources.providers.dap = {
+          module = "blink.compat.source",
+          name = "dap",
+        }
+
+        c.sources.per_filetype = {
+          ["dap-repl"] = {
+            "dap",
+          },
+        }
 
         return c
       end)
@@ -58,16 +64,6 @@ function M.config()
       end)
     end,
     on_done = function()
-      require("dap.ext.vscode").load_launchjs()
-
-      if is_enabled(require("ck.plugins.cmp").name) then
-        require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-          sources = {
-            { name = "dap" },
-          },
-        })
-      end
-
       if is_enabled(require("ck.plugins.mason-nvim-dap").name) then
         -- just call to make sure it is loaded as well
         require("mason-nvim-dap")
@@ -258,17 +254,6 @@ function M.config()
         require("ck.modules.autocmds").q_close_autocmd({
           "dap-float",
         }),
-
-        {
-          event = "BufWritePost",
-          group = "_dap",
-          pattern = "launch.json",
-          callback = function()
-            require("dap.ext.vscode").load_launchjs()
-
-            require("ck.log"):info("Reloaded launch.json for dap.")
-          end,
-        },
       }
     end,
   })

@@ -11,7 +11,6 @@ local plugins = {
   "bufferline-nvim",
   "lualine-nvim",
   "telescope",
-  "cmp",
   "blink-cmp",
   "treesitter",
   "neoconf-nvim",
