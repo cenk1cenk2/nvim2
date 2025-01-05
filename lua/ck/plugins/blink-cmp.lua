@@ -167,6 +167,12 @@ function M.config()
           },
         },
         completion = {
+          accept = {
+            create_undo_point = true,
+            auto_brackets = {
+              enabled = true,
+            },
+          },
           list = {
             selection = "auto_insert",
           },
@@ -175,7 +181,14 @@ function M.config()
             min_width = 40,
             max_height = 10,
             draw = {
-              treesitter = { "lsp", "buffer", "ripgrep" },
+              components = {
+                ["label"] = {
+                  width = {
+                    fill = true,
+                  },
+                },
+              },
+              treesitter = { "lsp", "buffer" },
               columns = {
                 { "kind_icon", gap = 1 },
                 { "label", "label_description", gap = 1 },
@@ -189,8 +202,13 @@ function M.config()
           },
         },
         signature = {
-          enabled = true,
-          window = { border = nvim.ui.border },
+          enabled = false,
+          window = {
+            border = nvim.ui.border,
+            max_height = 15,
+            min_width = 40,
+            treesitter_highlighting = true,
+          },
         },
         snippets = {
           expand = function(snippet)

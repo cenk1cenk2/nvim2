@@ -26,6 +26,7 @@ end
 ---@return lsp.ClientCapabilities
 function M.capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
+
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = { "documentation", "detail", "additionalTextEdits" },
@@ -43,9 +44,9 @@ function M.capabilities()
   if ok then
     capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
   end
-  local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+  local ok, blink = pcall(require, "blink-cmp")
   if ok then
-    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+    capabilities = blink.get_lsp_capabilities(capabilities)
   end
 
   return capabilities
