@@ -605,6 +605,7 @@ hl.plugins.blink_cmp = {
   BlinkCmpKind = { fg = c.orange[300] },
   BlinkCmpKindCopilot = { fg = c.red[900] },
   BlinkCmpSource = { fg = c.gray[600] },
+  BlinkCmpLabelDeprecated = { fg = c.gray[600] },
 }
 
 ---@type table<string, vim.api.keyset.highlight>

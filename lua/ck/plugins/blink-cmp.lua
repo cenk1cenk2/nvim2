@@ -121,14 +121,20 @@ function M.config()
             return {}
           end,
           providers = {
+            buffer = {
+              name = "Buf",
+            },
+            luasnip = {
+              name = "Snip",
+            },
             lazydev = {
-              name = "LazyDev",
+              name = "LD",
               module = "lazydev.integrations.blink",
               score_offset = 100,
             },
             ripgrep = {
               module = "blink-ripgrep",
-              name = "Ripgrep",
+              name = "RG",
               opts = {
                 prefix_min_len = 3,
               },
@@ -185,13 +191,25 @@ function M.config()
                 ["label"] = {
                   width = {
                     fill = true,
+                    max = 60,
                   },
+                },
+                ["source_name"] = {
+                  text = function(ctx)
+                    return "[" .. ctx.source_name .. "]"
+                  end,
+                },
+                ["kind"] = {
+                  text = function(ctx)
+                    return "(" .. ctx.kind .. ")"
+                  end,
                 },
               },
               treesitter = { "lsp", "buffer" },
               columns = {
                 { "kind_icon", gap = 1 },
-                { "label", "label_description", gap = 1 },
+                { "label" },
+                { "label_description", gap = 1 },
                 { "kind", "source_name", gap = 1 },
               },
             },
