@@ -160,7 +160,6 @@ end
 
 M.default_formatters = {
   "trim_whitespace",
-  -- "trim_multiple_whitespace",
   "trim_newlines",
   "trim_multiple_newlines",
 }
@@ -169,10 +168,6 @@ function M.register()
   tools.register(METHOD, "trim_whitespace", {
     "*",
   })
-
-  -- lsp_utils.register(METHOD, "trim_multiple_whitespace", {
-  --   "*",
-  -- })
 
   tools.register(METHOD, "trim_newlines", {
     "*",
@@ -282,15 +277,6 @@ function M.extend_tools()
     },
     command = "awk",
     args = { "!NF {if (++n <= 1) print; next}; {n=0;print}" },
-  }
-
-  conform.formatters["trim_multiple_whitespace"] = {
-    meta = {
-      url = "https://www.gnu.org/software/gawk/manual/gawk.html",
-      description = "Trim multiple whitespace with awk.",
-    },
-    command = "tr",
-    args = { "-s", "' '" },
   }
 end
 

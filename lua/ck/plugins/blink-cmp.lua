@@ -113,6 +113,18 @@ function M.config()
                 "fuzzy_buffer",
               }
             elseif vim.tbl_contains({ ":", "@" }, type) then
+              -- local cmdline = vim.fn.getcmdline()
+              -- if cmdline:match("^lua") then
+              --   return {
+              --     "lsp",
+              --     "lazydev",
+              --   }
+              -- elseif cmdline:match("^!") then
+              --   return {
+              --     "zsh",
+              --   }
+              -- end
+
               return {
                 "zsh",
                 "cmdline",
@@ -220,6 +232,8 @@ function M.config()
           documentation = {
             window = { border = nvim.ui.border },
             auto_show = true,
+            auto_show_delay_ms = 250,
+            treesitter_highlighting = true,
           },
         },
         signature = {
@@ -251,7 +265,7 @@ function M.config()
         },
         keymap = {
           ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-          ["<CR>"] = { "accept", "fallback" },
+          ["<CR>"] = { "select_and_accept", "fallback" },
           ["<C-e>"] = { "cancel", "hide", "fallback" },
 
           ["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
