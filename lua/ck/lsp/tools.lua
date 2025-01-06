@@ -31,6 +31,7 @@ function M.register(method, config, filetypes)
       nvim.lsp.tools.by_ft[method][ft] = {}
     end
 
+    --TODO: should also expand arrays here
     nvim.lsp.tools.by_ft[method][ft] = vim.tbl_extend("force", nvim.lsp.tools.by_ft[method][ft], config)
   end
 
