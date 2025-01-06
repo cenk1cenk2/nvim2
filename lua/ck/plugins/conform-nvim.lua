@@ -165,15 +165,7 @@ M.default_formatters = {
 }
 
 function M.register()
-  tools.register(METHOD, "trim_whitespace", {
-    "*",
-  })
-
-  tools.register(METHOD, "trim_newlines", {
-    "*",
-  })
-
-  tools.register(METHOD, "trim_multiple_newlines", {
+  tools.register(METHOD, { "trim_whitespace", "trim_newlines", "trim_multiple_newlines" }, {
     "*",
   })
 
