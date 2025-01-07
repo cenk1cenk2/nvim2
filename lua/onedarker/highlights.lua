@@ -605,6 +605,7 @@ hl.plugins.blink_cmp = {
   BlinkCmpSignatureHelpBorder = { link = "FloatBorder" },
   BlinkCmpDocBorder = { link = "FloatBorder" },
   BlinkCmpMenuSelection = { bg = c.gray[300] },
+  BlinkCmpLabelMatch = { bold = true, bg = c.bg[400] },
   BlinkCmpKind = { fg = c.orange[300] },
   BlinkCmpKindCopilot = { fg = c.red[900] },
   BlinkCmpSource = { fg = c.gray[600] },
