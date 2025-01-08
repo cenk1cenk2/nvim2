@@ -84,7 +84,7 @@ function M.config()
         },
       }
     end,
-    setup = function(config)
+    setup = function()
       ---@type blink.cmp.Config
       return {
         sources = {
@@ -113,17 +113,17 @@ function M.config()
                 "fuzzy_buffer",
               }
             elseif vim.tbl_contains({ ":", "@" }, type) then
-              -- local cmdline = vim.fn.getcmdline()
-              -- if cmdline:match("^lua") then
-              --   return {
-              --     "lsp",
-              --     "lazydev",
-              --   }
-              -- elseif cmdline:match("^!") then
-              --   return {
-              --     "zsh",
-              --   }
-              -- end
+              local cmdline = vim.fn.getcmdline()
+              if cmdline:match("^lua") then
+                return {
+                  "lsp",
+                  "lazydev",
+                }
+              elseif cmdline:match("^!") then
+                return {
+                  "zsh",
+                }
+              end
 
               return {
                 "zsh",
@@ -134,12 +134,6 @@ function M.config()
             return {}
           end,
           providers = {
-            buffer = {
-              name = "BUFF",
-            },
-            luasnip = {
-              name = "LS",
-            },
             lazydev = {
               name = "LD",
               module = "lazydev.integrations.blink",
@@ -193,7 +187,10 @@ function M.config()
             },
           },
           list = {
-            selection = "auto_insert",
+            selection = {
+              auto_insert = true,
+              preselect = false,
+            },
           },
           menu = {
             border = nvim.ui.border,
@@ -281,10 +278,10 @@ function M.config()
         },
       }
     end,
-    on_setup = function(c, config)
+    on_setup = function(c)
       require("blink-cmp").setup(c)
     end,
-    on_done = function(c, config)
+    on_done = function()
       -- setup lua snip
       local paths = {}
 
