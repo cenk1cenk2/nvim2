@@ -17,6 +17,31 @@ function M.config()
     end,
     setup = function()
       return {
+        backup = {
+          enabled = false,
+        },
+        treeview = {
+          keymap = {
+            copy = "c",
+            create_list = "a",
+            cut = "x",
+            delete = "D",
+            ["goto"] = "g",
+            level_up = "u",
+            move_down = "<localleader>j",
+            move_up = "<localleader>k",
+            paste = "p",
+            quit = { "q", "<ESC>" },
+            refresh = "R",
+            rename = "r",
+            reverse = "t",
+            set_active = "m",
+            set_root = ".",
+            show_info = "i",
+            toggle = "o",
+          },
+          window_split_dimension = 30,
+        },
         signs = {
           -- Sign mark icon and color in the gutter
           mark = {
@@ -71,6 +96,14 @@ function M.config()
             require("bookmarks").goto_bookmark()
           end,
           desc = "show bookmarks",
+        },
+
+        {
+          fn.keystroke({ "m", "o" }),
+          function()
+            require("bookmarks").toggle_treeview()
+          end,
+          desc = "open treeview",
         },
       }
     end,
