@@ -132,10 +132,13 @@ function M.config()
             return {}
           end,
           providers = {
+            lsp = {
+              score_offset = 10,
+            },
             lazydev = {
               name = "LD",
               module = "lazydev.integrations.blink",
-              score_offset = 100,
+              score_offset = 15,
             },
             ripgrep = {
               module = "blink-ripgrep",
@@ -225,9 +228,15 @@ function M.config()
             },
           },
           documentation = {
-            window = { border = nvim.ui.border },
+            window = {
+              border = nvim.ui.border,
+              max_height = 15,
+              min_width = 40,
+              max_width = 120,
+            },
             auto_show = true,
-            auto_show_delay_ms = 250,
+            auto_show_delay_ms = 150,
+            update_delay_ms = 150,
             treesitter_highlighting = true,
           },
         },
@@ -237,6 +246,7 @@ function M.config()
             border = nvim.ui.border,
             max_height = 15,
             min_width = 40,
+            max_width = 120,
             treesitter_highlighting = true,
           },
         },

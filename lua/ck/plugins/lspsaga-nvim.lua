@@ -76,6 +76,7 @@ function M.config()
       end
     end,
     setup = function()
+      ---@type LspsagaConfig
       return {
         lightbulb = {
           enable = false,
@@ -112,6 +113,9 @@ function M.config()
             quit = "q",
           },
         },
+        hover = {
+          max_width = 120,
+        },
         diagnostic = {
           -- maybe disable this later on
           -- https://www.reddit.com/r/neovim/comments/11o68vz/text_appearing_on_the_corner_of_the_screen/?utm_source=share&utm_medium=android_app&utm_name=androidcss&utm_term=2&utm_content=share_button
@@ -121,6 +125,7 @@ function M.config()
           twice_into = true,
           show_code_action = false,
           show_source = true,
+          max_width = 120,
           keys = {
             exec_action = "o",
             quit = "q",
