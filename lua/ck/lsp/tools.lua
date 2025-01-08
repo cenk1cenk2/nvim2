@@ -31,8 +31,13 @@ function M.register(method, config, filetypes)
       nvim.lsp.tools.by_ft[method][ft] = {}
     end
 
-    --TODO: should also expand arrays here
-    nvim.lsp.tools.by_ft[method][ft] = vim.tbl_extend("force", nvim.lsp.tools.by_ft[method][ft], config)
+    for index, value in pairs(config) do
+      if type(index) == "number" then
+        nvim.lsp.tools.by_ft[method][ft][#nvim.lsp.tools.by_ft[method][ft] + 1] = value
+      else
+        nvim.lsp.tools.by_ft[method][ft] = vim.tbl_extend("force", nvim.lsp.tools.by_ft[method][ft], config)
+      end
+    end
   end
 
   log:debug(
