@@ -50,6 +50,20 @@ function M.config()
           desc = "get youtrack issues",
         },
         {
+          fn.wk_keystroke({ categories.ISSUES, "l" }),
+          function()
+            require("youtrack").get_issues({ query = "#Unresolved sort by: updated" })
+          end,
+          desc = "get latest youtrack issues [unresolved]",
+        },
+        {
+          fn.wk_keystroke({ categories.ISSUES, "L" }),
+          function()
+            require("youtrack").get_issues({ query = "sort by: updated" })
+          end,
+          desc = "get latest youtrack issues [all]",
+        },
+        {
           fn.wk_keystroke({ categories.ISSUES, "b" }),
           function()
             require("youtrack").get_agiles()
