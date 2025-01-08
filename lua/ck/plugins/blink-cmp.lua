@@ -125,7 +125,6 @@ function M.config()
               -- end
 
               return {
-                "zsh",
                 "cmdline",
               }
             end
