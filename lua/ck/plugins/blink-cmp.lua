@@ -262,7 +262,7 @@ function M.config()
         },
         keymap = {
           ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-          ["<CR>"] = { "select_and_accept", "fallback" },
+          ["<CR>"] = { "accept", "fallback" },
           ["<C-e>"] = { "cancel", "hide", "fallback" },
 
           ["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
