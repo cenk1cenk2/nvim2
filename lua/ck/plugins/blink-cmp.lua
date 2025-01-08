@@ -216,7 +216,7 @@ function M.config()
                   end,
                 },
               },
-              treesitter = { "lsp", "buffer" },
+              treesitter = { "lsp", "buffer", "fuzzy_buffer" },
               columns = {
                 { "kind_icon", gap = 1 },
                 { "label", "label_description", gap = 1 },
