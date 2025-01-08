@@ -206,16 +206,20 @@ function M.config()
                   },
                 },
                 source_name = {
+                  width = {
+                    fixed = 4,
+                  },
                   text = function(ctx)
-                    return "[" .. ctx.source_name .. "]"
+                    return ctx.source_name
                   end,
+                  ellipsis = false,
                 },
                 kind = {
                   width = {
-                    fill = false,
+                    max = 10,
                   },
                   text = function(ctx)
-                    return "(" .. ctx.kind .. ")"
+                    return ctx.kind
                   end,
                 },
               },
