@@ -113,17 +113,17 @@ function M.config()
                 "fuzzy_buffer",
               }
             elseif vim.tbl_contains({ ":", "@" }, type) then
-              local cmdline = vim.fn.getcmdline()
-              if cmdline:match("^lua") then
-                return {
-                  "lsp",
-                  "lazydev",
-                }
-              elseif cmdline:match("^!") then
-                return {
-                  "zsh",
-                }
-              end
+              -- local cmdline = vim.fn.getcmdline()
+              -- if cmdline:match("^lua") then
+              --   return {
+              --     "lsp",
+              --     "lazydev",
+              --   }
+              -- elseif cmdline:match("^!") then
+              --   return {
+              --     "zsh",
+              --   }
+              -- end
 
               return {
                 "zsh",
