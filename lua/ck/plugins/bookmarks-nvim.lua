@@ -25,7 +25,7 @@ function M.config()
             copy = "c",
             create_list = "a",
             cut = "x",
-            delete = "D",
+            delete = "dd",
             ["goto"] = "g",
             level_up = "u",
             move_down = "<localleader>j",
