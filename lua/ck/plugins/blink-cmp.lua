@@ -180,6 +180,15 @@ function M.config()
             },
           },
         },
+        fuzzy = {
+          use_typo_resistance = false,
+          sorts = {
+            "label",
+            "score",
+            "kind",
+            "sort_text",
+          },
+        },
         completion = {
           accept = {
             create_undo_point = true,
