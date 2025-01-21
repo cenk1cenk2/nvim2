@@ -183,8 +183,8 @@ function M.config()
         fuzzy = {
           use_typo_resistance = false,
           sorts = {
-            "label",
             "score",
+            "label",
             "kind",
             "sort_text",
           },
