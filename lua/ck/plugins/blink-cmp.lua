@@ -184,8 +184,8 @@ function M.config()
           use_typo_resistance = false,
           sorts = {
             "score",
-            "label",
-            "kind",
+            -- "label",
+            -- "kind",
             "sort_text",
           },
         },
