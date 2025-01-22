@@ -83,7 +83,7 @@ function M.config()
         discussion_signs = {
           -- See :h sign_define for details about sign configuration.
           enabled = true,
-          severity = vim.diagnostic.severity.WARN,
+          severity = "WARN",
           skip_resolved_discussion = false,
           text = nvim.ui.icons.ui.Comment,
           linehl = nil,
