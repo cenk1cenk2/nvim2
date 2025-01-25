@@ -13,7 +13,7 @@ function M.config()
       }
     end,
     setup = function()
-      local defaults = require("markview").configuration
+      local defaults = require("markview.spec").default
       return {
         buf_ignore = {},
         filetypes = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante" },
@@ -25,33 +25,35 @@ function M.config()
           --   vim.wo[win].concealcursor = "c"
           -- end,
         },
-        headings = vim.tbl_deep_extend("force", vim.deepcopy(defaults.headings), {
-          enable = true,
-          shift_width = 0,
-          shift_char = "",
-          heading_1 = {
-            hl = "@markup.heading.1.markdown",
-          },
-          heading_2 = {
-            hl = "@markup.heading.2.markdown",
-          },
-          heading_3 = {
-            hl = "@markup.heading.3.markdown",
-          },
-          heading_4 = {
-            hl = "@markup.heading.4.markdown",
-          },
-          heading_5 = {
-            hl = "@markup.heading.5.markdown",
-          },
-          heading_6 = {
-            hl = "@markup.heading.6.markdown",
-          },
-        }),
-        list_items = vim.tbl_deep_extend("force", vim.deepcopy(defaults.list_items), {
-          enable = true,
-          shift_width = 2,
-        }),
+        markdown = {
+          headings = vim.tbl_deep_extend("force", vim.deepcopy(defaults.markdown.headings), {
+            enable = true,
+            shift_width = 0,
+            shift_char = "",
+            heading_1 = {
+              hl = "@markup.heading.1.markdown",
+            },
+            heading_2 = {
+              hl = "@markup.heading.2.markdown",
+            },
+            heading_3 = {
+              hl = "@markup.heading.3.markdown",
+            },
+            heading_4 = {
+              hl = "@markup.heading.4.markdown",
+            },
+            heading_5 = {
+              hl = "@markup.heading.5.markdown",
+            },
+            heading_6 = {
+              hl = "@markup.heading.6.markdown",
+            },
+          }),
+          list_items = vim.tbl_deep_extend("force", vim.deepcopy(defaults.markdown.list_items), {
+            enable = true,
+            shift_width = 2,
+          }),
+        },
       }
     end,
     on_setup = function(c)
