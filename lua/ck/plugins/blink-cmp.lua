@@ -181,7 +181,9 @@ function M.config()
           },
         },
         fuzzy = {
-          use_typo_resistance = false,
+          max_typos = function()
+            return 0
+          end,
           sorts = {
             "score",
             -- "label",
