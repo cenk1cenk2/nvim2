@@ -85,6 +85,16 @@ function M.config()
             },
           },
         },
+        indent = {
+          enabled = true,
+          only_scope = true,
+          animate = {
+            enabled = false,
+          },
+          chunk = {
+            enabled = true,
+          },
+        },
         notifier = {
           enabled = true,
           timeout = 3000,
@@ -110,6 +120,13 @@ function M.config()
             border = nvim.ui.border,
           },
         },
+        zen = {
+          enabled = true,
+          win = {
+            width = 180,
+            backdrop = { transparent = false },
+          },
+        },
       }
     end,
     on_setup = function(c)
@@ -130,6 +147,14 @@ function M.config()
     wk = function(_, categories, fn)
       ---@type WKMappings
       return {
+        {
+          fn.wk_keystroke({ categories.ACTIONS, "z" }),
+          function()
+            Snacks.zen()
+          end,
+          desc = "dashboard",
+        },
+
         {
           fn.wk_keystroke({ categories.SESSION, "w" }),
           function()

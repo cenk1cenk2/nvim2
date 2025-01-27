@@ -658,6 +658,9 @@ hl.plugins.snacks = {
   SnacksDashboardFile = { fg = c.blue[600] },
   SnacksDashboardSpecial = { fg = c.orange[900], bold = true },
   SnacksDashboardHeader = { fg = c.orange[600] },
+  SnacksIndent = { fg = c.bg[500] },
+  SnacksIndentScope = { fg = c.cursor },
+  SnacksIndentChunk = { fg = c.cursor },
 }
 
 ---@type table<string, vim.api.keyset.highlight>
