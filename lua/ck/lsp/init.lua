@@ -35,34 +35,32 @@ function M.setup(force)
 
   require("ck.lsp.handlers").setup()
 
-  xpcall(function()
-    require("neoconf").setup({
-      jsonls = {
-        configured_servers_only = false,
-      },
-    })
+  require("neoconf").setup({
+    jsonls = {
+      configured_servers_only = false,
+    },
+  })
 
-    require("mason-lspconfig").setup({
-      -- ensure_installed = nvim.lsp.ensure_installed,
-      automatic_installation = {
-        exclude = nvim.lsp.skipped_servers,
-      },
-    })
+  require("mason-lspconfig").setup({
+    -- ensure_installed = nvim.lsp.ensure_installed,
+    automatic_installation = {
+      exclude = nvim.lsp.skipped_servers,
+    },
+  })
 
-    require("mason-lspconfig").setup_handlers({
-      function(server_name)
-        if not M.should_configure(server_name) then
-          log:warn(("Skipping configuring LSP: %s"):format(server_name))
+  require("mason-lspconfig").setup_handlers({
+    function(server_name)
+      if not M.should_configure(server_name) then
+        log:warn(("Skipping configuring LSP: %s"):format(server_name))
 
-          return
-        end
+        return
+      end
 
-        require("ck.lsp.loader").setup(server_name)
-      end,
-    })
+      require("ck.lsp.loader").setup(server_name)
+    end,
+  })
 
-    require("lspconfig.util").on_setup = nil
-  end, debug.traceback)
+  require("lspconfig.util").on_setup = nil
 
   local ok, installer = pcall(require, "mason-tool-installer")
 

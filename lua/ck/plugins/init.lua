@@ -40,7 +40,6 @@ local plugins = {
   "statuscol-nvim",
   "flash-nvim",
   "vim-repeat",
-  "neoscroll",
   "auto-hlsearch-nvim",
   "grug-far-nvim",
   "bookmarks-nvim",

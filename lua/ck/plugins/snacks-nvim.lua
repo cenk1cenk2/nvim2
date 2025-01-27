@@ -114,6 +114,19 @@ function M.config()
         quickfile = {
           enabled = true,
         },
+        scroll = {
+          enabled = true,
+          animate = {
+            duration = { step = 15, total = 250 },
+            easing = "linear",
+          },
+          -- faster animation when repeating scroll after delay
+          animate_repeat = {
+            delay = 100, -- delay in ms before using the repeat animation
+            duration = { step = 5, total = 50 },
+            easing = "linear",
+          },
+        },
         styles = {
           notification = {
             wo = { wrap = true }, -- Wrap notifications
@@ -122,9 +135,18 @@ function M.config()
         },
         zen = {
           enabled = true,
+          animate = {
+            enabled = false,
+          },
           win = {
             width = 180,
             backdrop = { transparent = false },
+          },
+        },
+        dim = {
+          enabled = true,
+          animate = {
+            enabled = false,
           },
         },
       }
@@ -144,16 +166,35 @@ function M.config()
       require("ck.setup").load_toggles(M._.pending_toggles)
       M._.pending_toggles = {}
     end,
-    wk = function(_, categories, fn)
-      ---@type WKMappings
+    toggles = function(_, categories, fn)
+      ---@type WKToggleMappings
       return {
         {
           fn.wk_keystroke({ categories.ACTIONS, "z" }),
           function()
-            Snacks.zen()
+            return require("snacks").toggle.zen()
           end,
-          desc = "dashboard",
+          desc = "zen",
         },
+        {
+          fn.wk_keystroke({ categories.ACTIONS, "d" }),
+          function()
+            return require("snacks").toggle.dim()
+          end,
+          desc = "dim",
+        },
+        {
+          fn.wk_keystroke({ categories.ACTIONS, "g" }),
+          function()
+            return require("snacks").toggle.indent()
+          end,
+          desc = "indentation guides",
+        },
+      }
+    end,
+    wk = function(_, categories, fn)
+      ---@type WKMappings
+      return {
 
         {
           fn.wk_keystroke({ categories.SESSION, "w" }),
