@@ -4,7 +4,7 @@ local M = {}
 M.name = "karb94/neoscroll.nvim"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, false, {
+  require("ck.setup").define_plugin(M.name, true, {
     plugin = function()
       ---@type Plugin
       return {
@@ -20,6 +20,7 @@ function M.config()
         stop_eof = false, -- Stop at <EOF> when scrolling downwards
         respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
         cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+        duration_multiplier = 0.5,
       }
     end,
     on_setup = function(c)

@@ -4,6 +4,7 @@ local plugins = {
   "plenary-nvim",
   "lazy-nvim",
   "snacks-nvim",
+  "neoscroll",
   "structlog-nvim",
   "mini-nvim-icons",
   -- core
