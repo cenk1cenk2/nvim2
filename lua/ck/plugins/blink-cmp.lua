@@ -143,6 +143,8 @@ function M.config()
             ripgrep = {
               module = "blink-ripgrep",
               name = "RG",
+              timeout_ms = 5000,
+              async = true,
               opts = {
                 prefix_min_len = 3,
               },
