@@ -331,9 +331,10 @@ hl.lsp = {
   LspDiagnosticsVirtualTextWarning = { link = "DiagnosticVirtualTextWarn" },
   LspDiagnosticsWarning = { link = "DiagnosticWarn" },
   LspInlayHint = { link = "@inlayhint" },
-  LspReferenceRead = { fg = c.gray[300], bold = false },
-  LspReferenceText = { fg = c.gray[300], bold = false },
-  LspReferenceWrite = { fg = c.gray[300], bold = false },
+  LspReferenceRead = { bg = c.bg[300] },
+  LspReferenceText = { bg = c.bg[300] },
+  LspReferenceWrite = { bg = c.bg[300] },
+  LspReferenceTarget = { bg = c.bg[300] },
   LspSignatureActiveParameter = { bg = c.bg[400], bold = true },
 }
 

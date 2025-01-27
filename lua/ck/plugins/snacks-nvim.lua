@@ -149,6 +149,9 @@ function M.config()
             enabled = false,
           },
         },
+        words = {
+          enabled = true,
+        },
       }
     end,
     on_setup = function(c)
@@ -192,10 +195,29 @@ function M.config()
         },
       }
     end,
+    keymaps = function()
+      return {
+        {
+          "<M-n>",
+          function()
+            require("snacks").words.jump(vim.v.count1)
+          end,
+          desc = "next reference",
+          mode = { "n" },
+        },
+        {
+          "<M-p>",
+          function()
+            require("snacks").words.jump(-vim.v.count1)
+          end,
+          desc = "previous reference",
+          mode = { "n" },
+        },
+      }
+    end,
     wk = function(_, categories, fn)
       ---@type WKMappings
       return {
-
         {
           fn.wk_keystroke({ categories.SESSION, "w" }),
           function()

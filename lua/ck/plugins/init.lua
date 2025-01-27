@@ -82,7 +82,6 @@ local plugins = {
   "nvim-surround",
   "ccc-nvim",
   "nvim-colorizer",
-  "vim-illuminate",
   "neotest",
   "nvim-coverage",
   "telescope-github",
