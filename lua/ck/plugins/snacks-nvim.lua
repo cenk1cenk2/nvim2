@@ -115,15 +115,15 @@ function M.config()
           enabled = true,
         },
         scroll = {
-          enabled = false,
+          enabled = true,
           animate = {
-            duration = { step = 10, total = 200 },
+            duration = { step = 7.5, total = 125 },
             easing = "linear",
           },
           -- faster animation when repeating scroll after delay
           animate_repeat = {
-            delay = 100, -- delay in ms before using the repeat animation
-            duration = { step = 5, total = 50 },
+            delay = 50, -- delay in ms before using the repeat animation
+            duration = { step = 2.5, total = 25 },
             easing = "linear",
           },
         },
