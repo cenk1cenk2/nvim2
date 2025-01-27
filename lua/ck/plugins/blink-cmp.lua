@@ -147,6 +147,7 @@ function M.config()
               async = true,
               opts = {
                 prefix_min_len = 3,
+                project_root_fallback = false,
               },
             },
             zsh = {
@@ -236,7 +237,7 @@ function M.config()
                   end,
                 },
               },
-              treesitter = { "lsp", "buffer", "fuzzy_buffer" },
+              treesitter = { "lsp", "buffer", "fuzzy_buffer", "ripgrep" },
               columns = {
                 { "kind_icon", gap = 1 },
                 { "label", "label_description", gap = 1 },
