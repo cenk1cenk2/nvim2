@@ -62,6 +62,26 @@ function M.config()
         return c
       end)
 
+      fn.setup_callback(require("ck.plugins.edgy-nvim").name, function(c)
+        vim.list_extend(c.left, {
+          {
+            ft = "dbee",
+            title = "Database",
+            size = {
+              width = function()
+                if vim.o.columns < 360 then
+                  return math.floor(vim.o.columns * 0.25)
+                end
+
+                return 30
+              end,
+            },
+          },
+        })
+
+        return c
+      end)
+
       fn.add_disabled_filetypes({
         "dbee",
       })
