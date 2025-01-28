@@ -388,7 +388,7 @@ function M.components()
       end,
       color = { fg = nvim.ui.colors.black, bg = nvim.ui.colors.orange[600] },
       cond = function()
-        return is_loaded("iedit") and require("ck.plugins.iedit-nvim") ~= nil
+        return is_loaded("iedit") and require("ck.plugins.iedit-nvim").is_active()
       end,
     },
     viedit = {

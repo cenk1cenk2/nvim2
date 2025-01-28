@@ -67,6 +67,12 @@ function M.config()
         {
           fn.wk_keystroke({ categories.SEARCH, "a" }),
           function()
+            if M.is_active() then
+              log:info("Editing stopped.")
+
+              return require("iedit").stop()
+            end
+
             log:info("Editing started with selection.")
 
             require("iedit").select_all()
@@ -79,6 +85,8 @@ function M.config()
   })
 end
 
+---@param bufnr? integer
+---@return boolean
 function M.is_active(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   local data = vim.b[bufnr].iedit_data
