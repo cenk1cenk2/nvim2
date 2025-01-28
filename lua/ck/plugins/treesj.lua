@@ -53,7 +53,7 @@ function M.config()
         {
           "gJ",
           function()
-            require("treesj").toggle()
+            require("treesj").toggle({ split = { recursive = false }, join = { recursive = false } })
           end,
           desc = "split lines",
           mode = { "n" },
