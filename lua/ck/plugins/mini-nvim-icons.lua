@@ -29,7 +29,7 @@ function M.config()
     end,
     on_setup = function(c)
       require("mini.icons").setup(c)
-      -- require("mini.icons").mock_nvim_web_devicons()
+      require("mini.icons").mock_nvim_web_devicons()
     end,
     on_done = function()
       local icons = require("mini.icons")
