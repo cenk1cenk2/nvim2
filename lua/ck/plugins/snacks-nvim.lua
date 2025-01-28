@@ -135,6 +135,9 @@ function M.config()
         },
         zen = {
           enabled = true,
+          toggles = {
+            dim = false,
+          },
           animate = {
             enabled = false,
           },
