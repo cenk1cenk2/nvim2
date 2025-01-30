@@ -211,6 +211,24 @@ function M.setup()
             end
           end,
         },
+        {
+          event = { "BufReadPost" },
+          group = "_buffer",
+          pattern = "*",
+          callback = function()
+            for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+              if vim.api.nvim_buf_is_loaded(bufnr) and vim.api.nvim_buf_get_name(bufnr) == "" and vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == "" then
+                local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+                if #lines == 1 and lines[1] == "" then
+                  vim.api.nvim_buf_delete(bufnr, {
+                    force = true,
+                  })
+                end
+              end
+            end
+          end,
+        },
         -- {
         --   event = { "BufWritePost" },
         --   group = "_zsh",
