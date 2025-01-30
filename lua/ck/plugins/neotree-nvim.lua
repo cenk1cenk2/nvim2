@@ -84,6 +84,10 @@ function M.config()
       local log = require("ck.log")
       local system_register = nvim.system_register
 
+      ---
+      ---@param state table
+      ---@param opts table
+      ---@return table
       local function get_telescope_options(state, opts)
         return vim.tbl_extend("force", opts, {
           hidden = true,
@@ -359,7 +363,7 @@ function M.config()
               ["S"] = "run_command",
               ["K"] = "show_file_details2",
               ["gp"] = "telescope_find",
-              ["gt"] = "telescope_grep",
+              ["gf"] = "telescope_grep",
               ["c"] = "copy_filename",
               ["C"] = "copy_filepath",
               ["HH"] = "prev_sibling",
@@ -396,18 +400,15 @@ function M.config()
               vim.api.nvim_input(":! " .. path .. "<Home>")
             end,
             telescope_find = function(state)
-              local path = get_node_dir(state)
-
-              require("telescope.builtin").find_files(get_telescope_options(state, {
-                cwd = path,
+              require("ck.plugins.telescope").find_project_files(get_telescope_options(state, {
+                cwd = get_node_dir(state),
               }))
             end,
             telescope_grep = function(state)
-              local path = get_node_dir(state)
-
-              require("telescope.builtin").live_grep(get_telescope_options(state, {
+              require("ck.plugins.telescope").rg_string(get_telescope_options(state, {
                 -- cwd = path,
-                search_dirs = { path },
+                search_dirs = { get_node_dir(state) },
+                additional_args = { "--no-ignore-dot" },
               }))
             end,
             next_sibling = function(state)
