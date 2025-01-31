@@ -89,7 +89,13 @@ end
 ---@return boolean
 function M.is_active(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
-  local data = vim.b[bufnr].iedit_data
+  local buf = vim.b[bufnr]
+
+  if not buf then
+    return false
+  end
+
+  local data = buf.iedit_data
 
   return data ~= nil and (type(data) == "table" and vim.tbl_count(data) > 0)
 end
