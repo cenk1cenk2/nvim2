@@ -132,7 +132,7 @@ function M.config()
         {
           fn.wk_keystroke({ categories.TERMINAL, "k" }),
           function()
-            M.create_terminal({ name = "k9s", command = { "k9s" } })
+            M.create_terminal({ name = "k9s", command = { "k9s" }, env = M.editor_block() })
           end,
           desc = "k9s",
         },
