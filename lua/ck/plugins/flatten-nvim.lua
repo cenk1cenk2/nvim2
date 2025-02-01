@@ -24,7 +24,7 @@ function M.config()
         hooks = {
           should_block = function(argv)
             if vim.tbl_contains(argv, "-b") then
-              log:info("Blocking for another neovim instance...")
+              log:info("Blocking for the given file in the parent instance.")
 
               return true
             end
