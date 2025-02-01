@@ -1,6 +1,8 @@
 -- https://github.com/willothy/flatten.nvim
 local M = {}
 
+local log = require("ck.log")
+
 M.name = "willothy/flatten.nvim"
 
 function M.config()
@@ -21,35 +23,28 @@ function M.config()
         },
         hooks = {
           should_block = function(argv)
-            return vim.tbl_contains(argv, "-b")
+            if vim.tbl_contains(argv, "-b") then
+              log:info("Blocking for another neovim instance...")
+
+              return true
+            end
+
+            return false
           end,
-          pre_open = function() end,
-          post_open = function(bufnr, winnr, ft, is_blocking)
-            -- if is_blocking then
-            --   -- If the file is a git commit, create one-shot autocmd to delete it on write
-            --   -- If you just want the toggleable terminal integration, ignore this bit and only use the
-            --   -- code in the else block
-            --   vim.api.nvim_create_autocmd("BufWritePost", {
-            --     buffer = bufnr,
-            --     once = true,
-            --     callback = function()
-            --       -- This is a bit of a hack, but if you run bufdelete immediately
-            --       -- the shell can occasionally freeze
-            --       -- if vim.tbl_contains(fts, ft) then
-            --       vim.defer_fn(function()
-            --         vim.api.nvim_buf_delete(bufnr, {})
-            --       end, 50)
-            --       -- end
-            --     end,
-            --   })
-            --   -- else
-            --   -- If it's a normal file, then reopen the terminal, then switch back to the newly opened window
-            --   -- This gives the appearance of the window opening independently of the terminal
-            --   -- require("toggleterm").toggle(0)
-            --   -- vim.api.nvim_set_current_win(winnr)
-            -- end
+          block_end = function()
+            log:info("File returned to the blocking neovim instance.")
           end,
-          block_end = function() end,
+          post_open = function(opts)
+            local ok = os.execute([[tmux popup -c $(tmux display-message -pt "$TMUX_PANE" '#{client_tty}') -C]])
+            if ok then
+              log:info("Closed popup windows.")
+            end
+            if opts.is_blocking then
+              log:info("Blocking for another neovim instance...")
+            else
+              log:info("Not blocking for the given file.")
+            end
+          end,
         },
         block_for = {
           gitcommit = true,
