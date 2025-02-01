@@ -218,10 +218,7 @@ function M.setup()
           callback = function()
             for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
               if vim.api.nvim_buf_is_loaded(bufnr) and vim.api.nvim_buf_get_name(bufnr) == "" and vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == "" then
-                local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-
                 if not vim.api.nvim_get_option_value("modified", { buf = bufnr }) then
-                  -- if #lines == 1 and lines[1] == "" then
                   vim.api.nvim_buf_delete(bufnr, {
                     force = true,
                   })
