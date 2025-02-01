@@ -42,6 +42,10 @@ function M.config()
             return vim.env["EDITOR_BLOCK"]
           end,
         },
+        on_init = {
+          "set exit-empty on",
+          "set -g status on",
+        },
         toggle = {
           key = "-n F1",
           mode = "force-close",
