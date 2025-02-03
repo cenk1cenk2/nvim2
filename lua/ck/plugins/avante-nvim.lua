@@ -91,8 +91,8 @@ function M.config()
           sidebar = {
             apply_all = fn.local_keystroke({ "A" }),
             apply_cursor = fn.local_keystroke({ "a" }),
-            switch_windows = "<Tab>",
-            reverse_switch_windows = "<S-Tab>",
+            switch_windows = "<C-n>",
+            reverse_switch_windows = "<C-p>",
           },
           ask = fn.wk_keystroke({ categories.COPILOT, "c" }),
           edit = fn.wk_keystroke({ categories.COPILOT, "e" }),

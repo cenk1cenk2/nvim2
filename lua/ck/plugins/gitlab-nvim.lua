@@ -55,13 +55,45 @@ function M.config()
         attachment_dir = nil, -- The local directory for files (see the "summary" section)
         -- https://github.com/harrisoncramer/gitlab.nvim/blob/main/lua/gitlab/state.lua#L69
         keymaps = {
-          popup = { -- The popup for comment creation, editing, and replying
+          disable_all = false,
+          help = "g?",
+          global = {
+            disable_all = true,
+          },
+          popup = {
             disable_all = false,
-            next_field = "<Tab>",
-            prev_field = "<S-Tab>",
+            next_field = "<C-n>",
+            prev_field = "<C-p>",
             perform_action = "<C-s>",
             perform_linewise_action = "<C-l>",
-            discard_changes = "<C-c>",
+            discard_changes = "<C-c><C-c>",
+          },
+          discussion_tree = {
+            disable_all = false,
+            add_emoji = "sa",
+            delete_emoji = "sd",
+            delete_comment = "X",
+            edit_comment = "e",
+            reply = "r",
+            toggle_resolved = "R",
+            jump_to_file = "gf",
+            jump_to_reviewer = "gr",
+            open_in_browser = "o",
+            copy_node_url = "O",
+            switch_view = "w",
+            toggle_tree_type = "i",
+            publish_draft = "P",
+            toggle_draft_mode = "D",
+            toggle_sort_method = "zs",
+            toggle_node = "zo",
+            toggle_all_discussions = "zR",
+            toggle_resolved_discussions = "zT",
+            toggle_unresolved_discussions = "zt",
+            refresh_data = "<C-R>",
+            print_node = "<localleader>p",
+          },
+          reviewer = {
+            disable_all = true,
           },
         },
         info = { -- Show additional fields in the summary pane

@@ -16,10 +16,10 @@ function M.config()
       local defaults = require("markview.spec").default
       return {
         buf_ignore = {},
-        filetypes = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante" },
         modes = { "n", "no", "c" }, -- Change these modes
         hybrid_modes = { "n", "v", "x" },
         preview = {
+          filetypes = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante" },
           callbacks = {
             -- on_enable = function(_, win)
             --   vim.wo[win].conceallevel = 2
