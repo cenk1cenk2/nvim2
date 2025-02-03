@@ -351,7 +351,7 @@ M.DASHBOARD = {
       icon = nvim.ui.icons.ui.File,
     },
     {
-      key = "c",
+      key = "<localleader>c",
       desc = "~Config",
       action = function()
         vim.fn.chdir(join_paths(vim.env.HOME, ".config/nvim/"))
@@ -360,7 +360,7 @@ M.DASHBOARD = {
       icon = nvim.ui.icons.misc.Neovim,
     },
     {
-      key = "n",
+      key = "<localleader>n",
       desc = "~Notes",
       action = function()
         vim.fn.chdir(join_paths(vim.env.HOME, "notes/"))
