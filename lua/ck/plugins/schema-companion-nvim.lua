@@ -91,6 +91,14 @@ function M.config()
                   buffer = event.buf,
                 },
                 {
+                  fn.local_keystroke({ "R" }),
+                  function()
+                    require("schema-companion.context").match()
+                  end,
+                  desc = "reload schema",
+                  buffer = event.buf,
+                },
+                {
                   fn.local_keystroke({ "k" }),
                   function()
                     require("schema-companion.matchers.kubernetes").change_version()
