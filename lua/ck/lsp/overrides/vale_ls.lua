@@ -14,6 +14,7 @@ return {
       :start()
   end,
   init_options = {
+    installVale = true,
     configPath = config,
     syncOnStartup = true,
   },

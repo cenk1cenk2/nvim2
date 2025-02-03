@@ -55,6 +55,7 @@ nvim.lsp.ensure_installed = {
   "taplo",
   "ts_ls",
   "typos_lsp",
+  "vale",
   "vale_ls",
   "volar",
   "yamlls",

@@ -15,10 +15,9 @@ function M.config()
     setup = function()
       local defaults = require("markview.spec").default
       return {
-        buf_ignore = {},
-        modes = { "n", "no", "c" }, -- Change these modes
-        hybrid_modes = { "n", "v", "x" },
         preview = {
+          modes = { "n", "no", "c" }, -- Change these modes
+          hybrid_modes = { "n", "v", "x" },
           filetypes = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante" },
           callbacks = {
             -- on_enable = function(_, win)
@@ -26,6 +25,7 @@ function M.config()
             --   vim.wo[win].concealcursor = "c"
             -- end,
           },
+          ignore_buftypes = {},
         },
         markdown = {
           headings = vim.tbl_deep_extend("force", vim.deepcopy(defaults.markdown.headings), {
