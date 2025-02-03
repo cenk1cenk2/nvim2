@@ -8,8 +8,8 @@ function M.config()
     plugin = function()
       ---@type Plugin
       return {
-        -- "cenk1cenk2/schema-companion.nvim",
-        dir = "~/development/schema-companion.nvim",
+        "cenk1cenk2/schema-companion.nvim",
+        -- dir = "~/development/schema-companion.nvim",
         ft = { "yaml", "helm" },
       }
     end,
@@ -94,7 +94,7 @@ function M.config()
                 {
                   fn.local_keystroke({ "R" }),
                   function()
-                    require("schema-companion.context").rematch()
+                    require("schema-companion.context").match()
                   end,
                   desc = "rematch schema",
                   buffer = event.buf,
