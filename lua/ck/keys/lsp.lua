@@ -51,7 +51,7 @@ function M.setup()
         {
           fn.wk_keystroke({ categories.LSP, categories.LOGS, "l" }),
           function()
-            vim.ui.select(require("ck.log").levels, {
+            vim.ui.select(vim.tbl_keys(require("ck.log").nvim_levels), {
               prompt = "LSP Log Level",
             }, function(level)
               if not level then
