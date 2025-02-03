@@ -8,14 +8,15 @@ function M.config()
     plugin = function()
       ---@type Plugin
       return {
-        "cenk1cenk2/schema-companion.nvim",
-        -- dir = "~/development/schema-companion.nvim",
+        -- "cenk1cenk2/schema-companion.nvim",
+        dir = "~/development/schema-companion.nvim",
         ft = { "yaml", "helm" },
       }
     end,
     setup = function()
       ---@type schema_companion.Config
       return {
+        -- log_level = vim.log.levels.DEBUG,
         log_level = require("ck.log"):to_nvim_level(),
         enable_telescope = true,
         -- Built in file matchers
