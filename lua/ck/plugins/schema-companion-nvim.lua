@@ -94,9 +94,9 @@ function M.config()
                 {
                   fn.local_keystroke({ "R" }),
                   function()
-                    require("schema-companion.context").match()
+                    require("schema-companion.context").rematch()
                   end,
-                  desc = "reload schema",
+                  desc = "rematch schema",
                   buffer = event.buf,
                 },
                 {
