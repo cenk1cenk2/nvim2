@@ -45,7 +45,7 @@ function M.config()
         return c
       end)
     end,
-    setup = function()
+    setup = function(_, fn)
       ---@type Settings
       return {
         port = nil, -- The port of the Go server, which runs in the background, if omitted or `nil` the port will be chosen automatically
@@ -70,20 +70,20 @@ function M.config()
           },
           discussion_tree = {
             disable_all = false,
-            add_emoji = "sa",
-            delete_emoji = "sd",
-            delete_comment = "X",
-            edit_comment = "e",
-            reply = "r",
-            toggle_resolved = "R",
-            jump_to_file = "gf",
-            jump_to_reviewer = "gr",
-            open_in_browser = "o",
-            copy_node_url = "O",
-            switch_view = "w",
-            toggle_tree_type = "i",
-            publish_draft = "P",
-            toggle_draft_mode = "D",
+            add_emoji = fn.local_keystroke({ "sa" }),
+            delete_emoji = fn.local_keystroke({ "sd" }),
+            delete_comment = fn.local_keystroke({ "X" }),
+            edit_comment = fn.local_keystroke({ "e" }),
+            reply = fn.local_keystroke({ "r" }),
+            toggle_resolved = fn.local_keystroke({ "R" }),
+            jump_to_file = fn.local_keystroke({ "f" }),
+            jump_to_reviewer = fn.local_keystroke({ "r" }),
+            open_in_browser = fn.local_keystroke({ "o" }),
+            copy_node_url = fn.local_keystroke({ "O" }),
+            switch_view = fn.local_keystroke({ "w" }),
+            toggle_tree_type = fn.local_keystroke({ "W" }),
+            publish_draft = fn.local_keystroke({ "P" }),
+            toggle_draft_mode = fn.local_keystroke({ "D" }),
             toggle_sort_method = "zs",
             toggle_node = "zo",
             toggle_all_discussions = "zR",
