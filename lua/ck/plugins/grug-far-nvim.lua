@@ -42,6 +42,7 @@ function M.config()
         minSearchChars = 2,
         maxWorkers = 10,
         startInInsertMode = false,
+        transient = true,
         -- windowCreationCommand = "tabnew %",
         keymaps = {
           replace = { n = "<localleader>r" },
