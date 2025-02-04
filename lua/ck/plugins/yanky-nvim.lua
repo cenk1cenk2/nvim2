@@ -22,9 +22,9 @@ function M.config()
         ring = {
           history_length = 10,
           storage = "shada",
-          sync_with_numbered_registers = true,
           cancel_event = "update",
           ignore_registers = { "_" },
+          sync_with_numbered_registers = true,
           update_register_on_cycle = true,
         },
         system_clipboard = {

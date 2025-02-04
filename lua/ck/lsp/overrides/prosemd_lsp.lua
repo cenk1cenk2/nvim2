@@ -1,5 +1,5 @@
 ---@module "lspconfig"
----@type lspconfig.options.prosemd_lsp
+---@type lspconfig.Config
 return {
   filetypes = { "markdown", "plaintext", "text", "gitcommit", "" },
   single_file_support = true,

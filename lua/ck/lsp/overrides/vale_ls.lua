@@ -1,7 +1,7 @@
 local config = join_paths(vim.fn.stdpath("config"), "utils/linter-config", "vale.ini")
 
 ---@module "lspconfig"
----@type lspconfig.options.vale_ls
+---@type lspconfig.Config
 return {
   filetypes = { "markdown", "plaintext", "text", "gitcommit", "" },
   on_attach = function(client, bufnr)

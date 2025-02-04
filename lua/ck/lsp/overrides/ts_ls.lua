@@ -1,5 +1,5 @@
 ---@module "lspconfig"
----@type lspconfig.options.tsserver
+---@type lspconfig.options.ts_ls
 return {
   override = function(config)
     -- typescript-tools if this is enabled it will override it

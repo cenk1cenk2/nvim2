@@ -75,13 +75,21 @@ local function launch_server(server_name, config)
     end
 
     if type(config.override) == "function" then
-      local override = config.override(config)
+      config = config.override(config)
 
       log:trace("Server has a override function: %s", server_name)
+    end
 
-      require("lspconfig")[server_name].setup(override)
+    if type(config.condition) == "function" then
+      local condition = config.condition(config)
 
-      return
+      log:trace("Server has a condition: %s set to %s", server_name, condition)
+
+      if not condition then
+        log:debug("Server condition is set to skip: %s", server_name)
+
+        return
+      end
     end
 
     require("lspconfig")[server_name].setup(config)

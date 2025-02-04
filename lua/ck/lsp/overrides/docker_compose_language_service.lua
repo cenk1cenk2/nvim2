@@ -1,5 +1,5 @@
 ---@module "lspconfig"
----@type lspconfig.options.docker_compose_language_service
+---@type lspconfig.Config
 return {
   filetypes = { "yaml.docker-compose" },
 }

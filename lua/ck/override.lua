@@ -45,7 +45,7 @@ nvim.lsp.ensure_installed = {
   "html",
   "jsonls",
   "lua_ls",
-  -- "markdown_oxide",
+  "markdown_oxide",
   "prismals",
   "pyright",
   "ruff",
