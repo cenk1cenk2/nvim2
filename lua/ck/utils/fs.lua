@@ -27,7 +27,7 @@ end
 ---@param bufnr? number
 ---@return string
 function M.get_buffer_filepath(bufnr)
-  return require("plenary.path").new(vim.api.nvim_buf_get_name(bufnr or 0)):absolute()
+  return require("plenary.path").new(vim.api.nvim_buf_get_name(bufnr or vim.api.nvim_get_current_buf())):absolute()
 end
 
 --- Returns the buffer absolute dir path.
@@ -41,7 +41,7 @@ end
 ---@param bufnr? number
 ---@return string
 function M.get_project_buffer_filepath(bufnr)
-  return M.get_project_filepath(vim.api.nvim_buf_get_name(bufnr or 0))
+  return M.get_project_filepath(vim.api.nvim_buf_get_name(bufnr or vim.api.nvim_get_current_buf()))
 end
 
 --- Returns the buffer relative file path in the project.
@@ -55,7 +55,7 @@ end
 ---@param bufnr? number
 ---@return string
 function M.get_project_buffer_dirpath(bufnr)
-  return M.get_project_dirpath(vim.api.nvim_buf_get_name(bufnr or 0))
+  return M.get_project_dirpath(vim.api.nvim_buf_get_name(bufnr or vim.api.nvim_get_current_buf()))
 end
 
 --- Returns the buffer relative file path in the project.
@@ -69,7 +69,7 @@ end
 ---@param bufnr? number
 ---@return string
 function M.get_buffer_name(bufnr)
-  return vim.fs.basename(vim.api.nvim_buf_get_name(bufnr or 0))
+  return vim.fs.basename(vim.api.nvim_buf_get_name(bufnr or vim.api.nvim_get_current_buf()))
 end
 
 --- Returns the buffer basename.
