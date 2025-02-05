@@ -4,7 +4,7 @@ local M = {}
 M.name = "zbirenbaum/copilot.lua"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, true, {
+  require("ck.setup").define_plugin(M.name, nvim.lsp.ai.provider == "copilot", {
     plugin = function()
       ---@type Plugin
       return {

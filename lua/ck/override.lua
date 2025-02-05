@@ -28,6 +28,13 @@ nvim.lsp.copilot.filetypes = {
   ["."] = false,
 }
 
+nvim.lsp.ai.provider = "ai.kilic.dev"
+nvim.lsp.ai.debug = false
+nvim.lsp.ai.model.chat = "qwen2.5-coder:7b"
+nvim.lsp.ai.model.completion = "qwen2.5-coder:7b"
+nvim.lsp.ai.filetypes.enabled = { "*" }
+nvim.lsp.ai.filetypes.ignored = {}
+
 nvim.lsp.ensure_installed = {
   ---- language servers
   "ansiblels",

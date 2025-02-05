@@ -9,7 +9,7 @@ function M.config()
       ---@type Plugin
       return {
         "OXY2DEV/markview.nvim",
-        ft = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante" },
+        ft = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante", "codecompanion" },
       }
     end,
     setup = function()
@@ -18,7 +18,7 @@ function M.config()
         preview = {
           modes = { "n", "no", "c" }, -- Change these modes
           hybrid_modes = { "n", "v", "x" },
-          filetypes = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante" },
+          filetypes = { "markdown", "rmd", "norg", "org", "vimwiki", "Avante", "codecompanion" },
           callbacks = {
             -- on_enable = function(_, win)
             --   vim.wo[win].conceallevel = 2

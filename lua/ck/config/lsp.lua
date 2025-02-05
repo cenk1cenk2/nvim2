@@ -1,4 +1,21 @@
 return {
+  ai = {
+    ---@type 'copilot' | 'ai.kilic.dev'
+    provider = "copilot",
+    debug = false,
+    filetypes = {
+      ---@type string[]
+      enabled = {},
+      ---@type string[]
+      ignored = {},
+    },
+    model = {
+      ---@type string?
+      chat = nil,
+      ---@type string?
+      completion = nil,
+    },
+  },
   --- @type vim.diagnostic.Opts
   diagnostics = {
     signs = {
