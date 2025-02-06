@@ -27,7 +27,7 @@ function M.config()
             name = "Ollama",
             end_point = "https://api.ai.kilic.dev/v1/completions",
             model = nvim.lsp.ai.model.completion,
-            stream = true,
+            stream = false,
             request_timeout = 5,
             -- optional = {
             --   max_tokens = 256,
