@@ -9,7 +9,7 @@ function M.config()
       ---@type Plugin
       return {
         "milanglacier/minuet-ai.nvim",
-        event = { "FileType", "InsertEnter" },
+        event = { "BufReadPre", "BufNewFile", "FileType", "InsertEnter" },
       }
     end,
     setup = function()
