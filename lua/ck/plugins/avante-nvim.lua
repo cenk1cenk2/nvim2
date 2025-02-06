@@ -67,6 +67,7 @@ function M.config()
         behaviour = {
           auto_set_highlight_group = false,
           auto_set_keymaps = false,
+          enable_token_counting = false,
         },
         mappings = {
           --- @class AvanteConflictMappings
@@ -76,8 +77,8 @@ function M.config()
             all_theirs = fn.local_keystroke({ "a", "t" }),
             both = fn.local_keystroke({ "c", "b" }),
             cursor = fn.local_keystroke({ "c", "c" }),
-            next = "]x",
-            prev = "[x",
+            next = "]c",
+            prev = "[c",
           },
           suggestion = {
             accept = "<M-l>",
@@ -228,10 +229,17 @@ function M.ollama_parse_stream_data(data, handler)
     end
   end
 
+  -- Handle tool calls if present
+  if json_data.tool_calls then
+    for _, tool in ipairs(json_data.tool_calls) do
+      handler.on_tool(tool)
+    end
+  end
+
   if json_data.done then
     Utils.debug("Stream complete")
 
-    handler.on_stop({ reason = "complete" })
+    handler.on_stop({ reason = json_data.done_reason or "stop" })
 
     return
   end

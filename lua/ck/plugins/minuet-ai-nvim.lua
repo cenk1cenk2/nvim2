@@ -9,25 +9,23 @@ function M.config()
       ---@type Plugin
       return {
         "milanglacier/minuet-ai.nvim",
-        event = { "BufReadPre", "BufNewFile", "FileType", "InsertEnter" },
+        event = { "LspAttach", "BufReadPre", "BufNewFile", "FileType", "InsertEnter" },
         dependencies = {
-          {
-            -- https://github.com/Davidyz/VectorCode
-            "Davidyz/VectorCode",
-            version = "*", -- optional, depending on whether you're on nightly or release
-            build = { "pipx install vectorcode", "pipx upgrade vectorcode" },
-          },
+          -- TODO: this seems promising revisit this project when it is completed
+          -- {
+          --   -- https://github.com/Davidyz/VectorCode
+          --   "Davidyz/VectorCode",
+          --   build = { "pipx install vectorcode", "pipx upgrade vectorcode" },
+          -- },
         },
       }
     end,
     setup = function()
-      local cacher = require("vectorcode.cacher")
-
       return {
         notify = nvim.lsp.ai.debug and "debug" or "error",
         provider = "openai_fim_compatible",
-        n_completions = 1,
-        context_window = 1024,
+        n_completions = 3,
+        context_window = 16000,
         context_ratio = 0.75,
         throttle = 750,
         debounce = 250,
@@ -40,21 +38,24 @@ function M.config()
             end_point = "https://api.ai.kilic.dev/v1/completions",
             model = nvim.lsp.ai.model.completion,
             stream = true,
-            request_timeout = 5,
+            request_timeout = 10,
             template = {
-              prompt = function(pref, suff)
-                local prompt_message = ""
-                for _, file in ipairs(cacher.query_from_cache(0)) do
-                  prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
-                end
-                return prompt_message .. "<|fim_prefix|>" .. pref .. "<|fim_suffix|>" .. suff .. "<|fim_middle|>"
+              prompt = function(prefix, _)
+                local utils = require("minuet.utils")
+                local language = utils.add_language_comment()
+                local tab = utils.add_tab_comment()
+
+                -- local context = ""
+                -- for _, file in ipairs(require("vectorcode.cacher").query_from_cache()) do
+                --   context = context .. "// " .. file.path .. "\n" .. file.document .. "\n\n"
+                -- end
+
+                -- return language .. "\n" .. tab .. "\n" .. context .. prefix
+                return language .. "\n" .. tab .. "\n" .. prefix
               end,
-              suffix = false,
-              -- suffix = false,
-              -- optional = {
-              --   max_tokens = 256,
-              --   top_p = 0.9,
-              -- },
+              suffix = function(_, suffix)
+                return suffix
+              end,
             },
           },
         },
@@ -77,24 +78,33 @@ function M.config()
       }
     end,
     on_setup = function(c)
+      -- require("vectorcode").setup({
+      --   n_query = 1,
+      -- })
+
       require("minuet").setup(c)
     end,
-    autocmds = function()
-      return {
-        {
-          event = { "LspAttach" },
-          group = "__completion",
-          pattern = "*",
-          callback = function(event)
-            local cacher = require("vectorcode.cacher")
-
-            cacher.async_check("config", function()
-              cacher.register_buffer(event.buf, { notify = false, n_query = 10 })
-            end, nil)
-          end,
-        },
-      }
-    end,
+    -- autocmds = function()
+    --   return {
+    --     {
+    --       event = { "LspAttach" },
+    --       group = "__completion",
+    --       callback = function(event)
+    --         local cacher = require("vectorcode.cacher")
+    --
+    --         cacher.async_check("config", function()
+    --           cacher.register_buffer(event.buf, {
+    --             notify = nvim.lsp.ai.debug,
+    --             n_query = 1,
+    --             run_on_register = true,
+    --             query_cb = require("vectorcode.utils").surrounding_lines_cb(-1),
+    --             events = { "BufWritePost", "InsertEnter", "BufReadPost" },
+    --           })
+    --         end, nil)
+    --       end,
+    --     },
+    --   }
+    -- end,
   })
 end
 
