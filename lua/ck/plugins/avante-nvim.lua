@@ -200,8 +200,8 @@ function M.ollama_parse_messages(opts)
 end
 
 ---@param data string
----@param handler_opts AvanteHandlerOptions
-function M.ollama_parse_stream_data(data, handler_opts)
+---@param handler AvanteHandlerOptions
+function M.ollama_parse_stream_data(data, handler)
   local Utils = require("avante.utils")
 
   local ok, json_data = pcall(vim.json.decode, data)
@@ -224,22 +224,22 @@ function M.ollama_parse_stream_data(data, handler_opts)
     if content and content ~= "" then
       Utils.debug("Sending chunk: " .. content)
 
-      handler_opts.on_chunk(content)
+      handler.on_chunk(content)
     end
   end
 
   if json_data.done then
     Utils.debug("Stream complete")
 
-    handler_opts.on_stop({ reason = "complete" })
+    handler.on_stop({ reason = "complete" })
 
     return
   end
 end
 
 ---@param provider AvanteProvider
----@param prompt_opts AvantePromptOptions
-function M.ollama_parse_curl_args(provider, prompt_opts)
+---@param prompt AvantePromptOptions
+function M.ollama_parse_curl_args(provider, prompt)
   local Utils = require("avante.utils")
   local P = require("avante.providers")
 
@@ -264,9 +264,9 @@ function M.ollama_parse_curl_args(provider, prompt_opts)
 
     body = vim.tbl_deep_extend("force", {
       model = base.model,
-      messages = M.ollama_parse_messages(prompt_opts),
+      messages = M.ollama_parse_messages(prompt),
       stream = true,
-      system = prompt_opts.system_prompt,
+      system = prompt.system_prompt,
     }, body_opts),
   }
 end
@@ -292,20 +292,20 @@ end
 -- https://github.com/yetone/avante.nvim/issues/1149
 M.ai_kilic_dev = {
   api_key_name = "AI_KILIC_DEV_API_KEY",
-  -- endpoint = "https://api.ai.kilic.dev",
+  endpoint = "https://api.ai.kilic.dev",
+  parse_messages = M.ollama_parse_messages,
+  parse_stream_data = M.ollama_parse_stream_data,
+  parse_curl_args = M.ollama_parse_curl_args,
+  on_error = M.ollama_on_error,
   model = nvim.lsp.ai.model.chat,
   stream = true, -- Optional
   -- options = {
   --   num_ctx = 32768, -- Optional
   --   temperature = 0, -- Optional see https://github.com/ollama/ollama/blob/main/docs/api.md for all options
   -- },
-  -- parse_messages = M.ollama_parse_messages,
-  -- parse_stream_data = M.ollama_parse_stream_data,
-  -- parse_curl_args = M.ollama_parse_curl_args,
-  -- on_error = M.ollama_on_error,
   -- for open ai compatible api
-  endpoint = "https://api.ai.kilic.dev/v1",
-  __inherited_from = "openai",
+  -- endpoint = "https://api.ai.kilic.dev/v1",
+  -- __inherited_from = "openai",
 }
 
 return M
