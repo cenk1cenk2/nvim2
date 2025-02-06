@@ -16,7 +16,7 @@ function M.config()
       return {
         notify = nvim.lsp.ai.debug and "debug" or "warn",
         provider = "openai_fim_compatible",
-        n_completions = 1,
+        n_completions = 3,
         context_window = 16000,
         context_ratio = 0.75,
         throttle = 750,
@@ -27,7 +27,7 @@ function M.config()
             name = "Ollama",
             end_point = "https://api.ai.kilic.dev/v1/completions",
             model = nvim.lsp.ai.model.completion,
-            stream = false,
+            stream = true,
             request_timeout = 5,
             -- optional = {
             --   max_tokens = 256,
