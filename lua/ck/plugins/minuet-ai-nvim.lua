@@ -14,7 +14,7 @@ function M.config()
     end,
     setup = function()
       return {
-        notify = nvim.lsp.ai.debug and "debug" or "warn",
+        notify = nvim.lsp.ai.debug and "debug" or "error",
         provider = "openai_fim_compatible",
         n_completions = 3,
         context_window = 16000,
