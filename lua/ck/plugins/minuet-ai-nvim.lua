@@ -27,11 +27,12 @@ function M.config()
         notify = nvim.lsp.ai.debug and "debug" or "error",
         provider = "openai_fim_compatible",
         n_completions = 1,
-        context_window = 4000,
+        context_window = 1024,
         context_ratio = 0.75,
         throttle = 750,
         debounce = 250,
         add_single_line_entry = true,
+        after_cursor_filter_length = 15,
         provider_options = {
           openai_fim_compatible = {
             api_key = "AI_KILIC_DEV_API_KEY",
