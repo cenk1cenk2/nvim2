@@ -292,17 +292,20 @@ end
 -- https://github.com/yetone/avante.nvim/issues/1149
 M.ai_kilic_dev = {
   api_key_name = "AI_KILIC_DEV_API_KEY",
-  endpoint = "https://api.ai.kilic.dev",
+  -- endpoint = "https://api.ai.kilic.dev",
   model = nvim.lsp.ai.model.chat,
-  options = {
-    num_ctx = 32768, -- Optional
-    temperature = 0, -- Optional see https://github.com/ollama/ollama/blob/main/docs/api.md for all options
-  },
   stream = true, -- Optional
-  parse_messages = M.ollama_parse_messages,
-  parse_stream_data = M.ollama_parse_stream_data,
-  parse_curl_args = M.ollama_parse_curl_args,
-  on_error = M.ollama_on_error,
+  -- options = {
+  --   num_ctx = 32768, -- Optional
+  --   temperature = 0, -- Optional see https://github.com/ollama/ollama/blob/main/docs/api.md for all options
+  -- },
+  -- parse_messages = M.ollama_parse_messages,
+  -- parse_stream_data = M.ollama_parse_stream_data,
+  -- parse_curl_args = M.ollama_parse_curl_args,
+  -- on_error = M.ollama_on_error,
+  -- for open ai compatible api
+  endpoint = "https://api.ai.kilic.dev/v1",
+  __inherited_from = "openai",
 }
 
 return M
