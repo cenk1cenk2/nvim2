@@ -4,7 +4,7 @@ local M = {}
 M.name = "milanglacier/minuet-ai.nvim"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, nvim.lsp.ai.provider == "ai.kilic.dev", {
+  require("ck.setup").define_plugin(M.name, nvim.lsp.ai.provider ~= "copilot", {
     plugin = function()
       ---@type Plugin
       return {
@@ -21,9 +21,18 @@ function M.config()
       }
     end,
     setup = function()
+      local provider
+      if nvim.lsp.ai.provider == "ai.kilic.dev" then
+        provider = "openai_fim_compatible"
+      elseif nvim.lsp.ai.provider == "gemini" then
+        provider = "gemini"
+      else
+        error("Can not handle given AI provider.")
+      end
+
       return {
         notify = nvim.lsp.ai.debug and "debug" or "error",
-        provider = "openai_fim_compatible",
+        provider = provider,
         n_completions = 3,
         context_window = 4096,
         context_ratio = 0.75,
@@ -58,6 +67,12 @@ function M.config()
                 return suffix
               end,
             },
+          },
+          gemini = {
+            model = "gemini-2.0-flash",
+            stream = true,
+            api_key = "GEMINI_API_KEY",
+            optional = {},
           },
         },
         blink = {

@@ -1,6 +1,6 @@
 return {
   ai = {
-    ---@type 'copilot' | 'ai.kilic.dev'
+    ---@type 'copilot' | 'ai.kilic.dev' | 'gemini'
     provider = "copilot",
     debug = false,
     filetypes = {

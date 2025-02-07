@@ -48,8 +48,10 @@ function M.config()
       ---@type avante.Config
       return {
         debug = nvim.lsp.ai.debug,
-        -- provider = "copilot",
         provider = nvim.lsp.ai.provider,
+        gemini = {
+          model = "gemini-2.0-flash",
+        },
         vendors = {
           ["ai.kilic.dev"] = M.ai_kilic_dev,
         },
