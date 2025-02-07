@@ -30,9 +30,9 @@ nvim.lsp.copilot.filetypes = {
 
 nvim.lsp.ai.debug = false
 nvim.lsp.ai.provider.completion = "ai.kilic.dev"
-nvim.lsp.ai.provider.chat = "gemini"
+nvim.lsp.ai.provider.chat = "ai.kilic.dev"
 nvim.lsp.ai.model.completion = "deepseek-coder-v2:16b"
--- nvim.lsp.ai.model.chat = "deepseek-coder-v2:16b"
+nvim.lsp.ai.model.chat = "deepseek-coder-v2:16b"
 nvim.lsp.ai.filetypes.enabled = {
   "*",
 }
@@ -40,6 +40,8 @@ nvim.lsp.ai.filetypes.ignored = {
   "Telescope",
   "TelescopePrompt",
   "TelescopeResults",
+  "Avante",
+  "AvanteInput",
 }
 
 nvim.lsp.ensure_installed = {

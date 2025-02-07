@@ -152,19 +152,20 @@ function M.config()
   })
 end
 
-local role_map = {
-  user = "user",
-  assistant = "assistant",
-  system = "system",
-  tool = "tool",
-}
-
 ---@param opts AvantePromptOptions
-local parse_messages = function(self, opts)
+local parse_messages = function(_, opts)
+  local role_map = {
+    user = "user",
+    assistant = "assistant",
+    system = "system",
+    tool = "tool",
+  }
+
   local messages = {}
   local has_images = opts.image_paths and #opts.image_paths > 0
   -- Ensure opts.messages is always a table
   local msg_list = opts.messages or {}
+
   -- Convert Avante messages to Ollama format
   for _, msg in ipairs(msg_list) do
     local role = role_map[msg.role] or "assistant"
@@ -192,21 +193,14 @@ local parse_messages = function(self, opts)
   return messages
 end
 
-local function parse_curl_args(self, code_opts)
+local function parse_curl_args(self, content)
   -- Create the messages array starting with the system message
   local messages = {
-    { role = "system", content = code_opts.system_prompt },
+    { role = "system", content = content.system_prompt },
   }
   -- Extend messages with the parsed conversation messages
-  vim.list_extend(messages, self:parse_messages(code_opts))
-  -- Construct options separately for clarity
-  local options = {
-    num_ctx = (self.options and self.options.num_ctx) or 4096,
-    temperature = code_opts.temperature or (self.options and self.options.temperature) or 0,
-  }
-  -- Check if tools table is empty
-  local tools = (code_opts.tools and next(code_opts.tools)) and code_opts.tools or nil
-  -- Return the final request table
+  vim.list_extend(messages, self:parse_messages(content))
+
   return {
     url = self.endpoint .. "/api/chat",
     headers = {
@@ -217,30 +211,33 @@ local function parse_curl_args(self, code_opts)
     body = {
       model = self.model,
       messages = messages,
-      options = options,
-      -- tools = tools, -- Optional tool support
+      options = {
+        num_ctx = (self.options and self.options.num_ctx) or 4096,
+        temperature = content.temperature or (self.options and self.options.temperature) or 0,
+      },
+      -- tools = (code_opts.tools and next(code_opts.tools)) and code_opts.tools or nil,
       stream = true, -- Keep streaming enabled
     },
   }
 end
 
-local function parse_stream_data(data, handler_opts)
+local function parse_stream_data(data, handler)
   local json_data = vim.fn.json_decode(data)
   if json_data then
     if json_data.done then
-      handler_opts.on_stop({ reason = json_data.done_reason or "stop" })
+      handler.on_stop({ reason = json_data.done_reason or "stop" })
       return
     end
     if json_data.message then
       local content = json_data.message.content
       if content and content ~= "" then
-        handler_opts.on_chunk(content)
+        handler.on_chunk(content)
       end
     end
     -- Handle tool calls if present
     if json_data.tool_calls then
       for _, tool in ipairs(json_data.tool_calls) do
-        handler_opts.on_tool(tool)
+        handler.on_tool(tool)
       end
     end
   end
@@ -275,7 +272,7 @@ M.ai_kilic_dev = {
   model = nvim.lsp.ai.model.chat,
   stream = true, -- Optional
   options = {
-    num_ctx = 512,
+    num_ctx = 1024,
     temperature = 0,
   },
   -- for open ai compatible api
