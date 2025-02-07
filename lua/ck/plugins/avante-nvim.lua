@@ -154,128 +154,100 @@ function M.config()
   })
 end
 
+local role_map = {
+  user = "user",
+  assistant = "assistant",
+  system = "system",
+  tool = "tool",
+}
+
 ---@param opts AvantePromptOptions
-function M.ollama_parse_messages(opts)
-  local Config = require("avante.config")
-  local Clipboard = require("avante.clipboard")
-
+function M.ollama_parse_messages(self, opts)
   local messages = {}
-
-  local has_images = Config.behaviour.support_paste_from_clipboard and opts.image_paths and #opts.image_paths > 0
-
-  -- Convert avante messages to ollama format
-
-  for _, msg in ipairs(opts.messages) do
-    local role = msg.role == "user" and "user" or "assistant"
-
-    local content = msg.content
-
+  local has_images = opts.image_paths and #opts.image_paths > 0
+  -- Ensure opts.messages is always a table
+  local msg_list = opts.messages or {}
+  -- Convert Avante messages to Ollama format
+  for _, msg in ipairs(msg_list) do
+    local role = role_map[msg.role] or "assistant"
+    local content = msg.content or "" -- Default content to empty string
     -- Handle multimodal content if images are present
-
+    -- *Experimental* not tested
     if has_images and role == "user" then
       local message_content = {
-
         role = role,
-
         content = content,
-
         images = {},
       }
-
       for _, image_path in ipairs(opts.image_paths) do
-        table.insert(message_content.images, "data:image/png;base64," .. Clipboard.get_base64_content(image_path))
+        local base64_content = vim.fn.system(string.format("base64 -w 0 %s", image_path)):gsub("\n", "")
+        table.insert(message_content.images, "data:image/png;base64," .. base64_content)
       end
-
       table.insert(messages, message_content)
     else
       table.insert(messages, {
-
         role = role,
-
         content = content,
       })
     end
   end
-
   return messages
 end
 
 ---@param data string
 ---@param handler AvanteHandlerOptions
 function M.ollama_parse_stream_data(data, handler)
-  local Utils = require("avante.utils")
-
-  local ok, json_data = pcall(vim.json.decode, data)
-
-  if not ok or not json_data then
-    -- Add debug logging
-
-    Utils.debug("Failed to parse JSON: " .. data)
-
-    return
-  end
-
-  -- Add debug logging
-
-  Utils.debug("Received data: " .. vim.inspect(json_data))
-
-  if json_data.message and json_data.message.content then
-    local content = json_data.message.content
-
-    if content and content ~= "" then
-      Utils.debug("Sending chunk: " .. content)
-
-      handler.on_chunk(content)
+  local json_data = vim.fn.json_decode(data)
+  if json_data then
+    if json_data.done then
+      handler.on_stop({ reason = json_data.done_reason or "stop" })
+      return
     end
-  end
-
-  -- Handle tool calls if present
-  if json_data.tool_calls then
-    for _, tool in ipairs(json_data.tool_calls) do
-      handler.on_tool(tool)
+    if json_data.message then
+      local content = json_data.message.content
+      if content and content ~= "" then
+        handler.on_chunk(content)
+      end
     end
-  end
-
-  if json_data.done then
-    Utils.debug("Stream complete")
-
-    handler.on_stop({ reason = json_data.done_reason or "stop" })
-
-    return
+    -- Handle tool calls if present
+    if json_data.tool_calls then
+      for _, tool in ipairs(json_data.tool_calls) do
+        handler.on_tool(tool)
+      end
+    end
   end
 end
 
----@param provider AvanteProvider
----@param prompt AvantePromptOptions
-function M.ollama_parse_curl_args(provider, prompt)
-  local Utils = require("avante.utils")
-  local P = require("avante.providers")
-
-  local base, body_opts = P.parse_config(provider)
-
-  if not base.model or base.model == "" then
-    error("Ollama model must be specified in config")
-  end
-
-  if not base.endpoint then
-    error("Ollama requires endpoint configuration")
-  end
+function M.ollama_parse_curl_args(self, code_opts)
+  -- Create the messages array starting with the system message
+  local messages = {
+    { role = "system", content = code_opts.system_prompt },
+  }
+  -- Extend messages with the parsed conversation messages
+  vim.list_extend(messages, self:parse_messages(code_opts))
+  -- Construct options separately for clarity
+  local options = {
+    num_ctx = (self.options and self.options.num_ctx) or 4096,
+    temperature = code_opts.temperature or (self.options and self.options.temperature) or 0,
+  }
+  -- Check if tools table is empty
+  local tools = (code_opts.tools and next(code_opts.tools)) and code_opts.tools or nil
+  -- Return the final request table
 
   return {
-    url = Utils.url_join(base.endpoint, "/api/chat"),
-
+    url = self.endpoint .. "/api/chat",
     headers = {
-      ["Content-Type"] = "application/json",
       ["Accept"] = "application/json",
-      ["Authorization"] = "Bearer " .. os.getenv(provider.api_key_name),
+      ["Content-Type"] = "application/json",
+      ["Authorization"] = "Bearer " .. os.getenv(self.api_key_name),
     },
-
-    body = vim.tbl_deep_extend("force", {
-      model = base.model,
-      messages = M.ollama_parse_messages(prompt),
-      stream = true,
-      system = prompt.system_prompt,
-    }, body_opts),
+    body = {
+      model = self.model,
+      messages = messages,
+      options = options,
+      -- tools = tools, -- Optional tool support
+      stream = self.stream,
+    },
   }
 end
 
