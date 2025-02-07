@@ -24,13 +24,14 @@ function M.config()
       return {
         notify = nvim.lsp.ai.debug and "debug" or "error",
         provider = "openai_fim_compatible",
-        n_completions = 3,
-        context_window = 16000,
+        n_completions = 1,
+        context_window = 4096,
         context_ratio = 0.75,
         throttle = 750,
         debounce = 250,
+        request_timeout = 30,
         add_single_line_entry = true,
-        after_cursor_filter_length = 15,
+        after_cursor_filter_length = 10,
         provider_options = {
           openai_fim_compatible = {
             api_key = "AI_KILIC_DEV_API_KEY",
@@ -38,7 +39,7 @@ function M.config()
             end_point = "https://api.ai.kilic.dev/v1/completions",
             model = nvim.lsp.ai.model.completion,
             stream = true,
-            request_timeout = 10,
+            request_timeout = 15,
             template = {
               prompt = function(prefix, _)
                 local utils = require("minuet.utils")

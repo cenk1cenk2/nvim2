@@ -162,7 +162,7 @@ local role_map = {
 }
 
 ---@param opts AvantePromptOptions
-function M.ollama_parse_messages(self, opts)
+local parse_messages = function(self, opts)
   local messages = {}
   local has_images = opts.image_paths and #opts.image_paths > 0
   -- Ensure opts.messages is always a table
@@ -194,31 +194,7 @@ function M.ollama_parse_messages(self, opts)
   return messages
 end
 
----@param data string
----@param handler AvanteHandlerOptions
-function M.ollama_parse_stream_data(data, handler)
-  local json_data = vim.fn.json_decode(data)
-  if json_data then
-    if json_data.done then
-      handler.on_stop({ reason = json_data.done_reason or "stop" })
-      return
-    end
-    if json_data.message then
-      local content = json_data.message.content
-      if content and content ~= "" then
-        handler.on_chunk(content)
-      end
-    end
-    -- Handle tool calls if present
-    if json_data.tool_calls then
-      for _, tool in ipairs(json_data.tool_calls) do
-        handler.on_tool(tool)
-      end
-    end
-  end
-end
-
-function M.ollama_parse_curl_args(self, code_opts)
+local function parse_curl_args(self, code_opts)
   -- Create the messages array starting with the system message
   local messages = {
     { role = "system", content = code_opts.system_prompt },
@@ -233,12 +209,11 @@ function M.ollama_parse_curl_args(self, code_opts)
   -- Check if tools table is empty
   local tools = (code_opts.tools and next(code_opts.tools)) and code_opts.tools or nil
   -- Return the final request table
-
   return {
     url = self.endpoint .. "/api/chat",
     headers = {
-      ["Accept"] = "application/json",
       ["Content-Type"] = "application/json",
+      ["Accept"] = "application/json",
       ["Authorization"] = "Bearer " .. os.getenv(self.api_key_name),
     },
     body = {
@@ -246,13 +221,35 @@ function M.ollama_parse_curl_args(self, code_opts)
       messages = messages,
       options = options,
       -- tools = tools, -- Optional tool support
-      stream = self.stream,
+      stream = true, -- Keep streaming enabled
     },
   }
 end
 
+local function parse_stream_data(data, handler_opts)
+  local json_data = vim.fn.json_decode(data)
+  if json_data then
+    if json_data.done then
+      handler_opts.on_stop({ reason = json_data.done_reason or "stop" })
+      return
+    end
+    if json_data.message then
+      local content = json_data.message.content
+      if content and content ~= "" then
+        handler_opts.on_chunk(content)
+      end
+    end
+    -- Handle tool calls if present
+    if json_data.tool_calls then
+      for _, tool in ipairs(json_data.tool_calls) do
+        handler_opts.on_tool(tool)
+      end
+    end
+  end
+end
+
 ---@param result table
-function M.ollama_on_error(result)
+local function on_error(result)
   local Utils = require("avante.utils")
 
   local error_msg = "Ollama API error"
@@ -273,16 +270,16 @@ end
 M.ai_kilic_dev = {
   api_key_name = "AI_KILIC_DEV_API_KEY",
   endpoint = "https://api.ai.kilic.dev",
-  parse_messages = M.ollama_parse_messages,
-  parse_stream_data = M.ollama_parse_stream_data,
-  parse_curl_args = M.ollama_parse_curl_args,
-  on_error = M.ollama_on_error,
+  parse_messages = parse_messages,
+  parse_stream_data = parse_stream_data,
+  parse_curl_args = parse_curl_args,
+  on_error = on_error,
   model = nvim.lsp.ai.model.chat,
   stream = true, -- Optional
-  -- options = {
-  --   num_ctx = 32768, -- Optional
-  --   temperature = 0, -- Optional see https://github.com/ollama/ollama/blob/main/docs/api.md for all options
-  -- },
+  options = {
+    num_ctx = 512,
+    temperature = 0,
+  },
   -- for open ai compatible api
   -- endpoint = "https://api.ai.kilic.dev/v1",
   -- __inherited_from = "openai",

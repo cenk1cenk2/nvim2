@@ -27,8 +27,8 @@ nvim.lsp.copilot.filetypes = {
   cvs = false,
   ["."] = false,
 }
-nvim.lsp.ai.provider = "copilot"
--- nvim.lsp.ai.provider = "ai.kilic.dev"
+-- nvim.lsp.ai.provider = "copilot"
+nvim.lsp.ai.provider = "ai.kilic.dev"
 nvim.lsp.ai.debug = false
 nvim.lsp.ai.model.completion = "deepseek-coder-v2:16b"
 nvim.lsp.ai.model.chat = "deepseek-coder-v2:16b"
