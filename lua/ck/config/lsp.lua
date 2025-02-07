@@ -1,7 +1,11 @@
 return {
   ai = {
-    ---@type 'copilot' | 'ai.kilic.dev' | 'gemini'
-    provider = "copilot",
+    provider = {
+      ---@type 'copilot' | 'ai.kilic.dev' | 'gemini'
+      chat = "copilot",
+      ---@type 'copilot' | 'ai.kilic.dev' | 'gemini'
+      completion = "copilot",
+    },
     debug = false,
     filetypes = {
       ---@type string[]

@@ -4,7 +4,7 @@ local M = {}
 M.name = "zbirenbaum/copilot.lua"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, nvim.lsp.ai.provider == "copilot", {
+  require("ck.setup").define_plugin(M.name, nvim.lsp.ai.provider.completion == "copilot" or nvim.lsp.ai.provider.chat == "copilot", {
     plugin = function()
       ---@type Plugin
       return {
@@ -56,7 +56,7 @@ function M.config()
           },
         },
         suggestion = {
-          enabled = true,
+          enabled = nvim.lsp.ai.provider.completion == "copilot",
           auto_trigger = vim.tbl_contains(nvim.lsp.copilot.completion, "inline"),
           debounce = nvim.lsp.copilot.debounce,
           keymap = {

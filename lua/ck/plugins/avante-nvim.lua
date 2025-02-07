@@ -48,7 +48,7 @@ function M.config()
       ---@type avante.Config
       return {
         debug = nvim.lsp.ai.debug,
-        provider = nvim.lsp.ai.provider,
+        provider = nvim.lsp.ai.provider.chat,
         gemini = {
           model = "gemini-2.0-flash",
         },
@@ -69,7 +69,7 @@ function M.config()
         behaviour = {
           auto_set_highlight_group = false,
           auto_set_keymaps = false,
-          enable_token_counting = false,
+          enable_token_counting = true,
         },
         mappings = {
           --- @class AvanteConflictMappings

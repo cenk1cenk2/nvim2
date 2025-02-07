@@ -4,7 +4,7 @@ local M = {}
 M.name = "milanglacier/minuet-ai.nvim"
 
 function M.config()
-  require("ck.setup").define_plugin(M.name, nvim.lsp.ai.provider ~= "copilot", {
+  require("ck.setup").define_plugin(M.name, nvim.lsp.ai.provider.completion ~= "copilot", {
     plugin = function()
       ---@type Plugin
       return {
@@ -21,13 +21,9 @@ function M.config()
       }
     end,
     setup = function()
-      local provider
-      if nvim.lsp.ai.provider == "ai.kilic.dev" then
+      local provider = nvim.lsp.ai.provider.completion
+      if nvim.lsp.ai.provider.completion == "ai.kilic.dev" then
         provider = "openai_fim_compatible"
-      elseif nvim.lsp.ai.provider == "gemini" then
-        provider = "gemini"
-      else
-        error("Can not handle given AI provider.")
       end
 
       return {

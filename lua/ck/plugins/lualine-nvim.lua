@@ -40,7 +40,7 @@ function M.config()
           },
           lualine_x = {
             components.searchcount,
-            components.copilot,
+            components.ai,
             components.snippet,
             components.noice_mode,
             components.noice_command,
@@ -141,22 +141,12 @@ function M.components()
       color = { fg = nvim.ui.colors.black, bg = nvim.ui.colors.yellow[300] },
       cond = conditions.hide_in_width,
     },
-    copilot = {
+    ai = {
       function()
-        local status = require("copilot.api").status.data.status
-
-        if status == "Normal" then
-          return nvim.ui.icons.misc.Robot
-        elseif status == "InProgress" then
-          return nvim.ui.icons.ui.Lightbulb
-        elseif status == "Warning" then
-          return nvim.ui.icons.diagnostics.Warning
-        end
-
-        return nvim.ui.icons.ui.Close
+        return ("%s %s | %s"):format(nvim.ui.icons.misc.Robot, nvim.lsp.ai.provider.completion, nvim.lsp.ai.provider.chat)
       end,
       cond = function()
-        return conditions.hide_in_width() and is_loaded("copilot")
+        return conditions.hide_in_width()
       end,
       color = {
         fg = nvim.ui.colors.white,
