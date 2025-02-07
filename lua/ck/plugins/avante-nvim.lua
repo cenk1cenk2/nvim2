@@ -97,6 +97,12 @@ function M.config()
             apply_cursor = fn.local_keystroke({ "a" }),
             switch_windows = "<C-n>",
             reverse_switch_windows = "<C-p>",
+            remove_file = fn.local_keystroke({ "x" }),
+            add_file = fn.local_keystroke({ "f" }),
+            close = { "<C-c><C-c>" },
+          },
+          files = {
+            add_current = fn.wk_keystroke({ categories.COPILOT, "b" }),
           },
           ask = fn.wk_keystroke({ categories.COPILOT, "c" }),
           edit = fn.wk_keystroke({ categories.COPILOT, "e" }),
