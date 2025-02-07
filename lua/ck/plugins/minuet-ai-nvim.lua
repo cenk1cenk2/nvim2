@@ -24,7 +24,7 @@ function M.config()
       return {
         notify = nvim.lsp.ai.debug and "debug" or "error",
         provider = "openai_fim_compatible",
-        n_completions = 1,
+        n_completions = 2,
         context_window = 4096,
         context_ratio = 0.75,
         throttle = 750,
