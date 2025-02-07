@@ -193,13 +193,21 @@ local parse_messages = function(_, opts)
   return messages
 end
 
-local function parse_curl_args(self, content)
+local function parse_curl_args(self, prompt)
   -- Create the messages array starting with the system message
   local messages = {
-    { role = "system", content = content.system_prompt },
+    { role = "system", content = prompt.system_prompt },
   }
   -- Extend messages with the parsed conversation messages
-  vim.list_extend(messages, self:parse_messages(content))
+  vim.list_extend(messages, self:parse_messages(prompt))
+
+  local OpenAI = require("avante.providers").openai
+  local tools = {}
+  if prompt.tools then
+    for _, tool in ipairs(prompt.tools) do
+      table.insert(tools, OpenAI.transform_tool(tool))
+    end
+  end
 
   return {
     url = self.endpoint .. "/api/chat",
@@ -211,12 +219,9 @@ local function parse_curl_args(self, content)
     body = {
       model = self.model,
       messages = messages,
-      options = {
-        num_ctx = (self.options and self.options.num_ctx) or 4096,
-        temperature = content.temperature or (self.options and self.options.temperature) or 0,
-      },
-      -- tools = (code_opts.tools and next(code_opts.tools)) and code_opts.tools or nil,
-      stream = true, -- Keep streaming enabled
+      options = self.options,
+      -- tools = tools,
+      stream = self.stream,
     },
   }
 end
@@ -271,9 +276,13 @@ M.ai_kilic_dev = {
   on_error = on_error,
   model = nvim.lsp.ai.model.chat,
   stream = true, -- Optional
+  -- https://github.com/ollama/ollama/blob/main/docs/modelfile.md#parameter
   options = {
-    num_ctx = 1024,
+    num_ctx = 4096,
     temperature = 0,
+    -- num_predict = 42,
+    top_k = 10,
+    top_p = 0.5,
   },
   -- for open ai compatible api
   -- endpoint = "https://api.ai.kilic.dev/v1",
