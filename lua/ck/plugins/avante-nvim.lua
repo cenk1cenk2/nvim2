@@ -10,10 +10,6 @@ function M.config()
       return {
         "yetone/avante.nvim",
         build = "make",
-        dependencies = {
-          { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-          { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-        },
       }
     end,
     configure = function(_, fn)
