@@ -1,12 +1,21 @@
 return {
   ai = {
+    debug = false,
+    completion = {
+      number_of_completions = 1,
+      context_window = 2048,
+      line_limit = 15,
+      vectorcode = {
+        enabled = false,
+        number_of_files = 1,
+      },
+    },
     provider = {
       ---@type 'copilot' | 'ai.kilic.dev' | 'gemini'
       chat = "copilot",
       ---@type 'copilot' | 'ai.kilic.dev' | 'gemini'
       completion = "copilot",
     },
-    debug = false,
     filetypes = {
       ---@type string[]
       enabled = {},

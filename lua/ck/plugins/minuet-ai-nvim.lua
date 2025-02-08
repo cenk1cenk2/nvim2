@@ -1,6 +1,8 @@
 -- https://github.com/milanglacier/minuet-ai.nvim
 local M = {}
 
+local log = require("ck.log")
+
 M.name = "milanglacier/minuet-ai.nvim"
 
 function M.config()
@@ -12,11 +14,12 @@ function M.config()
         event = { "LspAttach", "BufReadPre", "BufNewFile", "FileType", "InsertEnter" },
         dependencies = {
           -- TODO: this seems promising revisit this project when it is completed
-          -- {
-          --   -- https://github.com/Davidyz/VectorCode
-          --   "Davidyz/VectorCode",
-          --   build = { "pipx install vectorcode", "pipx upgrade vectorcode" },
-          -- },
+          {
+            -- https://github.com/Davidyz/VectorCode
+            "Davidyz/VectorCode",
+            cond = nvim.lsp.ai.completion.vectorcode.enabled == true,
+            build = { "pipx install vectorcode", "pipx upgrade vectorcode" },
+          },
         },
       }
     end,
@@ -29,14 +32,14 @@ function M.config()
       return {
         notify = nvim.lsp.ai.debug and "debug" or "error",
         provider = provider,
-        n_completions = 3,
-        context_window = 4096,
+        n_completions = nvim.lsp.ai.completion.number_of_completions,
+        context_window = nvim.lsp.ai.completion.context_window,
         context_ratio = 0.75,
         throttle = 750,
         debounce = 250,
         request_timeout = 30,
-        add_single_line_entry = true,
-        after_cursor_filter_length = 10,
+        add_single_line_entry = false,
+        after_cursor_filter_length = nvim.lsp.ai.completion.line_limit,
         provider_options = {
           openai_fim_compatible = {
             api_key = "AI_KILIC_DEV_API_KEY",
@@ -51,17 +54,33 @@ function M.config()
                 local language = utils.add_language_comment()
                 local tab = utils.add_tab_comment()
 
-                -- local context = ""
-                -- for _, file in ipairs(require("vectorcode.cacher").query_from_cache()) do
-                --   context = context .. "// " .. file.path .. "\n" .. file.document .. "\n\n"
-                -- end
+                local context = ""
+                --- @module "vectorcode.cacher"
+                local ok, cacher = pcall(require, "vectorcode.cacher")
+                if ok then
+                  local cache = cacher.query_from_cache()
+                  for _, file in ipairs(cache) do
+                    context = file.document .. "\n"
+                  end
 
-                -- return language .. "\n" .. tab .. "\n" .. context .. prefix
-                return language .. "\n" .. tab .. "\n" .. prefix
+                  if nvim.lsp.ai.debug then
+                    log:info(
+                      "Files selected for context: %s",
+                      vim.tbl_map(function(value)
+                        return value.path
+                      end, cache)
+                    )
+                  end
+                end
+
+                return context .. language .. "\n" .. tab .. "\n" .. prefix
               end,
               suffix = function(_, suffix)
                 return suffix
               end,
+            },
+            optional = {
+              max_tokens = 256,
             },
           },
           gemini = {
@@ -82,7 +101,7 @@ function M.config()
             prev = "<M-k>",
             dismiss = "<M-h>",
             accept = "<M-l>",
-            accept_line = nil,
+            accept_line = "<M-o>",
             accept_n_lines = nil,
           },
           show_on_completion_menu = false,
@@ -90,33 +109,40 @@ function M.config()
       }
     end,
     on_setup = function(c)
-      -- require("vectorcode").setup({
-      --   n_query = 1,
-      -- })
+      ---@module "vectorcode"
+      local ok, vectorcode = pcall(require, "vectorcode")
+      if ok then
+        vectorcode.setup({
+          n_query = nvim.lsp.ai.completion.vectorcode.number_of_files,
+        })
+      end
 
       require("minuet").setup(c)
     end,
-    -- autocmds = function()
-    --   return {
-    --     {
-    --       event = { "LspAttach" },
-    --       group = "__completion",
-    --       callback = function(event)
-    --         local cacher = require("vectorcode.cacher")
-    --
-    --         cacher.async_check("config", function()
-    --           cacher.register_buffer(event.buf, {
-    --             notify = nvim.lsp.ai.debug,
-    --             n_query = 1,
-    --             run_on_register = true,
-    --             query_cb = require("vectorcode.utils").surrounding_lines_cb(-1),
-    --             events = { "BufWritePost", "InsertEnter", "BufReadPost" },
-    --           })
-    --         end, nil)
-    --       end,
-    --     },
-    --   }
-    -- end,
+    autocmds = function()
+      return {
+        {
+          event = { "LspAttach" },
+          group = "__completion",
+          callback = function(event)
+            --- @module "vectorcode.cacher"
+            local ok, cacher = pcall(require, "vectorcode.cacher")
+            if not ok then
+              return
+            end
+
+            cacher.async_check("config", function()
+              cacher.register_buffer(event.buf, {
+                notify = nvim.lsp.ai.debug,
+                run_on_register = true,
+                events = { "BufWritePost" },
+                debounce = 15,
+              })
+            end, nil)
+          end,
+        },
+      }
+    end,
   })
 end
 
