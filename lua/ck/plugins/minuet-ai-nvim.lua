@@ -10,8 +10,9 @@ function M.config()
     plugin = function()
       ---@type Plugin
       return {
-        "milanglacier/minuet-ai.nvim",
+        -- "milanglacier/minuet-ai.nvim",
         event = { "LspAttach", "BufReadPre", "BufNewFile", "FileType", "InsertEnter" },
+        dir = "~/development/minuet-ai.nvim",
         dependencies = {
           -- TODO: this seems promising revisit this project when it is completed
           {
@@ -49,18 +50,23 @@ function M.config()
             stream = true,
             request_timeout = 15,
             template = {
-              prompt = function(prefix, _)
+              -- https://platform.openai.com/docs/api-reference/completions/create
+              -- https://api-docs.deepseek.com/api/create-completion
+              prompt = function(prefix, suffix)
                 local utils = require("minuet.utils")
                 local language = utils.add_language_comment()
                 local tab = utils.add_tab_comment()
 
+                return "// current file that requires completion is as follows \n" .. language .. "\n" .. tab .. "\n" .. prefix
+              end,
+              suffix = function(_, suffix)
                 local context = ""
                 --- @module "vectorcode.cacher"
                 local ok, cacher = pcall(require, "vectorcode.cacher")
                 if ok then
                   local cache = cacher.query_from_cache()
                   for _, file in ipairs(cache) do
-                    context = file.document .. "\n"
+                    context = context .. "// reference file that is in the same project is as follows: " .. file.path .. "\n" .. file.document .. "\n\n"
                   end
 
                   if nvim.lsp.ai.debug then
@@ -73,14 +79,13 @@ function M.config()
                   end
                 end
 
-                return context .. language .. "\n" .. tab .. "\n" .. prefix
-              end,
-              suffix = function(_, suffix)
-                return suffix
+                return suffix .. "\n\n" .. context
               end,
             },
             optional = {
               max_tokens = 256,
+              top_p = 0.95,
+              top_k = 10,
             },
           },
           gemini = {

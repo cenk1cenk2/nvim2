@@ -285,10 +285,9 @@ M.ai_kilic_dev = {
   -- https://github.com/ollama/ollama/blob/main/docs/modelfile.md#parameter
   options = {
     num_ctx = 4096,
-    temperature = 0,
-    -- num_predict = 42,
+    top_p = 0.95,
     top_k = 10,
-    top_p = 0.5,
+    -- num_predict = 8,
   },
   -- for open ai compatible api
   -- endpoint = "https://api.ai.kilic.dev/v1",
