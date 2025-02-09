@@ -333,7 +333,7 @@ function M.setup()
 
               if item.compact then
                 item.process_result = function(j)
-                  return { table.concat(j:result(), ""):gsub("\n", "") }
+                  return table.concat(j:result(), ""):gsub("\n", "")
                 end
               end
 
@@ -388,7 +388,7 @@ function M.setup()
 
               if item.compact then
                 item.process_result = function(j)
-                  return { table.concat(j:result(), ""):gsub("\n", "") }
+                  return table.concat(j:result(), ""):gsub("\n", "")
                 end
               end
 
