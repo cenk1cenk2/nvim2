@@ -1,7 +1,7 @@
 return {
   ai = {
     debug = false,
-    ai = {
+    chat = {
       context_window = 2048,
     },
     completion = {
