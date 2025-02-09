@@ -10,9 +10,8 @@ function M.config()
     plugin = function()
       ---@type Plugin
       return {
-        -- "milanglacier/minuet-ai.nvim",
+        "milanglacier/minuet-ai.nvim",
         event = { "LspAttach", "BufReadPre", "BufNewFile", "FileType", "InsertEnter" },
-        dir = "~/development/minuet-ai.nvim",
         dependencies = {
           -- TODO: this seems promising revisit this project when it is completed
           {
