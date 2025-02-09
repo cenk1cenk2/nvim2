@@ -209,6 +209,8 @@ function M.config()
             return 0
           end,
           sorts = {
+            -- TODO: enable me on the next release
+            -- "exact",
             "score",
             -- "label",
             -- "kind",
