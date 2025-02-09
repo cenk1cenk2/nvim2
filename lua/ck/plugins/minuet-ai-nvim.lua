@@ -51,7 +51,7 @@ function M.config()
             template = {
               -- https://platform.openai.com/docs/api-reference/completions/create
               -- https://api-docs.deepseek.com/api/create-completion
-              prompt = function(prefix, suffix)
+              prompt = function(prefix, _)
                 local utils = require("minuet.utils")
                 local language = utils.add_language_comment()
                 local tab = utils.add_tab_comment()

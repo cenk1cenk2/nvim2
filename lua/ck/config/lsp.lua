@@ -1,6 +1,9 @@
 return {
   ai = {
     debug = false,
+    ai = {
+      context_window = 2048,
+    },
     completion = {
       number_of_completions = 1,
       context_window = 2048,

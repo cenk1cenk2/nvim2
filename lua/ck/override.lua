@@ -35,9 +35,10 @@ nvim.lsp.ai.model.completion = "deepseek-coder-v2:16b"
 nvim.lsp.ai.model.chat = "deepseek-coder-v2:16b"
 nvim.lsp.ai.completion.number_of_completions = 1
 nvim.lsp.ai.completion.line_limit = -1
-nvim.lsp.ai.completion.context_window = 1024 * 8
+nvim.lsp.ai.chat.context_window = 1024 * 4
+nvim.lsp.ai.completion.context_window = 1024 * 4
 nvim.lsp.ai.completion.vectorcode.enabled = true
-nvim.lsp.ai.completion.vectorcode.number_of_files = 1
+nvim.lsp.ai.completion.vectorcode.number_of_files = 10
 
 nvim.lsp.ai.filetypes.enabled = {
   "*",

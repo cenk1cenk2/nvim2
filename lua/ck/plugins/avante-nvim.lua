@@ -284,7 +284,7 @@ M.ai_kilic_dev = {
   stream = true, -- Optional
   -- https://github.com/ollama/ollama/blob/main/docs/modelfile.md#parameter
   options = {
-    num_ctx = 4096,
+    num_ctx = nvim.lsp.ai.chat.context_window,
     top_p = 0.95,
     top_k = 10,
     -- num_predict = 8,
