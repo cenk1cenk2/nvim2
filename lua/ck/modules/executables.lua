@@ -14,18 +14,32 @@ function M.get_selection()
   return utils.get_visual_selection() or vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 end
 
+---@alias ProcessResultCallback fun(j: Job): string[]
+
+---@param j Job
+---@param cb ProcessResultCallback?
+---@return string[]
+local function process_result(j, cb)
+  if cb == nil then
+    return j:result()
+  end
+
+  return cb(j)
+end
+
 ---
 ---@param lines string[]
 ---@param opts CommandJob
+---@param cb ProcessResultCallback?
 ---@return Job
-function M.run_buffer_command(lines, opts)
+function M.run_buffer_command(lines, opts, cb)
   local bufnr = vim.api.nvim_get_current_buf()
   local j = job.create(vim.tbl_extend("force", opts, {
     writer = lines,
     on_success = function(j)
       log:info("Ran command: %s", opts.command)
 
-      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, j:result())
+      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, process_result(j, cb))
     end,
     on_failure = function(j)
       log:error("Error running command:\n%s", table.concat(j:stderr_result(), "\n"))
@@ -38,11 +52,12 @@ end
 
 ---
 ---@param opts CommandJob
+---@param cb ProcessResultCallback?
 ---@return Job
-function M.run_clipboard_command(opts)
+function M.run_clipboard_command(opts, cb)
   local j = job.create(vim.tbl_extend("force", opts, {
     on_success = function(j)
-      local generated = j:result()
+      local generated = process_result(j, cb)
 
       log:info("Copied result of command to clipboard: %s", opts.command)
       vim.fn.setreg(vim.v.register or nvim.system_register, generated)
@@ -57,12 +72,13 @@ end
 ---
 ---@param lines string[]
 ---@param opts CommandJob
+---@param cb ProcessResultCallback?
 ---@return Job
-function M.run_buffer_clipboard_command(lines, opts)
+function M.run_buffer_clipboard_command(lines, opts, cb)
   local j = job.create(vim.tbl_extend("force", opts, {
     writer = lines,
     on_success = function(j)
-      local generated = j:result()
+      local generated = process_result(j, cb)
 
       log:info("Copied result of command to clipboard: %s", opts.command)
       vim.fn.setreg(vim.v.register or nvim.system_register, generated)
@@ -315,7 +331,13 @@ function M.setup()
                 return
               end
 
-              M.run_buffer_clipboard_command(lines, item)
+              if item.compact then
+                item.process_result = function(j)
+                  return { table.concat(j:result(), ""):gsub("\n", "") }
+                end
+              end
+
+              M.run_buffer_clipboard_command(lines, item, item.process_result)
             end
 
             vim.ui.select({
@@ -327,13 +349,13 @@ function M.setup()
                 end,
               },
               { command = "sttr", args = { "ascii85-decode" } },
-              { command = "sttr", args = { "base32-decode" } },
-              { command = "sttr", args = { "base64-decode" } },
-              { command = "sttr", args = { "base64url-decode" } },
+              { command = "sttr", args = { "base32-decode" }, compact = true },
+              { command = "sttr", args = { "base64-decode" }, compact = true },
+              { command = "sttr", args = { "base64url-decode" }, compact = true },
               { command = "sttr", args = { "hex-decode" } },
-              { command = "sttr", args = { "html-decode" } },
+              { command = "sttr", args = { "html-decode" }, compact = true },
               { command = "sttr", args = { "json-unescape" } },
-              { command = "sttr", args = { "url-decode" } },
+              { command = "sttr", args = { "url-decode" }, compact = true },
               { command = "sttr", args = { "zeropad" } },
             }, {
               prompt = "decrypt",
@@ -364,7 +386,13 @@ function M.setup()
                 return
               end
 
-              M.run_buffer_clipboard_command(lines, item)
+              if item.compact then
+                item.process_result = function(j)
+                  return { table.concat(j:result(), ""):gsub("\n", "") }
+                end
+              end
+
+              M.run_buffer_clipboard_command(lines, item, item.process_result)
             end
 
             vim.ui.select({
@@ -376,12 +404,12 @@ function M.setup()
                 end,
               },
               { command = "sttr", args = { "ascii85-encode" } },
-              { command = "sttr", args = { "base32-encode" } },
-              { command = "sttr", args = { "base64-encode" } },
-              { command = "sttr", args = { "base64url-encode" } },
+              { command = "sttr", args = { "base32-encode" }, compact = true },
+              { command = "sttr", args = { "base64-encode" }, compact = true },
+              { command = "sttr", args = { "base64url-encode" }, compact = true },
               { command = "sttr", args = { "hex-encode" } },
-              { command = "sttr", args = { "html-encode" } },
-              { command = "sttr", args = { "url-encode" } },
+              { command = "sttr", args = { "html-encode" }, compact = true },
+              { command = "sttr", args = { "url-encode" }, compact = true },
 
               { command = "sttr", args = { "bcrypt" } },
               { command = "sttr", args = { "count-chars" } },
