@@ -195,7 +195,6 @@ function M.on_attach(_, bufnr)
           end,
           desc = "format buffer",
           mode = { "n", "v" },
-          buffer = bufnr,
         },
         {
           fn.wk_keystroke({ categories.LSP, "F" }),
