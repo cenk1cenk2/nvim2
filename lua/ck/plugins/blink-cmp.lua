@@ -107,33 +107,6 @@ function M.config()
             }
           end,
           per_filetype = {},
-          cmdline = function()
-            local type = vim.fn.getcmdtype()
-
-            if vim.tbl_contains({ "/", "?" }, type) then
-              return {
-                "fuzzy_buffer",
-              }
-            elseif vim.tbl_contains({ ":", "@" }, type) then
-              -- local cmdline = vim.fn.getcmdline()
-              -- if cmdline:match("^lua") then
-              --   return {
-              --     "lsp",
-              --     "lazydev",
-              --   }
-              -- elseif cmdline:match("^!") then
-              --   return {
-              --     "zsh",
-              --   }
-              -- end
-
-              return {
-                "cmdline",
-              }
-            end
-
-            return {}
-          end,
           providers = {
             lsp = {
               score_offset = 10,
@@ -204,13 +177,41 @@ function M.config()
             },
           },
         },
+        cmdline = {
+          sources = function()
+            local type = vim.fn.getcmdtype()
+
+            if vim.tbl_contains({ "/", "?" }, type) then
+              return {
+                "fuzzy_buffer",
+              }
+            elseif vim.tbl_contains({ ":", "@" }, type) then
+              -- local cmdline = vim.fn.getcmdline()
+              -- if cmdline:match("^lua") then
+              --   return {
+              --     "lsp",
+              --     "lazydev",
+              --   }
+              -- elseif cmdline:match("^!") then
+              --   return {
+              --     "zsh",
+              --   }
+              -- end
+
+              return {
+                "cmdline",
+              }
+            end
+
+            return {}
+          end,
+        },
         fuzzy = {
           max_typos = function()
             return 0
           end,
           sorts = {
-            -- TODO: enable me on the next release
-            -- "exact",
+            "exact",
             "score",
             -- "label",
             -- "kind",
