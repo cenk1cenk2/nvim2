@@ -59,6 +59,10 @@ function M.config()
       }
     end,
     setup = function()
+      -- TODO: flatten.nvim has problems with nvim-neotest for discovery
+      -- https://github.com/willothy/flatten.nvim/issues/106
+      -- https://github.com/nvim-neotest/neotest/issues/468
+
       ---@type neotest.Config
       return {
         log_level = vim.log.levels.INFO,
